@@ -1,39 +1,71 @@
-<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" #addModal>
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" [size]="'lg'" #addModal>
   <form>
     <modal-header [show-close]="true">
         <h4 class="modal-title">Position details</h4>
     </modal-header>
     <modal-body>
-      <div>
-
+      <div style="float: left">
         <label for="groupSel" id="groupLabel">Group&nbsp;</label>
-        <div class="selectContainer">
-        <ng-select id="groupSel" name="groupSel" [allowClear]="false"
+        <div class="selectContainer" id="groupSel">
+          <ng-select [allowClear]="false"
                     [items]="groups"
                     [disabled]="groupsDisabled"
                     [initData]="groupBg"
-                    (data)="refreshValue($event)"
-                    (selected)="selected($event)"
+                    (selected)="groupSelected($event)"
                     (removed)="removed($event)"
                     (typed)="typed($event)"
                     placeholder="No group selected">
-        </ng-select>
+          </ng-select>
+        </div>
       </div>
+      <div  style="float: left">
         <label for="partSel">Part&nbsp;</label>
         <div class="selectContainer">
-        <ng-select id="partSel" name="partSel" [allowClear]="false"
-                    [items]="groups"
+          <ng-select id="partSel" name="partSel" [allowClear]="false"
+                    [items]="parts"
                     [disabled]="groupsDisabled"
                     [initData]="groupBg"
+                    (selected)="selected($event)"
+                    (removed)="removed($event)"
+                    (typed)="typed($event)"
+                    placeholder="No part selected">
+          </ng-select>
+        </div>
+      </div>
+      <div style="clear: both">
+        <div *ngFor="let table of tables">
+          <label>{{table.name}}</label>
+          <ng-select [allowClear]="true"
+                    [items]="table.items"
                     (data)="refreshValue($event)"
                     (selected)="selected($event)"
                     (removed)="removed($event)"
                     (typed)="typed($event)"
-                    placeholder="No group selected">
-        </ng-select>
+                    placeholder="No detail selected">
+          </ng-select>
+        </div>
       </div>
-
-    </div>
+      <table style="width: 400px">
+        <thead>
+          <tr>
+            <td>Commodity Code</td>
+            <td>Size</td>
+            <td>Description</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ABD3390EADJKLAD</td>
+            <td>20X30</td>
+            <td>Mock Description</td>
+          </tr>
+          <tr>
+            <td>ABD3390EADJKLAD</td>
+            <td>20X30</td>
+            <td>Mock Description</td>
+          </tr>
+        </tbody>
+      </table>
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="navigateModal.dismiss()">Cancel</button>

@@ -16,7 +16,7 @@ import {
 import { IOptionsBehavior } from './select-interfaces';
 
 let optionsTemplate = `
-    <ul *ngIf="optionsOpened && options && options.length > 0 && !itemObjects[0].hasChildren()"
+    <ul *ngIf="optionsOpened && options && options.length > 0 && (itemObjects) && (itemObjects[0]) && !itemObjects[0].hasChildren()"
         class="ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu">
       <li class="ui-select-choices-group">
         <div *ngFor="let o of options"
@@ -31,7 +31,7 @@ let optionsTemplate = `
       </li>
     </ul>
 
-    <ul *ngIf="optionsOpened && options && options.length > 0 && itemObjects[0].hasChildren()"
+    <ul *ngIf="optionsOpened && options && options.length > 0 && (itemObjects) && (itemObjects[0]) && itemObjects[0].hasChildren()"
         class="ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu">
       <li *ngFor="let c of options; let index=index" class="ui-select-choices-group">
         <div class="divider" *ngIf="index > 0"></div>
@@ -269,7 +269,7 @@ export class Select {
   }
 
   ngOnInit() {
-    this.behavior = this.itemObjects[0].hasChildren() ?
+    this.behavior = this.itemObjects && this.itemObjects[0] && this.itemObjects[0].hasChildren() ?
       new ChildrenBehavior(this) : new GenericBehavior(this);
     //this.offSideClickHandler = this.getOffSideClickHandler(this);
     document.addEventListener('click', this.offSideClickHandler);

@@ -272,7 +272,7 @@ export class AppComponent implements BubbleNodeMessageInterface {
     console.log("app.component - disabledV - nodeTypeDisabled: " + this.nodeTypeDisabled); //TODO: remove
   }
 
-  public selected(value:any):void {
+  public nodeTypeSelected(value:any):void {
     console.log('Selected value is: ', value);
     this.selectedNodeType = value.id;
   }

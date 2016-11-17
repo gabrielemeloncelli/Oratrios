@@ -3,21 +3,23 @@
     <span class="{{root.cssClass}}"></span>
   </a>
   <a (click)="selectRoot()">{{ root.name }}</a>
-  <div class="pull-right" style="clear: both">
-  <div *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator" class="pull-right" style="width: 80px; padding-left: 5px">
-    <div style="width: 25px; height: 25px; border: 1px black; float: left">
-      <a *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator && !root.showIcon" class="btn btn-xs btn-danger" (click)="deleteNode()"><span class="glyphicon glyphicon-remove-sign"></span></a>
+  <div class="pull-right">
+    <div *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator" class="pull-right" style="width: 80px; padding-left: 5px">
+      <div style="width: 25px; height: 25px; border: 1px black; float: left">
+        <a *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator && !root.showIcon" class="btn btn-xs btn-danger" (click)="deleteNode()"><span class="glyphicon glyphicon-remove-sign"></span></a>
+      </div>
+      <div style="width: 25px; height: 25px; border: 1px black; float: left">
+        <a *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator" class="btn btn-xs btn-warning" (click)="editNode()"><span class="glyphicon glyphicon-edit"></span></a>
+      </div>
+      <div style="width: 25px; height: 25px; border: 1px black; float: left">
+        <a *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator" class="btn btn-xs btn-success" (click)="addNode()"><span class="glyphicon glyphicon-plus"></span></a>
+      </div>
     </div>
-    <div style="width: 25px; height: 25px; border: 1px black; float: left">
-      <a *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator" class="btn btn-xs btn-warning" (click)="editNode()"><span class="glyphicon glyphicon-edit"></span></a>
-    </div>
-    <div style="width: 25px; height: 25px; border: 1px black; float: left">
-      <a *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator" class="btn btn-xs btn-success" (click)="addNode()"><span class="glyphicon glyphicon-plus"></span></a>
-    </div>
+    <a *ngIf="root.id !== 0 && sessionUser && (sessionUser.isAdministrator || !root.locked || sessionUser.login === root.lockedBy)" [ngClass]="lockClasses" (click)="toggleLockNode()"><span class="glyphicon glyphicon-lock"></span></a>
+    <a *ngIf="root.id !== 0 && sessionUser && !(sessionUser.isAdministrator || !root.locked || sessionUser.login === root.lockedBy)" [ngClass]="lockClasses"><span class="glyphicon glyphicon-lock"></span></a>
   </div>
-  <a *ngIf="root.id !== 0 && sessionUser && (sessionUser.isAdministrator || !root.locked || sessionUser.login === root.lockedBy)" [ngClass]="lockClasses" (click)="toggleLockNode()"><span class="glyphicon glyphicon-lock"></span></a>
-  <a *ngIf="root.id !== 0 && sessionUser && !(sessionUser.isAdministrator || !root.locked || sessionUser.login === root.lockedBy)" [ngClass]="lockClasses"><span class="glyphicon glyphicon-lock"></span></a>
-</div>
+  <div style="clear: both; width: 1px; height: 1px">
+  </div>
 </div>
 <div *ngIf="root.expanded">
   <ul>

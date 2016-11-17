@@ -12,13 +12,20 @@ import { SessionServiceConfig } from './session.service';
 import { PositionsListComponent } from './positions-list.component';
 import { ModalModule } from '../ng2-bs3-modal/ng2-bs3-modal.module';
 import { AddPositionComponent } from './add-position.component';
+import { CommodityGroupService } from './commodity-group.service';
+import { CommodityGroupStoreService } from './commodity-group-store.service';
+import { CommodityPartService } from './commodity-part.service';
+import { CommodityPartStoreService } from './commodity-part-store.service';
+import { RuleTableService } from './rule-table.service';
+import { RuleTableStoreService } from './rule-table-store.service';
 
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, SelectModule, ModalModule ],
   declarations: [ PositionsListComponent, AddPositionComponent ],
   exports:      [ CommonModule, FormsModule, SelectModule, PositionsListComponent, AddPositionComponent, ModalModule ],
-  providers:    [ CoreEstService ]
+  providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,
+  RuleTableService, RuleTableStoreService ]
 })
 export class CoreModule {
 
