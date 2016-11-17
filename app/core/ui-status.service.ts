@@ -8,6 +8,8 @@ export class UiStatusService
 {
   private _insertPosition: BehaviorSubject<InsertPositionDetails> = new BehaviorSubject<InsertPositionDetails>(new InsertPositionDetails());
   public insertPosition: Observable<InsertPositionDetails> = this._insertPosition.asObservable();
+  public commodityGroupCode: string;
+  public commodityPartCode: string;
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {

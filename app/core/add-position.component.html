@@ -25,7 +25,7 @@
                     [items]="parts"
                     [disabled]="groupsDisabled"
                     [initData]="groupBg"
-                    (selected)="selected($event)"
+                    (selected)="partSelected($event)"
                     (removed)="removed($event)"
                     (typed)="typed($event)"
                     placeholder="No part selected">
@@ -34,15 +34,16 @@
       </div>
       <div style="clear: both">
         <div *ngFor="let table of tables">
-          <label>{{table.name}}</label>
+          <label>{{table.description}}</label>
+          <label>{{table.items}}</label>
           <ng-select [allowClear]="true"
-                    [items]="table.items"
-                    (data)="refreshValue($event)"
+                      [items]="table.detailItems"
                     (selected)="selected($event)"
                     (removed)="removed($event)"
                     (typed)="typed($event)"
                     placeholder="No detail selected">
           </ng-select>
+
         </div>
       </div>
       <table style="width: 400px">

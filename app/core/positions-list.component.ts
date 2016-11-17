@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Position } from './position';
 import { NodeSelectorService } from './node-selector.service';
 import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
-import { PositionsStoreService } from './positions-store.service';
+import { PositionService } from './position.service';
 import { BehaviorSubject } from 'rxjs/behaviorsubject';
 import { Observable } from 'rxjs/observable';
 import { UiStatusService } from './ui-status.service';
@@ -17,7 +17,7 @@ export class PositionsListComponent
   public nodeName: string;
   public nodeLocked: boolean;
   private _node: TreeNode;
-  constructor(private _selectorService: NodeSelectorService, public positionsService: PositionsStoreService, private _uiStatusService: UiStatusService)
+  constructor(private _selectorService: NodeSelectorService, public positionsService: PositionService, private _uiStatusService: UiStatusService)
   {
   }
 

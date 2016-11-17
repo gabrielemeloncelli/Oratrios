@@ -131,11 +131,9 @@ export class Select {
   set initData(value:Array<any>) {
     this._initData = value;
     if (this._initData && this._initData.length > 0) {
-      console.log("Select - set - initData"); //TODO: remove
       this.open();
       for (var i:number = 0; i < this.options.length; i+=1)
       {
-        console.log("Select - options index: " + i + " id: " + this.options[i].id); //TODO: remove
         if (this.options[i].id === this._initData[0].id)
         {
           this.selectMatch(this.options[i]);
@@ -147,7 +145,6 @@ export class Select {
     }
     else
     {
-      console.log("Select - set - initData - resetting"); //TODO: remove
       if (this.activeOption)
       {
         this.remove(this.activeOption);
@@ -161,7 +158,7 @@ export class Select {
 
   @Input() set items(value:Array<any>) {
     this._items = value;
-    this.itemObjects = this._items.map((item:any) => new SelectItem(item));
+    this.itemObjects = this._items ? this._items.map((item:any) => new SelectItem(item)) : null;
   }
 
   @Input() set disabled(value:boolean) {
@@ -187,7 +184,7 @@ export class Select {
   private offSideClickHandler:any;
   private inputMode:boolean = false;
   private optionsOpened:boolean = false;
-  private behavior:IOptionsBehavior;
+  private behavior:IOptionsBehavior= new GenericBehavior(this);
   private inputValue:string = '';
   private _items:Array<any> = [];
   private _disabled:boolean = false;
@@ -273,13 +270,6 @@ export class Select {
       new ChildrenBehavior(this) : new GenericBehavior(this);
     //this.offSideClickHandler = this.getOffSideClickHandler(this);
     document.addEventListener('click', this.offSideClickHandler);
-/* TODO: remove
-    if (this._initData) {
-      console.log("select - ngOnInit - initData"); //TODO: remove
-      this.active = this.initData.map(d => new SelectItem(d));
-      this.data.emit(this.active);
-    }
-    */
   }
 
   ngOnDestroy() {
@@ -434,11 +424,9 @@ export class Select {
       e.stopPropagation();
       e.preventDefault();
     }
-    console.log('selectActiveMatch - started');//TODO: remove
     if (this.options.length <= 0) {
       return;
     }
-    console.log('selectActiveMatch - options checked');//TODO: remove
     if (this.multiple === true) {
       this.active.push(value);
       this.data.next(this.active);
@@ -450,7 +438,6 @@ export class Select {
     }
 
     this.doEvent('selected', value);
-    console.log('selectActiveMatch - selected');//TODO: remove
     this.hideOptions();
 
     if (this.multiple === true) {
