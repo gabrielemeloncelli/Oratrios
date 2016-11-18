@@ -9,12 +9,6 @@
     <positions-list></positions-list>
   </div>
 <div>
-  <p>
-    Display position add: {{positionAdd}}
-  </p>
-  <p>
-    Is new position tag: {{positionIsTag}}
-  </p>
   <addposition *ngIf="positionAdd"></addposition>
 </div>
 <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="storeNode()" #navigateModal>

@@ -10,6 +10,8 @@ export class UiStatusService
   public insertPosition: Observable<InsertPositionDetails> = this._insertPosition.asObservable();
   public commodityGroupCode: string;
   public commodityPartCode: string;
+  public tablesAndSizesVisible = false;
+  public materialsVisible = false;
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {

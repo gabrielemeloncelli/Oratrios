@@ -25,9 +25,14 @@ export class AddPositionComponent
   public groupBg: any = {"text": "Area", "id": "Area"};
   public parts: SelectItem[] = new Array<SelectItem>();
   tables = new Array<MappedTable>();
+  public size1: string;
+  public size2: string;
+  public size3: string;
+  public size4: string;
+  public size5: string;
 
 
-  constructor(private _uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
+  constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
      private _commodityPartService: CommodityPartService, private _ruleTableService: RuleTableService)
   {
 
@@ -35,7 +40,7 @@ export class AddPositionComponent
 
   ngOnInit()
   {
-    this._uiStatusService.insertPosition.subscribe(
+    this.uiStatusService.insertPosition.subscribe(
       detail => {
         if (detail.displayInsertPosition)
         {
@@ -73,13 +78,26 @@ export class AddPositionComponent
 
   groupSelected(event: any)
   {
-    this._uiStatusService.commodityGroupCode = event.id;
+    this.uiStatusService.commodityGroupCode = event.id;
     this._commodityPartService.getAll(event.id);
   }
 
   partSelected(event: any)
   {
-    this._uiStatusService.commodityPartCode = event.id;
-    this._ruleTableService.getAll(this._uiStatusService.commodityGroupCode, event.id);
+    this.uiStatusService.commodityPartCode = event.id;
+    this.uiStatusService.tablesAndSizesVisible = true;
+    this._ruleTableService.getAll(this.uiStatusService.commodityGroupCode, event.id);
+  }
+
+  tableSelected(event: any, tableName: string)
+  {
+    console.log('add-position.component - tableSelected - tableName: ' + tableName);
+    console.log('add-position.component - tableSelected - event.id: ' + event.id);
+  }
+
+  findMaterial()
+  {
+    console.log("add-position.component - findMaterial - size2: " + this.size2)
+    this.uiStatusService.materialsVisible = true;
   }
 }

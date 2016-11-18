@@ -4,6 +4,7 @@
         <h4 class="modal-title">Position details</h4>
     </modal-header>
     <modal-body>
+      <div style="background-color:#D3D3D3">
       <div style="float: left">
         <label for="groupSel" id="groupLabel">Group&nbsp;</label>
         <div class="selectContainer" id="groupSel">
@@ -32,43 +33,91 @@
           </ng-select>
         </div>
       </div>
-      <div style="clear: both">
-        <div *ngFor="let table of tables">
-          <label>{{table.description}}</label>
-          <label>{{table.items}}</label>
-          <ng-select [allowClear]="true"
+      <div style="clear: both; height: 10px; width: 10px">
+      </div>
+      <div *ngIf="uiStatusService.tablesAndSizesVisible">
+          <div *ngFor="let table of tables">
+            <label>{{table.description}}</label>
+            <ng-select [allowClear]="true"
                       [items]="table.detailItems"
-                    (selected)="selected($event)"
+                    (selected)="tableSelected($event, table.name)"
                     (removed)="removed($event)"
                     (typed)="typed($event)"
                     placeholder="No detail selected">
-          </ng-select>
+            </ng-select>
 
         </div>
+        <div style="clear: both; height: 10px; width: 10px">
+        </div>
+        <div>
+        <div style="float: left">
+          <label for="size1">Size 1</label>
+          <input type="text" name="size1" id="size1" [(ngModel)]="size1"/>
+        </div>
+        <div style="float: left">
+          <label for="size2">Size 2</label>
+          <input type="text" name="size2"  id="size2" [(ngModel)]="size2"/>
+        </div>
+        <div style="float: left">
+          <label for="size3">Size 3</label>
+          <input type="text" name="size3"  id="size3" [(ngModel)]="size3"/>
+        </div>
+        <div style="float: left">
+          <label for="size4">Size 4</label>
+          <input type="text" name="size4"  id="size4" [(ngModel)]="size4"/>
+        </div>
+        <div style="float: left">
+          <label for="size5">Size 5</label>
+          <input type="text" name="size5"  id="size5" [(ngModel)]="size5"/>
+        </div>
+        <div style="clear: both; height: 10px; width: 10px">
+        </div>
+        <button class="btn btn-default pull-right" (click)="findMaterial()">Find</button>
+        <div style="clear: both"></div>
+        </div>
       </div>
-      <table style="width: 400px">
-        <thead>
-          <tr>
-            <td>Commodity Code</td>
-            <td>Size</td>
-            <td>Description</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>ABD3390EADJKLAD</td>
-            <td>20X30</td>
-            <td>Mock Description</td>
-          </tr>
-          <tr>
-            <td>ABD3390EADJKLAD</td>
-            <td>20X30</td>
-            <td>Mock Description</td>
-          </tr>
-        </tbody>
-      </table>
+    </div>
+        <div *ngIf="uiStatusService.tablesAndSizesVisible && uiStatusService.materialsVisible" style="padding:5px">
+          <table class="table-bordered" style="width: 800px">
+            <thead>
+              <tr style="font-weight: bold">
+                <td>Commodity Code</td>
+                <td>Size</td>
+                <td>Description</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ABD3390EADJKLAD</td>
+                <td>20X30</td>
+                <td>Mock Description</td>
+                <td><a class="btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></a></td>
+              </tr>
+              <tr>
+                <td>ABD3390EADJKLAD</td>
+                <td>20X30</td>
+                <td>Mock Description</td>
+                <td><a class="btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      <div>
+        <div class="pull-right">
+          <label>Quantity</label>
+          <input type="text"/>
+        </div>
+        <div class="pull-left">
+          <label>Tag</label>
+          <input type="text"/>
+        </div>
+        <div style="clear: both"></div>
+      </div>
     </modal-body>
+
     <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="navigateModal.dismiss()">Add</button>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="navigateModal.dismiss()">Cancel</button>
     </modal-footer>
   </form>
