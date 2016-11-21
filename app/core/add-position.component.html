@@ -41,7 +41,7 @@
             <ng-select [allowClear]="true"
                       [items]="table.detailItems"
                     (selected)="tableSelected($event, table.name)"
-                    (removed)="removed($event)"
+                    (removed)="tableRemoved(table.name)"
                     (typed)="typed($event)"
                     placeholder="No detail selected">
             </ng-select>
@@ -87,23 +87,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>ABD3390EADJKLAD</td>
-                <td>20X30</td>
-                <td>Mock Description</td>
-                <td><a class="btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></a></td>
-              </tr>
-              <tr>
-                <td>ABD3390EADJKLAD</td>
-                <td>20X30</td>
-                <td>Mock Description</td>
+              <tr *ngFor="let material of materials">
+                <td>{{material.commodityCode}}</td>
+                <td>{{material.size}}</td>
+                <td>{{material.description}}</td>
                 <td><a class="btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></a></td>
               </tr>
             </tbody>
           </table>
         </div>
 
-      <div>
+      <div style="padding: 5px">
         <div class="pull-right">
           <label>Quantity</label>
           <input type="text"/>

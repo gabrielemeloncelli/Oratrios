@@ -17,6 +17,7 @@ export class MaterialStoreService
     var _resultArray = new Array<Material[]>();
     if (!this._store[cacheKey])
     {
+      console.log('material-store.service - getAll - cacheKey: ' + cacheKey);//TODO: remove
     //TODO: replace with the actual implementation
     var _sampleMaterials: Material[] = [
       new Material(1, "GRP1", "PRT1", "I234566", "G1P1343AFD33DSE", "10X12", "Material with some nontrivial mocked description to check display settings"),

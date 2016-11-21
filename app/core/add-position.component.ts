@@ -8,6 +8,10 @@ import { CommodityPartService } from './commodity-part.service';
 import { MappedTable } from './mapped-table';
 import { RuleTableService } from './rule-table.service';
 import { SelectItem } from '../ng2-select/select/select-item';
+import { Material } from './material';
+import { MaterialService } from './material.service';
+import { TableAndSizeFilter } from './table-and-size-filter';
+import { TableFilter } from './table-filter';
 
 @Component({
 selector: "addposition",
@@ -24,16 +28,19 @@ export class AddPositionComponent
   public groupsDisabled: boolean = false;
   public groupBg: any = {"text": "Area", "id": "Area"};
   public parts: SelectItem[] = new Array<SelectItem>();
+  public materials: Material[] = new Array<Material>();
   tables = new Array<MappedTable>();
   public size1: string;
   public size2: string;
   public size3: string;
   public size4: string;
   public size5: string;
+  private _tableFilters = new Array<TableFilter>();
 
 
   constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
-     private _commodityPartService: CommodityPartService, private _ruleTableService: RuleTableService)
+     private _commodityPartService: CommodityPartService, private _ruleTableService: RuleTableService,
+     private _materialService: MaterialService)
   {
 
   }
@@ -65,6 +72,12 @@ export class AddPositionComponent
       }
     );
 
+    this._materialService.materials.subscribe(
+      (materials: Material[]) => {
+        this.materials = materials;
+      }
+    )
+
 
   }
 
@@ -91,13 +104,57 @@ export class AddPositionComponent
 
   tableSelected(event: any, tableName: string)
   {
-    console.log('add-position.component - tableSelected - tableName: ' + tableName);
-    console.log('add-position.component - tableSelected - event.id: ' + event.id);
+    var foundFilter: TableFilter = null;
+    for(var tableIndex = 0; tableIndex < this._tableFilters.length; tableIndex += 1)
+    {
+      if(this._tableFilters[tableIndex].tableName === tableName)
+      {
+        foundFilter = this._tableFilters[tableIndex];
+      }
+    }
+    if (!foundFilter)
+    {
+      foundFilter = new TableFilter(tableName, event.id);
+      this._tableFilters.push(foundFilter);
+    }
+    else
+    {
+      foundFilter.detail = event.id;
+    }
   }
 
   findMaterial()
   {
     console.log("add-position.component - findMaterial - size2: " + this.size2)
     this.uiStatusService.materialsVisible = true;
+    var tableFilters: TableFilter[] = new Array<TableFilter>();
+    for(var tableIndex = 0; tableIndex < this._tableFilters.length; tableIndex += 1)
+    {
+      tableFilters.push(new TableFilter(this._tableFilters[tableIndex].tableName, this._tableFilters[tableIndex].detail));
+    }
+    var filter: TableAndSizeFilter = new TableAndSizeFilter(this.size1, this.size2, this.size3, this.size4, this.size5, tableFilters);
+    this._materialService.getAll(this.uiStatusService.commodityGroupCode, this.uiStatusService.commodityPartCode, filter);
+  }
+
+  tableRemoved(tableName: string)
+  {
+    var foundFilterPosition = this.findFilterPosition(tableName);
+    if (foundFilterPosition > -1)
+    {
+      this._tableFilters.splice(foundFilterPosition, 1);
+    }
+  }
+
+  findFilterPosition(tableName: string): number
+  {
+    var foundIndex = -1;
+    for (var loopIndex = 0; loopIndex < this._tableFilters.length; loopIndex += 1)
+    {
+      if (this._tableFilters[loopIndex].tableName === tableName)
+      {
+        foundIndex = loopIndex;
+      }
+    }
+    return foundIndex;
   }
 }
