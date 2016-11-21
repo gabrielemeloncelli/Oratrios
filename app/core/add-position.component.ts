@@ -12,11 +12,14 @@ import { Material } from './material';
 import { MaterialService } from './material.service';
 import { TableAndSizeFilter } from './table-and-size-filter';
 import { TableFilter } from './table-filter';
+import { Position } from './position';
+import { Select } from '../ng2-select/select/select';
 
 @Component({
+
 selector: "addposition",
-templateUrl: "/app/core/add-position.component.html",
-styleUrls: ["/app/core/add-position.component.css"  ]
+templateUrl: "app/core/add-position.component.html",
+styleUrls: ["app/core/add-position.component.css"  ]
 
 })
 export class AddPositionComponent
@@ -36,6 +39,11 @@ export class AddPositionComponent
   public size4: string;
   public size5: string;
   private _tableFilters = new Array<TableFilter>();
+
+  public position: Position = new Position();
+
+  @ViewChild(Select)
+  private selectComponent: Select;
 
 
   constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
@@ -156,5 +164,44 @@ export class AddPositionComponent
       }
     }
     return foundIndex;
+  }
+
+  onSubmit()
+  {
+    console.log('Form submitted');//TODO: remove
+  }
+
+  resetTest()
+  {
+
+  }
+  resetPosition()
+  {
+    this.resetGroupAndPart();
+    this.resetSizes();
+    this.resetPositionModel();
+  }
+
+  resetGroupAndPart()
+  {
+      this.selectComponent.remove(null);
+      this.uiStatusService.commodityGroupCode = "";
+      this.uiStatusService.commodityPartCode = "";
+      this.uiStatusService.tablesAndSizesVisible = false;
+      this._commodityPartService.getAll("@#");
+  }
+
+  resetSizes()
+  {
+    this.size1 = null;
+    this.size2 = null;
+    this.size3 = null;
+    this.size4 = null;
+    this.size5 = null;
+  }
+
+  resetPositionModel()
+  {
+    this.position = new Position();
   }
 }

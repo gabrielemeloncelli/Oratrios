@@ -16,8 +16,12 @@ export class CommodityPartStoreService
       {code: "PRT1", description: "Part 1"},
       {code: "PRT2", description: "Part 2"}
     ];
-      this._store[groupCode] = _sampleParts;
+    if(groupCode === '@#')
+    {
+      _sampleParts = new Array<CommodityPart>();
     }
+    this._store[groupCode] = _sampleParts;
+  }
     _resultArray.push(this._store[groupCode]);
     return Observable.from(_resultArray);
   }

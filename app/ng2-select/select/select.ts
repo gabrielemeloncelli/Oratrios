@@ -157,6 +157,7 @@ export class Select {
 
 
   @Input() set items(value:Array<any>) {
+    this.remove(null);
     this._items = value;
     this.itemObjects = this._items ? this._items.map((item:any) => new SelectItem(item)) : null;
   }
