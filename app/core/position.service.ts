@@ -23,8 +23,8 @@ export class PositionService{
     for (var idx: number = 0; idx < rnd; idx += 1)
     {
       mockedPosition = new Position();
-      mockedPosition.group = "GRP";
-      mockedPosition.part = "PRT";
+      mockedPosition.groupCode = "GRP";
+      mockedPosition.partCode = "PRT";
       mockedPosition.commodityCode = "CMM0124RWI39939DD";
       mockedPosition.description = "Mocked description";
       mockedPosition.quantity = baseQty + idx * 0.5;

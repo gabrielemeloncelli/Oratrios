@@ -39,8 +39,10 @@ export class AddPositionComponent
   public size4: string;
   public size5: string;
   private _tableFilters = new Array<TableFilter>();
-
   public position: Position = new Position();
+  private _selectedMaterial: Material = null;
+  private _selectedMaterialVisible = false;
+  private _tagAndQuantityVisible = false;
 
   @ViewChild(Select)
   private selectComponent: Select;
@@ -50,7 +52,7 @@ export class AddPositionComponent
      private _commodityPartService: CommodityPartService, private _ruleTableService: RuleTableService,
      private _materialService: MaterialService)
   {
-
+    this.resetMaterial();
   }
 
   ngOnInit()
@@ -70,7 +72,8 @@ export class AddPositionComponent
 
     this._commodityPartService.parts.subscribe(
       (parts: CommodityPart[]) => {
-        this.parts = parts.map(p => new SelectItem({id: p.code, text: p.description}))
+        this.parts = parts.map(p => new SelectItem({id: p.code, text: p.description}));
+        this.changeGroup();
       }
     );
 
@@ -133,7 +136,6 @@ export class AddPositionComponent
 
   findMaterial()
   {
-    console.log("add-position.component - findMaterial - size2: " + this.size2)
     this.uiStatusService.materialsVisible = true;
     var tableFilters: TableFilter[] = new Array<TableFilter>();
     for(var tableIndex = 0; tableIndex < this._tableFilters.length; tableIndex += 1)
@@ -178,8 +180,6 @@ export class AddPositionComponent
   resetPosition()
   {
     this.resetGroupAndPart();
-    this.resetSizes();
-    this.resetPositionModel();
   }
 
   resetGroupAndPart()
@@ -188,7 +188,26 @@ export class AddPositionComponent
       this.uiStatusService.commodityGroupCode = "";
       this.uiStatusService.commodityPartCode = "";
       this.uiStatusService.tablesAndSizesVisible = false;
-      this._commodityPartService.getAll("@#");
+      this.resetPart();
+
+  }
+
+  resetPart()
+  {
+    this.changeGroup();
+    this._commodityPartService.getAll("@#");
+  }
+
+  changeGroup()
+  {
+    this._selectedMaterialVisible = false;
+    this._tagAndQuantityVisible = false;
+    this.materials = new Array<Material>();
+    this.uiStatusService.materialsVisible = false;
+    this.uiStatusService.tablesAndSizesVisible = false;
+    this.resetSizes();
+    this.resetPositionModel();
+    this.resetMaterial();
   }
 
   resetSizes()
@@ -200,8 +219,34 @@ export class AddPositionComponent
     this.size5 = null;
   }
 
+  resetMaterial()
+  {
+    this._selectedMaterial = new Material(0, "", "", "", "", "", "");
+  }
+
   resetPositionModel()
   {
     this.position = new Position();
   }
+
+  selectMaterial(materialId: number)
+  {
+    this._selectedMaterial = this.selectMaterialFromCache(materialId);
+    this._selectedMaterialVisible = true;
+    this._tagAndQuantityVisible = true;
+  }
+
+  selectMaterialFromCache(materialId: number)
+  {
+    var foundMaterial = new Material(0, "", "", "", "", "", "");
+    for(var materialIndex = 0; materialIndex < this.materials.length; materialIndex += 1)
+    {
+      if (this.materials[materialIndex].id === materialId)
+      {
+        foundMaterial = this.materials[materialIndex];
+      }
+    }
+    return foundMaterial;
+  }
+
 }

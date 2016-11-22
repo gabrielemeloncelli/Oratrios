@@ -91,13 +91,31 @@
                 <td>{{material.commodityCode}}</td>
                 <td>{{material.size}}</td>
                 <td>{{material.description}}</td>
-                <td><a class="btn btn-xs btn-success"><span class="glyphicon glyphicon-check"></span></a></td>
+                <td><a class="btn btn-xs btn-success" (click)="selectMaterial(material.id)"><span class="glyphicon glyphicon-check"></span></a></td>
               </tr>
             </tbody>
           </table>
         </div>
-
-      <div style="padding: 5px">
+      <div *ngIf="_selectedMaterialVisible" style="padding: 5px">
+        <div class="pull-left">
+          <label>Ident Code</label>
+          <input type="text" [value]="_selectedMaterial.identCode" class="form-control" name="identCode" disabled="true" style="width: 80px"/>
+        </div>
+        <div class="pull-left">
+          <label>Commodity Code</label>
+          <input type="text" [value]="_selectedMaterial.commodityCode" class="form-control" name="commodityCode" disabled="true"  style="width: 180px"/>
+        </div>
+        <div class="pull-left">
+          <label>Size</label>
+          <input type="text" [value]="_selectedMaterial.size" class="form-control" name="size" disabled="true"  style="width: 120px"/>
+        </div>
+        <div class="pull-left">
+          <label>Description</label>
+          <input type="text" [value]="_selectedMaterial.description" class="form-control" name="materialDescription" disabled="true" style="width: 450px"/>
+        </div>
+        <div style="width: 1px; height: 1px; clear: both"></div>
+      </div>
+      <div *ngIf="_tagAndQuantityVisible" style="padding: 5px">
         <div class="pull-right">
           <label>Quantity</label>
           <input type="text" [(ngModel)]="position.quantity" class="form-control" name="quantity" required/>
@@ -112,7 +130,7 @@
 
     <modal-footer>
       <button type="button" class="btn btn-default" (click)="resetPosition()">Reset</button>
-        <button type="submit" class="btn btn-default" data-dismiss="modal" [disabled]="!addPositionForm.form.valid">Add</button>
+        <button type="submit" class="btn btn-default" data-dismiss="modal" [disabled]="!_tagAndQuantityVisible || !addPositionForm.form.valid">Add</button>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="navigateModal.dismiss()">Cancel</button>
     </modal-footer>
   </form>
