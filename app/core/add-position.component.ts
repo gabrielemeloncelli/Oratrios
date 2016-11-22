@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UiStatusService } from './ui-status.service';
 import { ModalComponent } from '../ng2-bs3-modal/components/modal';
 import { CommodityGroup } from './commodity-group';
@@ -43,6 +43,7 @@ export class AddPositionComponent
   private _selectedMaterial: Material = null;
   private _selectedMaterialVisible = false;
   private _tagAndQuantityVisible = false;
+  private _isTag = false;
 
   @ViewChild(Select)
   private selectComponent: Select;
@@ -55,16 +56,23 @@ export class AddPositionComponent
     this.resetMaterial();
   }
 
-  ngOnInit()
+  ngAfterViewInit()
   {
     this.uiStatusService.insertPosition.subscribe(
       detail => {
         if (detail.displayInsertPosition)
         {
+          this._isTag = detail.positionFromTag;
           this.modalComponent.open('lg');
+          console.log('add-position.component - ngAfterContentInit - this.selectComponent: ' + this.selectComponent)
+          this.resetPosition();
         }
       }
     );
+  }
+  ngOnInit()
+  {
+
 
     this._commodityGroupService.groups.subscribe(
       (groups: CommodityGroup[]) => this.groups = groups.map(g => new SelectItem({id: g.code, text: g.description}))
@@ -109,8 +117,15 @@ export class AddPositionComponent
   partSelected(event: any)
   {
     this.uiStatusService.commodityPartCode = event.id;
-    this.uiStatusService.tablesAndSizesVisible = true;
-    this._ruleTableService.getAll(this.uiStatusService.commodityGroupCode, event.id);
+    if (this._isTag)
+    {
+      this._tagAndQuantityVisible = true;
+    }
+    else
+    {
+      this.uiStatusService.tablesAndSizesVisible = true;
+      this._ruleTableService.getAll(this.uiStatusService.commodityGroupCode, event.id);
+    }
   }
 
   tableSelected(event: any, tableName: string)
@@ -184,6 +199,7 @@ export class AddPositionComponent
 
   resetGroupAndPart()
   {
+
       this.selectComponent.remove(null);
       this.uiStatusService.commodityGroupCode = "";
       this.uiStatusService.commodityPartCode = "";
