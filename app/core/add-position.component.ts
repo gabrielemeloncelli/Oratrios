@@ -14,6 +14,8 @@ import { TableAndSizeFilter } from './table-and-size-filter';
 import { TableFilter } from './table-filter';
 import { Position } from './position';
 import { Select } from '../ng2-select/select/select';
+import { NodeSelectorService } from './node-selector.service';
+import { PositionService } from './position.service';
 
 @Component({
 
@@ -45,13 +47,15 @@ export class AddPositionComponent
   private _tagAndQuantityVisible = false;
   private _isTag = false;
 
+
   @ViewChild(Select)
   private selectComponent: Select;
 
 
   constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
      private _commodityPartService: CommodityPartService, private _ruleTableService: RuleTableService,
-     private _materialService: MaterialService)
+     private _materialService: MaterialService, private _selectorService: NodeSelectorService,
+     private _positionService: PositionService)
   {
     this.resetMaterial();
   }
@@ -110,12 +114,14 @@ export class AddPositionComponent
 
   groupSelected(event: any)
   {
+    this._selectedMaterial.groupCode = event.id;
     this.uiStatusService.commodityGroupCode = event.id;
     this._commodityPartService.getAll(event.id);
   }
 
   partSelected(event: any)
   {
+    this._selectedMaterial.partCode = event.id;
     this.uiStatusService.commodityPartCode = event.id;
     if (this._isTag)
     {
@@ -243,6 +249,7 @@ export class AddPositionComponent
   resetPositionModel()
   {
     this.position = new Position();
+    this.position.nodeId = this._selectorService.lastSelectedNode.id;
   }
 
   selectMaterial(materialId: number)
@@ -263,6 +270,17 @@ export class AddPositionComponent
       }
     }
     return foundMaterial;
+  }
+
+  savePosition()
+  {
+    this.position.materialId = this._selectedMaterial.id;
+    this.position.groupCode = this._selectedMaterial.groupCode;
+    this.position.partCode = this._selectedMaterial.partCode;
+    this.position.commodityCode = this._selectedMaterial.commodityCode;
+    this.position.identCode = this._selectedMaterial.identCode;
+    this.position.description = this._selectedMaterial.description;
+    this._positionService.addPosition(this.position);
   }
 
 }

@@ -11,7 +11,12 @@ export class PositionService{
   private nodeId: number = 0;
 
 
-
+  addPosition(newPosition: Position)
+  {
+    console.log('position.service - addPosition - added position (IdentCode - quantity): ('
+     + newPosition.identCode + " - " + newPosition.quantity + ")" ); //TODO: remove
+    //TODO: implement
+  }
 
   selectNode(selectedNode: TreeNode)
   {
