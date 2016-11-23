@@ -12,7 +12,6 @@ import { ModalModule } from './ng2-bs3-modal/ng2-bs3-modal.module';
 
 import { NodeSelectorService } from './core/node-selector.service';
 import { CoreEstService } from './core/core.est.service';//TODO : remove
-import { PositionService } from './core/position.service';
 import { UiStatusService } from './core/ui-status.service';
 
 
@@ -32,6 +31,6 @@ import { UiStatusService } from './core/ui-status.service';
   ],
   declarations: [ AppComponent ],
   bootstrap:    [ AppComponent ],
-  providers: [ NodeSelectorService, PositionService, UiStatusService ]
+  providers: [ NodeSelectorService, UiStatusService ]
 })
 export class AppModule { }

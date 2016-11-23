@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/observable';
+import { Subject } from 'rxjs/subject';
 import { Position } from './position';
 import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
+import { PositionStoreService } from './position-store.service';
+
 
 @Injectable()
 export class PositionService{
@@ -10,37 +13,33 @@ export class PositionService{
   public positions: Observable<Array<Position>> = this._positions.asObservable();
   private nodeId: number = 0;
 
+  constructor(private _storeService: PositionStoreService){}
 
-  addPosition(newPosition: Position)
+  addPosition(newPosition: Position): Observable<Position>
   {
-    console.log('position.service - addPosition - added position (IdentCode - quantity): ('
-     + newPosition.identCode + " - " + newPosition.quantity + ")" ); //TODO: remove
-    //TODO: implement
+    return this._storeService.addPosition(newPosition);
   }
 
-  selectNode(selectedNode: TreeNode)
+  selectNode(nodeId: number)
   {
-    this.nodeId = selectedNode.id;
-    var rnd: number = Math.random() * 3 + 2;
-    var baseQty: number = Math.floor(Math.random() * 25 + 1);
-    var mockedPositions: Array<Position> = new Array<Position>();
-    var mockedPosition: Position;
-    for (var idx: number = 0; idx < rnd; idx += 1)
-    {
-      mockedPosition = new Position();
-      mockedPosition.groupCode = "GRP";
-      mockedPosition.partCode = "PRT";
-      mockedPosition.commodityCode = "CMM0124RWI39939DD";
-      mockedPosition.description = "Mocked description";
-      mockedPosition.quantity = baseQty + idx * 0.5;
-      mockedPositions.push(mockedPosition);
-    }
+    this._storeService.selectNode(nodeId).subscribe(
+      positions => this._positions.next(positions)
+    );
 
-    this._positions.next(mockedPositions);
 
   }
 
-  deletePosition(position: Position){
-    this.selectNode(new TreeNode(this.nodeId, "", "", "", 0, false, ""));
+  deletePosition(position: Position): Observable<Position>
+  {
+    var result = new Subject<Position>();
+    this._storeService.deletePosition(position).subscribe(
+      deletedPosition => {
+        this.selectNode(this.nodeId);
+        result.next(deletedPosition);
+      }
+    );
+    return result.asObservable();
+
+
   }
 }

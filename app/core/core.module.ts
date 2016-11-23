@@ -20,6 +20,8 @@ import { RuleTableService } from './rule-table.service';
 import { RuleTableStoreService } from './rule-table-store.service';
 import { MaterialStoreService } from './material-store.service';
 import { MaterialService } from './material.service';
+import { PositionService } from './position.service';
+import { PositionStoreService } from './position-store.service';
 
 
 @NgModule({
@@ -27,7 +29,7 @@ import { MaterialService } from './material.service';
   declarations: [ PositionsListComponent, AddPositionComponent ],
   exports:      [ CommonModule, FormsModule, SelectModule, PositionsListComponent, AddPositionComponent, ModalModule ],
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,
-  RuleTableService, RuleTableStoreService, MaterialStoreService, MaterialService ]
+  RuleTableService, RuleTableStoreService, MaterialStoreService, MaterialService, PositionService, PositionStoreService ]
 })
 export class CoreModule {
 

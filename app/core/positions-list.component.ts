@@ -43,7 +43,7 @@ export class PositionsListComponent
     this._node = selectedNode;
     this.nodeName = this._node.name;
     this.nodeLocked = selectedNode.locked;
-    this.positionsService.selectNode(selectedNode);
+    this.positionsService.selectNode(selectedNode.id);
 
 
     }
