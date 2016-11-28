@@ -41,6 +41,7 @@ export class AddPositionComponent
   private _selectedMaterialVisible = false;
   private _tagAndQuantityVisible = false;
   private _isTag = false;
+  private _description2Keypress = false;
 
 
   @ViewChild(Select)
@@ -229,7 +230,8 @@ export class AddPositionComponent
 
   resetMaterial()
   {
-    this._selectedMaterial = new Material(0, "", "", "", "");
+    this._selectedMaterial = new Material(0, "", "", "", "", "");
+    this.resetMaterialDetails();
   }
 
   resetMaterialDetails()
@@ -237,6 +239,8 @@ export class AddPositionComponent
     this._selectedMaterial.partCode = "";
     this._selectedMaterial.commodityCode = "";
     this._selectedMaterial.description = "";
+    this._selectedMaterial.description2 = "";
+    this._description2Keypress = false;
   }
 
   resetPositionModel()
@@ -254,7 +258,7 @@ export class AddPositionComponent
 
   selectMaterialFromCache(materialId: number)
   {
-    var foundMaterial = new Material(0, "", "", "", "");
+    var foundMaterial = new Material(0, "", "", "", "", "");
     for(var materialIndex = 0; materialIndex < this.materials.length; materialIndex += 1)
     {
       if (this.materials[materialIndex].id === materialId)
@@ -272,12 +276,26 @@ export class AddPositionComponent
     this.position.partCode = this._selectedMaterial.partCode;
     this.position.commodityCode = this._selectedMaterial.commodityCode;
     this.position.description = this._selectedMaterial.description;
+    this.position.description2 = this._selectedMaterial.description2;
     this.position.isTwm = this._isTag;
     this._positionService.addPosition(this.position).subscribe(
       p => {
         this._selectorService.refreshNode();
       }
     );
+  }
+
+  description2KeyPress()
+  {
+    this._description2Keypress = true;
+  }
+
+  descriptionChanged()
+  {
+    if(!this._description2Keypress)
+    {
+      this._selectedMaterial.description2 = this._selectedMaterial.description;
+    }
   }
 
 }

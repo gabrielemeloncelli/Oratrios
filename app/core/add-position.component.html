@@ -94,8 +94,12 @@
       </div>
       <div *ngIf="_tagAndQuantityVisible" style="padding: 5px">
         <div *ngIf="_isTag" class="pull-left">
-          <label>Description</label>
-          <textarea [(ngModel)]="_selectedMaterial.description" class="form-control" name="materialDescription" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
+          <label>Description 1</label>
+          <textarea [(ngModel)]="_selectedMaterial.description" (keyup)="descriptionChanged()"  class="form-control" name="materialDescription" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
+        </div>
+        <div *ngIf="_isTag" class="pull-left">
+          <label>Description 2</label>
+          <textarea [(ngModel)]="_selectedMaterial.description2" (keydown)="description2KeyPress()" class="form-control" name="materialDescription2" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
         </div>
         <div style="width: 1px; height: 1px; clear: both"></div>
         <div class="pull-right">

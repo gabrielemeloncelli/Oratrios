@@ -9,4 +9,5 @@ export class Position{
   public description: string;
   public quantity: number;
   public isTwm: boolean;
+  public description2: string;
 }

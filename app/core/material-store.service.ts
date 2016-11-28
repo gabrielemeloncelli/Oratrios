@@ -24,7 +24,7 @@ export class MaterialStoreService
           for(var index = 0; index < res.length; index += 1)
           {
             resultArray.push(new Material(res[index].id, res[index].groupCode, res[index].partCode,
-            res[index].commodityCode, res[index].description));
+            res[index].commodityCode, res[index].description, res[index].description2));
           }
           result.next(resultArray);
         });
