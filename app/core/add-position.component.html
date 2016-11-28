@@ -49,34 +49,11 @@
         </div>
         <div style="clear: both; height: 10px; width: 10px">
         </div>
-        <div>
-        <div style="float: left">
-          <label for="size1">Size 1</label>
-          <input type="text" name="size1" id="size1" [(ngModel)]="size1" class="size-class form-control"/>
-        </div>
-        <div style="float: left">
-          <label for="size2">Size 2</label>
-          <input type="text" name="size2" id="size2" [(ngModel)]="size2" class="size-class form-control"/>
-        </div>
-        <div style="float: left">
-          <label for="size3">Size 3</label>
-          <input type="text" name="size3" id="size3" [(ngModel)]="size3" class="size-class form-control"/>
-        </div>
-        <div style="float: left">
-          <label for="size4">Size 4</label>
-          <input type="text" name="size4" id="size4" [(ngModel)]="size4" class="size-class form-control"/>
-        </div>
-        <div style="float: left">
-          <label for="size5">Size 5</label>
-          <input type="text" name="size5" id="size5" [(ngModel)]="size5" class="size-class form-control"/>
-        </div>
-        <div style="clear: both; height: 10px; width: 10px">
-        </div>
         <button class="btn btn-default pull-right" (click)="findMaterial()">Find</button>
         <div style="clear: both"></div>
         </div>
       </div>
-    </div>
+
         <div *ngIf="uiStatusService.tablesAndSizesVisible && uiStatusService.materialsVisible && !_isTag" style="padding:5px">
           <table class="table-bordered" style="width: 800px">
             <thead>

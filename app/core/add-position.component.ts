@@ -35,11 +35,6 @@ export class AddPositionComponent
   public parts: SelectItem[] = new Array<SelectItem>();
   public materials: Material[] = new Array<Material>();
   tables = new Array<MappedTable>();
-  public size1: string;
-  public size2: string;
-  public size3: string;
-  public size4: string;
-  public size5: string;
   private _tableFilters = new Array<TableFilter>();
   public position: Position = new Position();
   private _selectedMaterial: Material = null;
@@ -163,7 +158,7 @@ export class AddPositionComponent
     {
       tableFilters.push(new TableFilter(this._tableFilters[tableIndex].tableName, this._tableFilters[tableIndex].detail));
     }
-    var filter: TableAndSizeFilter = new TableAndSizeFilter(this.size1, this.size2, this.size3, this.size4, this.size5, tableFilters);
+    var filter: TableAndSizeFilter = new TableAndSizeFilter(tableFilters);
     this._materialService.getAll(this.uiStatusService.commodityGroupCode, this.uiStatusService.commodityPartCode, filter);
   }
 
@@ -227,23 +222,21 @@ export class AddPositionComponent
     this.materials = new Array<Material>();
     this.uiStatusService.materialsVisible = false;
     this.uiStatusService.tablesAndSizesVisible = false;
-    this.resetSizes();
     this.resetPositionModel();
-    this.resetMaterial();
+    this.resetMaterialDetails();
   }
 
-  resetSizes()
-  {
-    this.size1 = null;
-    this.size2 = null;
-    this.size3 = null;
-    this.size4 = null;
-    this.size5 = null;
-  }
 
   resetMaterial()
   {
     this._selectedMaterial = new Material(0, "", "", "", "");
+  }
+
+  resetMaterialDetails()
+  {
+    this._selectedMaterial.partCode = "";
+    this._selectedMaterial.commodityCode = "";
+    this._selectedMaterial.description = "";
   }
 
   resetPositionModel()
@@ -280,7 +273,11 @@ export class AddPositionComponent
     this.position.commodityCode = this._selectedMaterial.commodityCode;
     this.position.description = this._selectedMaterial.description;
     this.position.isTwm = this._isTag;
-    this._positionService.addPosition(this.position);
+    this._positionService.addPosition(this.position).subscribe(
+      p => {
+        this._selectorService.refreshNode();
+      }
+    );
   }
 
 }

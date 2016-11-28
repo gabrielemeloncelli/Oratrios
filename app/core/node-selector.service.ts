@@ -12,10 +12,15 @@ export class NodeSelectorService{
   selectedNode = this.selectedNodeSource.asObservable();
 
 
-  SelectNode(node: TreeNode)
+  selectNode(node: TreeNode)
   {
     this.lastSelectedNode = node;
     this.selectedNodeSource.next(node);
+  }
+
+  refreshNode()
+  {
+    this.selectNode(this.lastSelectedNode);
   }
 
 
