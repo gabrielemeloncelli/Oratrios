@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { CommodityPart } from './commodity-part';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/subject';
+import { Http, Response } from '@angular/http';
 
 @Injectable()
 export class CommodityPartStoreService
 {
   private _store: CommodityPart[][] = new Array<CommodityPart[]>();
-  getAll(groupCode: string): Observable<Array<CommodityPart>>
+  private BASE_URL = '/api/commodityparts';
+  constructor(private _http: Http){}
+
+  getAll(disciplineCode: string, groupCode: string): Observable<Array<CommodityPart>>
   {
+
     var _resultArray = new Array<CommodityPart[]>();
-    if (!this._store[groupCode])
-    {
-    //TODO: replace with the actual implementation
-    var _sampleParts: CommodityPart[] = [
-      {code: "PRT1", description: "Part 1"},
-      {code: "PRT2", description: "Part 2"}
-    ];
-    if(groupCode === '@#')
-    {
-      _sampleParts = new Array<CommodityPart>();
-    }
-    this._store[groupCode] = _sampleParts;
-  }
-    _resultArray.push(this._store[groupCode]);
-    return Observable.from(_resultArray);
+    var result = new Subject<Array<CommodityPart>>();
+    this._http
+        .get(this.BASE_URL + "/" + disciplineCode + "/" + groupCode)
+        .map((res:Response) => res.json())
+        .subscribe(res => {
+          var resultArray = new Array<CommodityPart>();
+          for(var index = 0; index < res.length; index += 1)
+          {
+            resultArray.push(new CommodityPart(res[index].code, res[index].description, res[index].groupCode));
+          }
+          result.next(resultArray);
+        });
+    return result.asObservable();
+
   }
 }

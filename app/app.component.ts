@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from './ng2-bs3-modal/components/modal';
 import { TreeNode } from './lazy-loaded-tree-view/tree-node';
 import { TreeView } from './lazy-loaded-tree-view/tree-view';
@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { SessionService } from './core/session.service';
 import { SessionUser } from './core/session.service';
 import { UiStatusService } from './core/ui-status.service';
+import { CommodityGroupService } from './core/commodity-group.service';
 
 //import { CoreService } from './core/core.service';
 @Component ({
@@ -18,7 +19,7 @@ import { UiStatusService } from './core/ui-status.service';
 
 
 })
-export class AppComponent implements BubbleNodeMessageInterface {
+export class AppComponent implements BubbleNodeMessageInterface, OnInit {
   outMessage = this;
   fatherNodeId : number = 0;
   currentNodeId : number = 0;
@@ -44,18 +45,18 @@ export class AppComponent implements BubbleNodeMessageInterface {
   positionAdd: boolean = false;
   positionIsTag: boolean = false;
 
-  constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService, sessionService: SessionService, private _uiStatusService: UiStatusService)
+  constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService, sessionService: SessionService,
+     private _uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService)
   {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
     this.sessionService = sessionService;
-    console.log('app.component - constructor - this.sessionService.userLogin: ' + this.sessionService.userLogin);//TODO: remove
-    console.log('app.component - constructor - this.sessionService.userIsAdministrator: ' + this.sessionService.userIsAdministrator);//TODO: remove
-    console.log('app.component - constructor - this.sessionService.user: ' + !!this.sessionService.user);//TODO: remove
   }
 
   @ViewChild(ModalComponent)
   private modalComponent: ModalComponent;
+
+
 
   handleNode(node: TreeNode) : void
   {
@@ -129,7 +130,9 @@ export class AppComponent implements BubbleNodeMessageInterface {
 
    ngOnInit(){
 
-     console.log(this.coreEstService.welcome);//TODO: remove
+
+     this._uiStatusService.disciplineCode = "ELEC-MI"; //TODO: replace
+     this._commodityGroupService.getAll(this._uiStatusService.disciplineCode);
      this.coreEstService.nodeTypes()
      .subscribe((r : any) => this.nodeTypes.push(r));
      console.log('app.component - OnInit - this.sessionService.userLogin: ' + this.sessionService.userLogin);//TODO: remove

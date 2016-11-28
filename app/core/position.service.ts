@@ -34,7 +34,6 @@ export class PositionService{
     var result = new Subject<Position>();
     this._storeService.deletePosition(position).subscribe(
       deletedPosition => {
-        this.selectNode(this.nodeId);
         result.next(deletedPosition);
       }
     );

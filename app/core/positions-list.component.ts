@@ -36,7 +36,7 @@ export class PositionsListComponent
 
   deletePosition(position: Position)
   {
-    this.positionsService.deletePosition(position);
+    this.positionsService.deletePosition(position).subscribe(p => {this.updateSelection(this._node)});
   }
 
   updateSelection(selectedNode: TreeNode): void {

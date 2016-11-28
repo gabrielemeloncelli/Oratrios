@@ -18,9 +18,9 @@ export class TreeNodeService{
 
   private getChildNodesUrl(id : number) : string
   {
-    return this.BASE_URL + '/' + id + '/nodes.json';
     //return this.BASE_URL + '/' + id + '/nodes.json';
-    //return this.BASE_URL + '/' + id + '/nodes';
+    //return this.BASE_URL + '/' + id + '/nodes.json';
+    return this.BASE_URL + '/' + id + '/nodes';
   }
 
   private getNodeUrl(id : number) : string

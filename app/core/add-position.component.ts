@@ -116,7 +116,7 @@ export class AddPositionComponent
   {
     this._selectedMaterial.groupCode = event.id;
     this.uiStatusService.commodityGroupCode = event.id;
-    this._commodityPartService.getAll(event.id);
+    this._commodityPartService.getAll(this.uiStatusService.disciplineCode, event.id);
   }
 
   partSelected(event: any)
@@ -217,7 +217,7 @@ export class AddPositionComponent
   resetPart()
   {
     this.changeGroup();
-    this._commodityPartService.getAll("@#");
+    this._commodityPartService.getAll(this.uiStatusService.disciplineCode, "@#");
   }
 
   changeGroup()
@@ -243,7 +243,7 @@ export class AddPositionComponent
 
   resetMaterial()
   {
-    this._selectedMaterial = new Material(0, "", "", "", "", "", "");
+    this._selectedMaterial = new Material(0, "", "", "", "");
   }
 
   resetPositionModel()
@@ -261,7 +261,7 @@ export class AddPositionComponent
 
   selectMaterialFromCache(materialId: number)
   {
-    var foundMaterial = new Material(0, "", "", "", "", "", "");
+    var foundMaterial = new Material(0, "", "", "", "");
     for(var materialIndex = 0; materialIndex < this.materials.length; materialIndex += 1)
     {
       if (this.materials[materialIndex].id === materialId)
@@ -278,8 +278,8 @@ export class AddPositionComponent
     this.position.groupCode = this._selectedMaterial.groupCode;
     this.position.partCode = this._selectedMaterial.partCode;
     this.position.commodityCode = this._selectedMaterial.commodityCode;
-    this.position.identCode = this._selectedMaterial.identCode;
     this.position.description = this._selectedMaterial.description;
+    this.position.isTwm = this._isTag;
     this._positionService.addPosition(this.position);
   }
 

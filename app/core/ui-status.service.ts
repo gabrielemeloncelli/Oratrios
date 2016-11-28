@@ -12,6 +12,7 @@ export class UiStatusService
   public commodityPartCode: string;
   public tablesAndSizesVisible = false;
   public materialsVisible = false;
+  public disciplineCode = "";
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {

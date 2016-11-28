@@ -5,8 +5,8 @@ export class Position{
   public groupCode: string;
   public partCode: string;
   public commodityCode: string;
-  public identCode: string;
   public tag: string;
   public description: string;
   public quantity: number;
+  public isTwm: boolean;
 }

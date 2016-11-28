@@ -12,8 +12,12 @@ export class CommodityGroupService{
   private nodeId: number = 0;
 
 constructor(private _storeService: CommodityGroupStoreService){
-      this._storeService.getAll().subscribe( groups => this._groups.next(groups));
 }
+
+  getAll(disciplineCode: string)
+  {
+    this._storeService.getAll(disciplineCode).subscribe( groups => this._groups.next(groups));
+  }
 
 
 
