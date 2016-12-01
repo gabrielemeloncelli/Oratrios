@@ -16,12 +16,16 @@ import { CommodityGroupService } from './commodity-group.service';
 import { CommodityGroupStoreService } from './commodity-group-store.service';
 import { CommodityPartService } from './commodity-part.service';
 import { CommodityPartStoreService } from './commodity-part-store.service';
-import { RuleTableService } from './rule-table.service';
-import { RuleTableStoreService } from './rule-table-store.service';
 import { MaterialStoreService } from './material-store.service';
 import { MaterialService } from './material.service';
 import { PositionService } from './position.service';
 import { PositionStoreService } from './position-store.service';
+import { CommodityTable } from './commodity-table';
+import { CommodityTableService } from './commodity-table.service';
+import { CommodityTableStoreService } from './commodity-table-store.service';
+import { CommodityTableValue } from './commodity-table-value';
+import { CommodityTableValueService } from './commodity-table-value.service';
+import { CommodityTableValueStoreService } from './commodity-table-value-store.service';
 
 
 @NgModule({
@@ -29,7 +33,8 @@ import { PositionStoreService } from './position-store.service';
   declarations: [ PositionsListComponent, AddPositionComponent ],
   exports:      [ CommonModule, FormsModule, SelectModule, PositionsListComponent, AddPositionComponent, ModalModule ],
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,
-  RuleTableService, RuleTableStoreService, MaterialStoreService, MaterialService, PositionService, PositionStoreService ]
+  MaterialStoreService, MaterialService, PositionService, PositionStoreService, CommodityTableService, CommodityTableStoreService,
+  CommodityTableValueService, CommodityTableValueStoreService ]
 })
 export class CoreModule {
 

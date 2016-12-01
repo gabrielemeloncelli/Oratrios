@@ -59,14 +59,12 @@
             <thead>
               <tr style="font-weight: bold">
                 <td>Commodity Code</td>
-                <td>Size</td>
                 <td>Description</td>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let material of materials">
                 <td>{{material.commodityCode}}</td>
-                <td>{{material.size}}</td>
                 <td>{{material.description}}</td>
                 <td><a class="btn btn-xs btn-success" (click)="selectMaterial(material.id)"><span class="glyphicon glyphicon-check"></span></a></td>
               </tr>

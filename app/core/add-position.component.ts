@@ -6,7 +6,7 @@ import { CommodityGroupService } from './commodity-group.service';
 import { CommodityPart } from './commodity-part';
 import { CommodityPartService } from './commodity-part.service';
 import { MappedTable } from './mapped-table';
-import { RuleTableService } from './rule-table.service';
+import { CommodityTableService } from './commodity-table.service';
 import { SelectItem } from '../ng2-select/select/select-item';
 import { Material } from './material';
 import { MaterialService } from './material.service';
@@ -16,6 +16,7 @@ import { Position } from './position';
 import { Select } from '../ng2-select/select/select';
 import { NodeSelectorService } from './node-selector.service';
 import { PositionService } from './position.service';
+import { CommodityTable } from  './commodity-table';
 
 @Component({
 
@@ -49,7 +50,7 @@ export class AddPositionComponent
 
 
   constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
-     private _commodityPartService: CommodityPartService, private _ruleTableService: RuleTableService,
+     private _commodityPartService: CommodityPartService, private _commodityTableService: CommodityTableService,
      private _materialService: MaterialService, private _selectorService: NodeSelectorService,
      private _positionService: PositionService)
   {
@@ -85,9 +86,11 @@ export class AddPositionComponent
       }
     );
 
-    this._ruleTableService.tables.subscribe(
-      (tables: MappedTable[]) => {
-        this.tables = tables;
+    this._commodityTableService.tables.subscribe(
+      (tables: CommodityTable[]) => {
+        setTimeout(() => this.uiStatusService.tablesAndSizesVisible = (this._selectedMaterial.partCode != ""), 100);
+        this.tables = tables.map(t => new MappedTable(t));
+
       }
     );
 
@@ -125,8 +128,7 @@ export class AddPositionComponent
     }
     else
     {
-      this.uiStatusService.tablesAndSizesVisible = true;
-      this._ruleTableService.getAll(this.uiStatusService.commodityGroupCode, event.id);
+      this._commodityTableService.getAll(this.uiStatusService.disciplineCode, this.uiStatusService.commodityGroupCode, event.id);
     }
   }
 
