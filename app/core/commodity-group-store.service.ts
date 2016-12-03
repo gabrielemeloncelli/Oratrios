@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/subject';
 @Injectable()
 export class CommodityGroupStoreService
 {
-  private BASE_URL : string = '/api/commoditygroups';
+  private BASE_URL : string = 'api/commoditygroups';
 
   constructor(private _http:Http){}
 

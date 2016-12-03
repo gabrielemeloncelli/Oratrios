@@ -13,9 +13,9 @@ export class MaterialService{
 
 constructor(private _storeService: MaterialStoreService){}
 
-  getAll(groupCode: string, partCode: string, filter: TableAndSizeFilter)
+  getAll(disciplineCode: string, groupCode: string, partCode: string, filter: TableAndSizeFilter)
   {
-    this._storeService.getAll(groupCode, partCode, filter).subscribe( materials => this._materials.next(materials));
+    this._storeService.getAll(disciplineCode, groupCode, partCode, filter).subscribe( materials => this._materials.next(materials));
   }
 
   clear()

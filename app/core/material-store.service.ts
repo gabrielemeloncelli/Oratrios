@@ -3,21 +3,23 @@ import { Material } from './material';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/subject';
 import { TableAndSizeFilter } from './table-and-size-filter';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 @Injectable()
 export class MaterialStoreService
 {
-  private BASE_URL = '/api/materials';
+  private BASE_URL = 'api/materials';
   constructor(private _http: Http){}
 
   private _store: Material[][] = new Array<Material[]>();
-  getAll(groupCode: string, partCode: string, filter: TableAndSizeFilter): Observable<Array<Material>>
+  getAll(disciplineCode: string, groupCode: string, partCode: string, filter: TableAndSizeFilter): Observable<Array<Material>>
   {
     var _resultArray = new Array<Material[]>();
     var result = new Subject<Array<Material>>();
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
     this._http
-        .get(this.BASE_URL + "/" + groupCode)
+        .post(this.BASE_URL + "/" + disciplineCode + "/" + groupCode+ "/" + partCode, filter.tableFilters , options)
         .map((res:Response) => res.json())
         .subscribe(res => {
           var resultArray = new Array<Material>();

@@ -1,7 +1,7 @@
 import { TableFilter } from './table-filter';
 
 export class TableAndSizeFilter{
-  constructor(private tableFilters: TableFilter[]){
+  constructor(public tableFilters: TableFilter[]){
 
   }
   get cacheKey(): string

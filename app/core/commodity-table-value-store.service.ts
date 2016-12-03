@@ -8,7 +8,7 @@ import { Http, Response } from '@angular/http';
 export class CommodityTableValueStoreService
 {
   private _store: CommodityTableValue[][] = new Array<CommodityTableValue[]>();
-  private BASE_URL = '/api/commoditytablevalues';
+  private BASE_URL = 'api/commoditytablevalues';
   constructor(private _http: Http){}
 
   getAll(disciplineCode: string, groupCode: string, partCode: string, tableName: string): Observable<Array<CommodityTableValue>>

@@ -10,7 +10,7 @@ import { UiStatusService } from './ui-status.service';
 
 @Component({
   selector: "positions-list",
-  templateUrl: "/app/core/positions-list.component.html"
+  templateUrl: "app/core/positions-list.component.html"
 })
 export class PositionsListComponent
 {

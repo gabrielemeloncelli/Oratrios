@@ -14,7 +14,7 @@ import { CommodityGroupService } from './core/commodity-group.service';
 
 //import { CoreService } from './core/core.service';
 @Component ({
-  templateUrl: '/app/app.component.html',
+  templateUrl: './app.component.html',
   selector: 'main-view',
 
 

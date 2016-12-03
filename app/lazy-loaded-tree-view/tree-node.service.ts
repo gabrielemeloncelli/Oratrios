@@ -14,7 +14,7 @@ export class TreeNodeService{
 
   private nodes : any = {};
 
-  private BASE_URL : string = '/api/Nodes';
+  private BASE_URL : string = 'api/Nodes';
 
   private getChildNodesUrl(id : number) : string
   {
@@ -54,21 +54,21 @@ export class TreeNodeService{
       this._http.post(action.url, action.node)
       .subscribe(res => {
         this.nodes[action.id] = null;
-        this.handleAction.bind(this,{name: 'LOAD_NODES', url: '/api/Nodes/' + action.id + '/nodes', id: action.id});
+        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/nodes', id: action.id});
       });
     }
     if (action.name === "EDIT_NODE"){
       this._http.put(action.url, action.node)
       .subscribe(res => {
         this.nodes[action.id] = null;
-        this.handleAction.bind(this,{name: 'LOAD_NODES', url: '/api/Nodes/' + action.id + '/nodes', id: action.id});
+        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/nodes', id: action.id});
       });
     }
     if (action.name === "DELETE_NODE"){
       this._http.delete(action.url)
       .subscribe(res => {
         this.nodes[action.id] = null;
-        this.handleAction.bind(this,{name: 'LOAD_NODES', url: '/api/Nodes/' + action.id + '/nodes', id: action.id});
+        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/nodes', id: action.id});
       });
     }
   }

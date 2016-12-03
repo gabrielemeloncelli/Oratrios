@@ -17,7 +17,7 @@ export class ElectricalProjectRoot implements OnInit, BubbleNodeMessageInterface
   currentView: any;
 
   constructor(private _treeNodeService:TreeNodeService){
-    this.root  = new TreeNode(0, '/api/Nodest/0/nodes.json', 'Project F01233', 'project', 0, false, "");
+    this.root  = new TreeNode(0, 'api/Nodest/0/nodes.json', 'Project F01233', 'project', 0, false, "");
     this.root.expand();
   }
 

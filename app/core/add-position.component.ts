@@ -162,7 +162,7 @@ export class AddPositionComponent
       tableFilters.push(new TableFilter(this._tableFilters[tableIndex].tableName, this._tableFilters[tableIndex].detail));
     }
     var filter: TableAndSizeFilter = new TableAndSizeFilter(tableFilters);
-    this._materialService.getAll(this.uiStatusService.commodityGroupCode, this.uiStatusService.commodityPartCode, filter);
+    this._materialService.getAll(this.uiStatusService.disciplineCode, this.uiStatusService.commodityGroupCode, this.uiStatusService.commodityPartCode, filter);
   }
 
   tableRemoved(tableName: string)
@@ -208,6 +208,7 @@ export class AddPositionComponent
       this.uiStatusService.commodityGroupCode = "";
       this.uiStatusService.commodityPartCode = "";
       this.uiStatusService.tablesAndSizesVisible = false;
+      this._tableFilters = new Array<TableFilter>();
       this.resetPart();
 
   }

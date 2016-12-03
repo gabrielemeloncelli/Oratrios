@@ -6,7 +6,7 @@ import { Position } from './position';
 
 @Injectable()
 export class PositionStoreService{
-  private BASE_URL = '/api/positions';
+  private BASE_URL = 'api/positions';
   constructor(private _http: Http){}
   addPosition(newPosition: Position): Observable<Position>
   {
