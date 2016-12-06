@@ -1,3 +1,5 @@
+import { PositionAttributeValue } from './position-attribute-value';
+
 export class BomPosition{
   public id: number;
   public nodeId: number;
@@ -10,4 +12,5 @@ export class BomPosition{
   public quantity: number;
   public isTwm: boolean;
   public description2: string;
+  public attributes: PositionAttributeValue[];
 }
