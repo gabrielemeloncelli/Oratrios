@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Position } from './position';
+import { BomPosition } from './bom-position';
 import { NodeSelectorService } from './node-selector.service';
 import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
 import { PositionService } from './position.service';
@@ -29,12 +29,12 @@ export class PositionsListComponent
     );
   }
 
-  editPosition(position: Position)
+  editPosition(position: BomPosition)
   {
-    console.log("position-list.component editPosition :" + position.quantity); //TODO: remove and complete
+    this._uiStatusService.editPosition(position);
   }
 
-  deletePosition(position: Position)
+  deletePosition(position: BomPosition)
   {
     this.positionsService.deletePosition(position).subscribe(p => {this.updateSelection(this._node)});
   }

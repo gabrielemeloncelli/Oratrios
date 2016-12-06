@@ -2,22 +2,27 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/observable';
 import { Subject } from 'rxjs/subject';
-import { Position } from './position';
+import { BomPosition } from './bom-position';
 import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
 import { PositionStoreService } from './position-store.service';
 
 
 @Injectable()
 export class PositionService{
-  private _positions: BehaviorSubject<Array<Position>> = new BehaviorSubject(new Array<Position>());
-  public positions: Observable<Array<Position>> = this._positions.asObservable();
+  private _positions: BehaviorSubject<Array<BomPosition>> = new BehaviorSubject(new Array<BomPosition>());
+  public positions: Observable<Array<BomPosition>> = this._positions.asObservable();
   private nodeId: number = 0;
 
   constructor(private _storeService: PositionStoreService){}
 
-  addPosition(newPosition: Position): Observable<Position>
+  addPosition(newPosition: BomPosition): Observable<BomPosition>
   {
     return this._storeService.addPosition(newPosition);
+  }
+
+  editPosition(modifiedPosition: BomPosition): Observable<BomPosition>
+  {
+    return this._storeService.editPosition(modifiedPosition);
   }
 
   selectNode(nodeId: number)
@@ -29,9 +34,9 @@ export class PositionService{
 
   }
 
-  deletePosition(position: Position): Observable<Position>
+  deletePosition(position: BomPosition): Observable<BomPosition>
   {
-    var result = new Subject<Position>();
+    var result = new Subject<BomPosition>();
     this._storeService.deletePosition(position).subscribe(
       deletedPosition => {
         result.next(deletedPosition);

@@ -73,16 +73,8 @@
         </div>
       <div *ngIf="_selectedMaterialVisible && !_isTag" style="padding: 5px">
         <div class="pull-left">
-          <label>Ident Code</label>
-          <input type="text" [value]="_selectedMaterial.identCode" class="form-control" name="identCode" disabled="true" style="width: 80px"/>
-        </div>
-        <div class="pull-left">
           <label>Commodity Code</label>
           <input type="text" [value]="_selectedMaterial.commodityCode" class="form-control" name="commodityCode" disabled="true"  style="width: 180px"/>
-        </div>
-        <div class="pull-left">
-          <label>Size</label>
-          <input type="text" [value]="_selectedMaterial.size" class="form-control" name="size" disabled="true"  style="width: 120px"/>
         </div>
         <div class="pull-left">
           <label>Description</label>
@@ -114,7 +106,7 @@
 
     <modal-footer>
       <button type="button" class="btn btn-default pull-left" (click)="resetPosition()">Reset</button>
-        <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="savePosition()" [disabled]="!_tagAndQuantityVisible || !addPositionForm.form.valid">Add</button>
+        <button type="submit" class="btn btn-default" data-dismiss="modal" (click)="savePosition()" [disabled]="!_tagAndQuantityVisible || !addPositionForm.form.valid">{{savePositionLabel()}}</button>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modalComponent.dismiss()">Cancel</button>
     </modal-footer>
   </form>

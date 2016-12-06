@@ -150,9 +150,20 @@ export class AppComponent implements BubbleNodeMessageInterface, OnInit {
      this._uiStatusService.insertPosition.subscribe(
        details => { this.positionAdd = details.displayInsertPosition;
         this.positionIsTag = details.positionFromTag;
-        console.log("app.component - New display details"); //TODO:remove
-      }
-     );
+          }
+       );
+      this._uiStatusService.editPositionObservable.subscribe(
+        position => { this.positionAdd = true;
+          if (position) {
+         this.positionIsTag = position.isTwm;
+       }
+       else
+       {
+         this.positionIsTag = false;
+       }
+         }
+        );
+
 
    }
 

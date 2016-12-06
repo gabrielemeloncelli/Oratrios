@@ -1,4 +1,4 @@
-export class Position{
+export class BomPosition{
   public id: number;
   public nodeId: number;
   public materialId: number;

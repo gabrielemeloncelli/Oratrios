@@ -12,7 +12,7 @@ import { Material } from './material';
 import { MaterialService } from './material.service';
 import { TableAndSizeFilter } from './table-and-size-filter';
 import { TableFilter } from './table-filter';
-import { Position } from './position';
+import { BomPosition } from './bom-position';
 import { Select } from '../ng2-select/select/select';
 import { NodeSelectorService } from './node-selector.service';
 import { PositionService } from './position.service';
@@ -37,12 +37,13 @@ export class AddPositionComponent
   public materials: Material[] = new Array<Material>();
   tables = new Array<MappedTable>();
   private _tableFilters = new Array<TableFilter>();
-  public position: Position = new Position();
+  public position: BomPosition = new BomPosition();
   private _selectedMaterial: Material = null;
   private _selectedMaterialVisible = false;
   private _tagAndQuantityVisible = false;
   private _isTag = false;
   private _description2Keypress = false;
+  private _isEdit = false;
 
 
   @ViewChild(Select)
@@ -64,9 +65,19 @@ export class AddPositionComponent
         if (detail.displayInsertPosition)
         {
           this._isTag = detail.positionFromTag;
-          this.modalComponent.open('lg');
-          console.log('add-position.component - ngAfterContentInit - this.selectComponent: ' + this.selectComponent)
           this.resetPosition();
+          setTimeout(() => this.modalComponent.open('lg'), 200);
+        }
+      }
+    );
+    this.uiStatusService.editPositionObservable.subscribe(
+      position => {
+        console.log("ahflashdflas - position == null: " + (position == null))
+        if (position)
+        {
+          this._isTag = position.isTwm;
+          this.editPositionByObject(position);
+          setTimeout(() => this.modalComponent.open('lg'), 200);
         }
       }
     );
@@ -97,6 +108,11 @@ export class AddPositionComponent
     this._materialService.materials.subscribe(
       (materials: Material[]) => {
         this.materials = materials;
+        if (this._isEdit && this.materials.length > 0)
+        {
+          this._selectedMaterial = this.materials[0];
+          console.log("add-position.component - ngOnInit");//TODO: remove
+        }
       }
     )
 
@@ -125,6 +141,8 @@ export class AddPositionComponent
     if (this._isTag)
     {
       this._tagAndQuantityVisible = true;
+      console.log("add-position.component - partSelected - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
+
     }
     else
     {
@@ -198,6 +216,7 @@ export class AddPositionComponent
   }
   resetPosition()
   {
+    this._isEdit = false;
     this.resetGroupAndPart();
   }
 
@@ -221,13 +240,41 @@ export class AddPositionComponent
 
   changeGroup()
   {
-    this._selectedMaterialVisible = false;
-    this._tagAndQuantityVisible = false;
+    this._selectedMaterialVisible = false || this._isEdit;
+    this._tagAndQuantityVisible = false || this._isEdit;
+    console.log("add-position.component - changeGroup - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
+    console.log("add-position.component - changeGroup - this._isEdit: " + this._isEdit);//TODO: remove
     this.materials = new Array<Material>();
     this.uiStatusService.materialsVisible = false;
     this.uiStatusService.tablesAndSizesVisible = false;
-    this.resetPositionModel();
-    this.resetMaterialDetails();
+    if (!this._isEdit)
+    {
+      this.resetPositionModel();
+      this.resetMaterialDetails();
+    }
+
+  }
+
+
+  editPositionByObject(positionToEdit: BomPosition)
+  {
+    this.resetPosition();
+    this._tagAndQuantityVisible = true;
+    this._isEdit = true;
+    this._isTag = positionToEdit.isTwm;
+    this.position = positionToEdit;
+    this._selectedMaterial.id = positionToEdit.materialId;
+    this._selectedMaterial.groupCode = positionToEdit.groupCode;
+    this._selectedMaterial.partCode = positionToEdit.partCode;
+    this._selectedMaterial.commodityCode = positionToEdit.commodityCode;
+    this._selectedMaterial.description = positionToEdit.description;
+    this._selectedMaterial.description2 = positionToEdit.description2;
+    console.log("add-position.component - editPositionByObject - this._selectedMaterial.description2: " + this._selectedMaterial.description2);//TODO: remove
+    if (!positionToEdit.isTwm) {
+      setTimeout(() => this._materialService.getSingle(positionToEdit.materialId), 100);
+    }
+    console.log("add-position.component - editPositionByObject - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
+
   }
 
 
@@ -248,7 +295,8 @@ export class AddPositionComponent
 
   resetPositionModel()
   {
-    this.position = new Position();
+    console.log("add-position.component - resetPositionModel");//TODO:remove
+    this.position = new BomPosition();
     this.position.nodeId = this._selectorService.lastSelectedNode.id;
   }
 
@@ -257,6 +305,8 @@ export class AddPositionComponent
     this._selectedMaterial = this.selectMaterialFromCache(materialId);
     this._selectedMaterialVisible = true;
     this._tagAndQuantityVisible = true;
+    console.log("add-position.component - selectMaterial - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
+
   }
 
   selectMaterialFromCache(materialId: number)
@@ -281,11 +331,22 @@ export class AddPositionComponent
     this.position.description = this._selectedMaterial.description;
     this.position.description2 = this._selectedMaterial.description2;
     this.position.isTwm = this._isTag;
-    this._positionService.addPosition(this.position).subscribe(
-      p => {
-        this._selectorService.refreshNode();
-      }
-    );
+    if (this._isEdit){
+      this._positionService.editPosition(this.position).subscribe(
+        p => {
+          this._selectorService.refreshNode();
+        }
+      );
+    }
+    else
+    {
+      this._positionService.addPosition(this.position).subscribe(
+        p => {
+          this._selectorService.refreshNode();
+        }
+      );
+    }
+
   }
 
   description2KeyPress()
@@ -299,6 +360,11 @@ export class AddPositionComponent
     {
       this._selectedMaterial.description2 = this._selectedMaterial.description;
     }
+  }
+
+  savePositionLabel(): string
+  {
+    return this._isEdit ? "Edit" : "Add";
   }
 
 }

@@ -12,6 +12,27 @@ export class MaterialStoreService
   constructor(private _http: Http){}
 
   private _store: Material[][] = new Array<Material[]>();
+
+  getSingle(materialId: number)
+  {
+    var _resultArray = new Array<Material[]>();
+    var result = new Subject<Array<Material>>();
+    this._http
+        .get(this.BASE_URL + "/" + materialId.toString())
+        .map((res:Response) => res.json())
+        .subscribe(res => {
+          var resultArray = new Array<Material>();
+          for(var index = 0; index < res.length; index += 1)
+          {
+            resultArray.push(new Material(res[index].id, res[index].groupCode, res[index].partCode,
+            res[index].commodityCode, res[index].description, res[index].description2));
+          }
+          result.next(resultArray);
+        });
+    return result.asObservable();
+
+  }
+
   getAll(disciplineCode: string, groupCode: string, partCode: string, filter: TableAndSizeFilter): Observable<Array<Material>>
   {
     var _resultArray = new Array<Material[]>();

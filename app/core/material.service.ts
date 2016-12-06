@@ -13,6 +13,10 @@ export class MaterialService{
 
 constructor(private _storeService: MaterialStoreService){}
 
+  getSingle(materialId: number)
+  {
+    this._storeService.getSingle(materialId).subscribe( materials => this._materials.next(materials));
+  }
   getAll(disciplineCode: string, groupCode: string, partCode: string, filter: TableAndSizeFilter)
   {
     this._storeService.getAll(disciplineCode, groupCode, partCode, filter).subscribe( materials => this._materials.next(materials));
