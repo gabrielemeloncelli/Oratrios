@@ -115,24 +115,13 @@ export class AppComponent implements BubbleNodeMessageInterface, OnInit {
   }
 
 
-/*
-  deleteNode(node: TreeNode) : void
-  {
 
-    this.actionType = 'delete';
-    this.handleNode(node);
-    this.confirmButtonText = 'Delete';
-    this.modalComponent.open();
-
-    /*
-  }
-  */
 
    ngOnInit(){
 
 
      this._uiStatusService.disciplineCode = "ELEC-MI"; //TODO: replace
-     this._commodityGroupService.getAll(this._uiStatusService.disciplineCode);
+     this._commodityGroupService.getAll(this._uiStatusService.disciplineId);
      this.coreEstService.nodeTypes()
      .subscribe((r : any) => this.nodeTypes.push(r));
      console.log('app.component - OnInit - this.sessionService.userLogin: ' + this.sessionService.userLogin);//TODO: remove

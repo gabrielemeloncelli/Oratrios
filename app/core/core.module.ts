@@ -26,6 +26,8 @@ import { CommodityTableStoreService } from './commodity-table-store.service';
 import { CommodityTableValue } from './commodity-table-value';
 import { CommodityTableValueService } from './commodity-table-value.service';
 import { CommodityTableValueStoreService } from './commodity-table-value-store.service';
+import { AttributeStoreService } from './attribute-store.service';
+import { AttributeService } from './attribute.service';
 
 
 @NgModule({
@@ -34,7 +36,7 @@ import { CommodityTableValueStoreService } from './commodity-table-value-store.s
   exports:      [ CommonModule, FormsModule, SelectModule, PositionsListComponent, AddPositionComponent, ModalModule ],
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,
   MaterialStoreService, MaterialService, PositionService, PositionStoreService, CommodityTableService, CommodityTableStoreService,
-  CommodityTableValueService, CommodityTableValueStoreService ]
+  CommodityTableValueService, CommodityTableValueStoreService, AttributeStoreService, AttributeService ]
 })
 export class CoreModule {
 

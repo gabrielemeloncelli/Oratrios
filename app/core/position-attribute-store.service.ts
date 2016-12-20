@@ -17,7 +17,7 @@ export class PositionAttributeStoreService{
         .get(this.BASE_URL + "/attributes/" + disciplineCode + "/" + projectCode)
         .map((res:Response) => res.json())
         .subscribe(res => {
-          var resultArray: PositionAttribute[] = res.map((a: any) => new PositionAttribute(a.code, a.description, a.mandatory));
+          var resultArray: PositionAttribute[] = res.map((a: any) => new PositionAttribute(a.id, a.code, a.description, a.mandatory));
           result.next(resultArray);
         });
     return result.asObservable();

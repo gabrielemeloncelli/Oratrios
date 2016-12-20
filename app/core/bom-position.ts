@@ -6,6 +6,7 @@ export class BomPosition{
   public materialId: number;
   public groupCode: string;
   public partCode: string;
+  public partId: number;
   public commodityCode: string;
   public tag: string;
   public description: string;

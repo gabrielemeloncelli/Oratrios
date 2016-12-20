@@ -101,6 +101,11 @@
           <input type="text" [(ngModel)]="position.tag" name="tag" class="form-control" [required]="_isTag ? 'true' : null"/>
         </div>
         <div style="clear: both"></div>
+        <div *ngFor="let attribute of attributes" class="pull-left">
+          <label>{{attribute.code}}</label>
+          <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null"/>
+        </div>
+        <div style="clear: both"></div>
       </div>
     </modal-body>
 

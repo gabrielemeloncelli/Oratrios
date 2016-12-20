@@ -1,3 +1,3 @@
 export class PositionAttributeValue{
-  constructor(public attributeCode: string, public value: string){}
+  constructor(public attributeId: number, public value: string){}
 }

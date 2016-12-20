@@ -13,9 +13,11 @@ export class UiStatusService
   public editPositionObservable: Observable<BomPosition> = this._editPositionSubject.asObservable();
   public commodityGroupCode: string;
   public commodityPartCode: string;
+  public partId: number;
   public tablesAndSizesVisible = false;
   public materialsVisible = false;
   public disciplineCode = "";
+  public disciplineId = 0;
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {

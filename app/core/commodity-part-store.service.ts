@@ -11,19 +11,19 @@ export class CommodityPartStoreService
   private BASE_URL = 'api/commodityparts';
   constructor(private _http: Http){}
 
-  getAll(disciplineCode: string, groupCode: string): Observable<Array<CommodityPart>>
+  getAll(groupId: number): Observable<Array<CommodityPart>>
   {
 
     var _resultArray = new Array<CommodityPart[]>();
     var result = new Subject<Array<CommodityPart>>();
     this._http
-        .get(this.BASE_URL + "/" + disciplineCode + "/" + groupCode)
+        .get(this.BASE_URL + "/" + groupId)
         .map((res:Response) => res.json())
         .subscribe(res => {
           var resultArray = new Array<CommodityPart>();
           for(var index = 0; index < res.length; index += 1)
           {
-            resultArray.push(new CommodityPart(res[index].code, res[index].description, res[index].groupCode));
+            resultArray.push(new CommodityPart(res[index].id, res[index].code, res[index].description, res[index].groupCode));
           }
           result.next(resultArray);
         });

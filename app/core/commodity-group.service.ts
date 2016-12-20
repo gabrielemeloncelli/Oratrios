@@ -14,9 +14,9 @@ export class CommodityGroupService{
 constructor(private _storeService: CommodityGroupStoreService){
 }
 
-  getAll(disciplineCode: string)
+  getAll(disciplineId: number)
   {
-    this._storeService.getAll(disciplineCode).subscribe( groups => this._groups.next(groups));
+    this._storeService.getAll(disciplineId).subscribe( groups => this._groups.next(groups));
   }
 
 

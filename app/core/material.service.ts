@@ -13,13 +13,13 @@ export class MaterialService{
 
 constructor(private _storeService: MaterialStoreService){}
 
-  getSingle(materialId: number)
+  getSingle(materialId: number, partId: number)
   {
-    this._storeService.getSingle(materialId).subscribe( materials => this._materials.next(materials));
+    this._storeService.getSingle(materialId, partId).subscribe( materials => this._materials.next(materials));
   }
-  getAll(disciplineCode: string, groupCode: string, partCode: string, filter: TableAndSizeFilter)
+  getAll(partId: number, filter: TableAndSizeFilter)
   {
-    this._storeService.getAll(disciplineCode, groupCode, partCode, filter).subscribe( materials => this._materials.next(materials));
+    this._storeService.getAll(partId, filter).subscribe( materials => this._materials.next(materials));
   }
 
   clear()
