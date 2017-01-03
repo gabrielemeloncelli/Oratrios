@@ -69,7 +69,7 @@
             </tbody>
           </table>
         </div>
-      <div *ngIf="_selectedMaterialVisible && !_isTag" style="padding: 5px">
+      <div *ngIf="_selectedMaterialVisible && !_isTag && _isEdit" style="padding: 5px">
         <div class="pull-left">
           <label>Commodity Code</label>
           <input type="text" [value]="_selectedMaterial.commodityCode" class="form-control" name="commodityCode" disabled="true"  style="width: 180px"/>
@@ -90,20 +90,42 @@
           <textarea [(ngModel)]="_selectedMaterial.description2" (keydown)="description2KeyPress()" class="form-control" name="materialDescription2" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
         </div>
         <div style="width: 1px; height: 1px; clear: both"></div>
-        <div class="pull-right">
+        <div *ngIf="_isEdit || _isTag" class="pull-right">
           <label>Quantity</label>
           <input type="text" [(ngModel)]="position.quantity" class="form-control" name="quantity" pattern="[0-9]{1,5}([.][0-9]{1,3})?" required/>
         </div>
-        <div class="pull-left">
+        <div *ngIf="_isEdit || _isTag" class="pull-left">
           <label>Tag</label>
           <input type="text" [(ngModel)]="position.tag" name="tag" class="form-control" [required]="_isTag ? 'true' : null"/>
         </div>
         <div style="clear: both"></div>
-        <div *ngFor="let attribute of attributes" class="pull-left">
-          <label>{{attribute.code}}</label>
-          <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null"/>
-        </div>
+        <table *ngIf="!_isEdit && !_isTag" class="table-bordered">
+          <thead>
+            <th>Commodity Code</th>
+            <th>Quantity</th>
+            <th *ngFor="let attribute of attributes">
+              {{attribute.code}}
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let addedPosition of addedPositions; let aIndex = index">
+              <td>{{addedPosition.bomPosition.commodityCode}}</td>
+              <td>
+                <input type="text" [(ngModel)]="addedPosition.bomPosition.quantity" class="form-control" name="{{'quantity_' + aIndex}}" pattern="[0-9]{1,5}([.][0-9]{1,3})?" required/></td>
+              <td *ngFor="let attribute of attributes">
+                <input type="text" [(ngModel)]="addedPosition.attributes[attribute.id]" name="{{'attr_' + aIndex + '_' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null"/>
+              </td>
+              <td><td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="_isEdit || _isTag">
+          <div *ngFor="let attribute of attributes" class="pull-left">
+            <label>{{attribute.code}}</label>
+            <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null"/>
+          </div>
         <div style="clear: both"></div>
+      </div>
       </div>
     </modal-body>
 

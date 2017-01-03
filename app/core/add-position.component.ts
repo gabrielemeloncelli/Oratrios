@@ -20,6 +20,7 @@ import { CommodityTable } from  './commodity-table';
 import { AttributeService } from './attribute.service';
 import { Attribute } from './attribute';
 import { PositionAttributeValue } from './position-attribute-value';
+import { PositionInput } from './position-input';
 
 @Component({
 
@@ -37,6 +38,7 @@ export class AddPositionComponent
   public groupsDisabled: boolean = false;
   public parts: SelectItem[] = new Array<SelectItem>();
   public materials: Material[] = new Array<Material>();
+  public addedPositions: PositionInput[] = new Array<PositionInput>();
   tables = new Array<MappedTable>();
   private _tableFilters = new Array<TableFilter>();
   public position: BomPosition = new BomPosition();
@@ -62,6 +64,8 @@ export class AddPositionComponent
      private _positionService: PositionService, private _attributeService: AttributeService)
   {
     this.resetMaterial();
+    this.resetAddedPositions();
+
   }
 
   ngAfterViewInit()
@@ -282,6 +286,11 @@ export class AddPositionComponent
     this.resetGroupAndPart();
   }
 
+  resetAddedPositions()
+  {
+    this.addedPositions = new Array<PositionInput>();
+  }
+
   resetGroupAndPart()
   {
 
@@ -370,6 +379,20 @@ export class AddPositionComponent
     this._selectedMaterial = this.selectMaterialFromCache(materialId);
     this._selectedMaterialVisible = true;
     this._tagAndQuantityVisible = true;
+
+    var newPosition: BomPosition = new BomPosition();
+    newPosition.id = 0;
+    newPosition.materialId = this._selectedMaterial.id;
+    newPosition.groupCode = this._selectedMaterial.groupCode;
+    newPosition.partCode = this._selectedMaterial.partCode;
+    newPosition.partId = this._selectedMaterial.partId;
+    newPosition.commodityCode = this._selectedMaterial.commodityCode;
+    newPosition.description = this._selectedMaterial.description;
+    newPosition.description2 = this._selectedMaterial.description2;
+    newPosition.nodeId = this.position.nodeId;
+    newPosition.attributes = new Array<PositionAttributeValue>();
+
+    this.addedPositions.push(new PositionInput(newPosition, new Array<string>()));
     console.log("add-position.component - selectMaterial - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
 
   }
