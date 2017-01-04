@@ -23,6 +23,20 @@ export class PositionStoreService{
       return result.asObservable();
   }
 
+  addPositionList(newPositions: BomPosition[]): Observable<BomPosition[]>
+  {
+    var headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    var result = new Subject<BomPosition[]>();
+    this._http.put(this.BASE_URL + "/multiple", JSON.stringify(newPositions), options)
+    .map((res:Response) => res.json())
+    .subscribe(pos => {
+          result.next(this.mapPositions(pos));
+        }
+      );
+      return result.asObservable();
+  }
+
   editPosition(modifiedPosition: BomPosition): Observable<BomPosition>
   {
     var headers = new Headers({ 'Content-Type': 'application/json' });
@@ -81,6 +95,18 @@ export class PositionStoreService{
     resultPosition.attributes = this.mapAttributes(res.attributes);
 
     return resultPosition;
+  }
+
+  mapPositions(res: any): BomPosition[]
+  {
+    var resultArray = new Array<BomPosition>();
+    var i: number;
+    for (i = 0; i < res.length; i += 1)
+    {
+      resultArray.push(this.mapPosition(res[i]));
+    }
+    return resultArray;
+
   }
 
   mapAttributes(attrs: any): PositionAttributeValue[]{

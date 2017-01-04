@@ -283,6 +283,7 @@ export class AddPositionComponent
   resetPosition()
   {
     this._isEdit = false;
+    this.resetAddedPositions();
     this.resetGroupAndPart();
   }
 
@@ -409,8 +410,23 @@ export class AddPositionComponent
     }
     return foundMaterial;
   }
-
   savePosition()
+  {
+    console.log("add-position.component -- savePosition -- this._isEdit: " + this._isEdit); //TODO: remove
+    console.log("add-position.component -- savePosition -- this._isTag: " + this._isTag); //TODO: remove
+    if (this._isEdit || this._isTag)
+    {
+      console.log("add-position.component -- savePosition -- invoking saveSinglePosition"); //TODO: remove
+      this.saveSinglePosition();
+    }
+    else
+    {
+      console.log("add-position.component -- savePosition -- invoking savePositionList"); //TODO: remove
+      this.savePositionList();
+    }
+  }
+
+  saveSinglePosition()
   {
     var newPosition: BomPosition = new BomPosition();
     newPosition.id = 0;
@@ -445,6 +461,41 @@ export class AddPositionComponent
     }
 
   }
+
+  savePositionList()
+  {
+    var addedBomPositions = new Array<BomPosition>();
+    var i: number;
+    for (i = 0; i < this.addedPositions.length; i += 1)
+    {
+      var bomPosition = this.addedPositions[i].bomPosition;
+      bomPosition.attributes  = this.fetchAttributesFromArray(this.addedPositions[i].attributes);
+      addedBomPositions.push(bomPosition);
+    }
+
+      this._positionService.addPositionList(addedBomPositions).subscribe(
+        p => {
+          this._selectorService.refreshNode();
+        }
+      );
+
+
+  }
+
+  fetchAttributesFromArray(attributeArray: string[]): PositionAttributeValue[]
+  {
+    var result = new Array<PositionAttributeValue>();
+    var i: number;
+    for(i = 0; i < attributeArray.length; i += 1)
+    {
+      if (attributeArray[i] != null)
+      {
+        result.push(new PositionAttributeValue(this.getPositionAttribute(i), attributeArray[i]))
+      }
+    }
+    return result;
+  }
+
   getAttributeValues(): PositionAttributeValue[]{
     var result = new Array<PositionAttributeValue>();
     var i: number;

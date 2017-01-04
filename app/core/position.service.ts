@@ -20,6 +20,11 @@ export class PositionService{
     return this._storeService.addPosition(newPosition);
   }
 
+  addPositionList(newPositions: BomPosition[]): Observable<BomPosition[]>
+  {
+    return this._storeService.addPositionList(newPositions);
+  }
+
   editPosition(modifiedPosition: BomPosition): Observable<BomPosition>
   {
     return this._storeService.editPosition(modifiedPosition);
