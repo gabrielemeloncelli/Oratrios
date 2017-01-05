@@ -76,7 +76,7 @@ export class AddPositionComponent
         {
           this._isTag = detail.positionFromTag;
           this.resetPosition();
-          setTimeout(() => this.modalComponent.open('lg'), 200);
+          setTimeout(() => this.modalComponent.open('fs'), 200);
         }
       }
     );
@@ -87,7 +87,7 @@ export class AddPositionComponent
         {
           this._isTag = position.isTwm;
           this.editPositionByObject(position);
-          setTimeout(() => this.modalComponent.open('lg'), 200);
+          setTimeout(() => this.modalComponent.open('fs'), 200);
         }
       }
     );

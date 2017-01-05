@@ -1,4 +1,4 @@
-<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" [size]="'lg'" #addModal>
+<modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" [size]="'fs'" #addModal>
   <form (ngSubmit)="onSubmit()" #addPositionForm="ngForm">
     <modal-header [show-close]="true">
         <h4 class="modal-title">Position details</h4>
@@ -90,16 +90,8 @@
           <textarea [(ngModel)]="_selectedMaterial.description2" (keydown)="description2KeyPress()" class="form-control" name="materialDescription2" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
         </div>
         <div style="width: 1px; height: 1px; clear: both"></div>
-        <div *ngIf="_isEdit || _isTag" class="pull-right">
-          <label>Quantity</label>
-          <input type="text" [(ngModel)]="position.quantity" class="form-control" name="quantity" pattern="[0-9]{1,5}([.][0-9]{1,3})?" required/>
-        </div>
-        <div *ngIf="_isEdit || _isTag" class="pull-left">
-          <label>Tag</label>
-          <input type="text" [(ngModel)]="position.tag" name="tag" class="form-control" [required]="_isTag ? 'true' : null"/>
-        </div>
-        <div style="clear: both"></div>
-        <table *ngIf="!_isEdit && !_isTag" class="table-bordered">
+        <div *ngIf="!_isEdit && !_isTag" style="clear: both; bg-color: white">
+        <table class="table-bordered">
           <thead>
             <th>Commodity Code</th>
             <th>Quantity</th>
@@ -119,6 +111,18 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+        <div *ngIf="_isEdit || _isTag" class="pull-right">
+          <label>Quantity</label>
+          <input type="text" [(ngModel)]="position.quantity" class="form-control" name="quantity" pattern="[0-9]{1,5}([.][0-9]{1,3})?" required/>
+        </div>
+        <div *ngIf="_isEdit || _isTag" class="pull-left">
+          <label>Tag</label>
+          <input type="text" [(ngModel)]="position.tag" name="tag" class="form-control" [required]="_isTag ? 'true' : null"/>
+        </div>
+        <div style="clear: both"></div>
+
         <div *ngIf="_isEdit || _isTag">
           <div *ngFor="let attribute of attributes" class="pull-left">
             <label>{{attribute.code}}</label>

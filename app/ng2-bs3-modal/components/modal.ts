@@ -9,12 +9,13 @@ import { ModalInstance, ModalResult } from './modal-instance';
         'tabindex': '-1'
     },
     template: `
-        <div class="modal-dialog" [ngClass]="{ 'modal-sm': isSmall(), 'modal-lg': isLarge() }">
-            <div class="modal-content">
+        <div class="modal-dialog" [ngClass]="{ 'modal-sm': isSmall(), 'modal-lg': isLarge(), 'modal-dialog-fs': isFullScreen() }">
+            <div class="modal-content" [ngClass]="{ 'modal-content-fs': isFullScreen() }">
                 <ng-content></ng-content>
             </div>
         </div>
-    `
+    `,
+    styleUrls: ["app/ng2-bs3-modal/components/modal.css"  ]
 
 })
 export class ModalComponent implements OnDestroy {
@@ -60,6 +61,8 @@ export class ModalComponent implements OnDestroy {
     }
 
     open(size?: string): Promise<void> {
+      console.log("modal.ts -- open -- size: " + size); //TODO: remove
+      console.log("modal.ts -- open -- this.overrideSize: " + this.overrideSize); //TODO: remove
         if (ModalSize.validSize(size)) this.overrideSize = size;
         return this.instance.open().then(() => {
             this.visible = this.instance.visible;
@@ -87,13 +90,17 @@ export class ModalComponent implements OnDestroy {
             && this.size === ModalSize.Large
             || this.overrideSize === ModalSize.Large;
     }
+    private isFullScreen() {
+      return this.overrideSize === ModalSize.FullScreen;
+    }
 }
 
 export class ModalSize {
     static Small = 'sm';
     static Large = 'lg';
+    static FullScreen = 'fs';
 
     static validSize(size: string) {
-        return size && (size === ModalSize.Small || size === ModalSize.Large);
+        return size && (size === ModalSize.Small || size === ModalSize.Large || size === ModalSize.FullScreen);
     }
 }
