@@ -2,7 +2,7 @@ import { Injectable, Optional } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Http , Response } from '@angular/http';
-import { CoreEstServiceConfig } from './core.est.service.config';
+import { CoreEstServiceConfig } from './core-est-service-config';
 //import { Rx } from 'rxjs/core';
 
 

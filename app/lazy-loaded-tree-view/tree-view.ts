@@ -4,7 +4,7 @@ import {TreeNode} from './tree-node';
 import {TreeNodeService} from './tree-node.service';
 import { BubbleNodeMessageInterface } from './bubble-node-message.interface';
 import { SessionService, SessionUser } from '../core/session.service';
-import { NodeSelectorService } from '../core/node-selector.service';
+import { NodeSelectorService } from '../fill-bom/node-selector.service';
 
 
 @Component({

@@ -5,12 +5,12 @@ import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
 import { PositionService } from './position.service';
 import { BehaviorSubject } from 'rxjs/behaviorsubject';
 import { Observable } from 'rxjs/observable';
-import { UiStatusService } from './ui-status.service';
+import { UiStatusService } from '../core/ui-status.service';
 
 
 @Component({
   selector: "positions-list",
-  templateUrl: "app/core/positions-list.component.html"
+  templateUrl: "app/fill-bom/positions-list.component.html"
 })
 export class PositionsListComponent
 {

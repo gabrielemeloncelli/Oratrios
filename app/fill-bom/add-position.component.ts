@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { UiStatusService } from './ui-status.service';
+import { UiStatusService } from '../core/ui-status.service';
 import { ModalComponent } from '../ng2-bs3-modal/components/modal';
 import { CommodityGroup } from './commodity-group';
 import { CommodityGroupService } from './commodity-group.service';
@@ -25,8 +25,8 @@ import { PositionInput } from './position-input';
 @Component({
 
 selector: "addposition",
-templateUrl: "app/core/add-position.component.html",
-styleUrls: ["app/core/add-position.component.css"  ]
+templateUrl: "app/fill-bom/add-position.component.html",
+styleUrls: ["app/fill-bom/add-position.component.css"  ]
 
 })
 export class AddPositionComponent
@@ -140,10 +140,7 @@ export class AddPositionComponent
 
   }
 
-  refreshValue(event: any)
-  {
 
-  }
   removed(event: any){}
 
   typed(event: any){}

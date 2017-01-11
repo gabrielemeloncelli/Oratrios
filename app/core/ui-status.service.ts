@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/observable';
 import { BehaviorSubject} from 'rxjs/behaviorsubject';
-import { BomPosition } from './bom-position';
-import { InsertPositionDetails } from './insert-position-details';
+import { BomPosition } from '../fill-bom/bom-position';
+import { InsertPositionDetails } from '../fill-bom/insert-position-details';
 
 @Injectable()
 export class UiStatusService
