@@ -63,6 +63,7 @@ export class AddPositionComponent
      private _materialService: MaterialService, private _selectorService: NodeSelectorService,
      private _positionService: PositionService, private _attributeService: AttributeService)
   {
+    this.uiStatusService.projectDisciplineId = 1;//TODO: remove
     this.resetMaterial();
     this.resetAddedPositions();
 

@@ -1,13 +1,15 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 import { Http , Response } from '@angular/http';
 import { TreeNode } from './tree-node';
 import { treeNodeReducer } from './tree-node-reducer';
 import { treeNodeReducerSingle } from './tree-node-reducer-single';
+import { UiStatusService } from '../core/ui-status.service';
 
 @Injectable()
 export class TreeNodeService{
+
 
   private dispatcher : Subject<any> = new Subject<any>();
   private treeNodes : any = {};
@@ -20,7 +22,7 @@ export class TreeNodeService{
   {
     //return this.BASE_URL + '/' + id + '/nodes.json';
     //return this.BASE_URL + '/' + id + '/nodes.json';
-    return this.BASE_URL + '/' + id + '/nodes';
+    return this.BASE_URL + '/' + id + '/' + this._uiStatusService.projectDisciplineId + '/nodes';
   }
 
   private getNodeUrl(id : number) : string
@@ -28,7 +30,7 @@ export class TreeNodeService{
     return this.BASE_URL + '/' + id;
   }
 
-  constructor(private _http:Http){
+  constructor(private _http:Http, private _uiStatusService: UiStatusService){
     this.dispatcher.subscribe((action) => this.handleAction(action));
   }
 
@@ -51,24 +53,26 @@ export class TreeNodeService{
       }
     }
     if (action.name === "STORE_NODE"){
+      action.node.projectDisciplineId = this._uiStatusService.projectDisciplineId;
+      console.log("tree-node.service -- STORE_NODE -- action.node.projectDisciplineId: " + action.node.projectDisciplineId); //TODO:remove
       this._http.post(action.url, action.node)
       .subscribe(res => {
         this.nodes[action.id] = null;
-        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/nodes', id: action.id});
+        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/' + this._uiStatusService.projectDisciplineId + '/nodes', id: action.id});
       });
     }
     if (action.name === "EDIT_NODE"){
       this._http.put(action.url, action.node)
       .subscribe(res => {
         this.nodes[action.id] = null;
-        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/nodes', id: action.id});
+        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/' + this._uiStatusService.projectDisciplineId + '/nodes', id: action.id});
       });
     }
     if (action.name === "DELETE_NODE"){
       this._http.delete(action.url)
       .subscribe(res => {
         this.nodes[action.id] = null;
-        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/nodes', id: action.id});
+        this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/' + this._uiStatusService.projectDisciplineId + '/nodes', id: action.id});
       });
     }
   }
@@ -83,6 +87,7 @@ export class TreeNodeService{
   persistNode(action: any)
   {
     if (action.name === "STORE_NODE"){
+      action.node.projectDisciplineId = this._uiStatusService.projectDisciplineId;
       return this._http.post(action.url, action.node)
       .map((res:Response) => null);
     }
@@ -109,6 +114,7 @@ export class TreeNodeService{
   }
 
   fetchTreeNodes(id : number){
+    console.log('tree-node.service -- fetchTreeNodes -- this.getChildNodesUrl(id): ' + this.getChildNodesUrl(id)); //TODO:remove
     return this._http
         .get(this.getChildNodesUrl(id))
         .map((res:Response) => treeNodeReducer(res.json()));

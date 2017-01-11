@@ -18,6 +18,7 @@ export class UiStatusService
   public materialsVisible = false;
   public disciplineCode = "";
   public disciplineId = 0;
+  public projectDisciplineId = 0;
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {
