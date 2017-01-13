@@ -341,12 +341,26 @@ export class AddPositionComponent
     this._selectedMaterial.commodityCode = positionToEdit.commodityCode;
     this._selectedMaterial.description = positionToEdit.description;
     this._selectedMaterial.description2 = positionToEdit.description2;
+    this.setAttributes(positionToEdit.attributes);
     console.log("add-position.component - editPositionByObject - this._selectedMaterial.description2: " + this._selectedMaterial.description2);//TODO: remove
     if (!positionToEdit.isTwm) {
       setTimeout(() => this._materialService.getSingle(positionToEdit.materialId, positionToEdit.partId), 100);
     }
     console.log("add-position.component - editPositionByObject - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
 
+  }
+
+  setAttributes(attributes: PositionAttributeValue[])
+  {
+    var identifier: number;
+    if (attributes != null)
+    {
+      var index: number;
+      for(index = 0; index < attributes.length; index += 1)
+      {
+        this.attributeValues[attributes[index].attribute.id] = attributes[index].value;
+      }
+    }
   }
 
 

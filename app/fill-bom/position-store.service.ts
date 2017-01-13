@@ -84,6 +84,7 @@ export class PositionStoreService{
     resultPosition.id = res.id;
     resultPosition.nodeId = res.nodeId;
     resultPosition.materialId = res.materialId;
+    resultPosition.partId = res.partId;
     resultPosition.groupCode = res.groupCode;
     resultPosition.partCode = res.partCode;
     resultPosition.commodityCode = res.commodityCode;
@@ -119,7 +120,7 @@ export class PositionStoreService{
   }
 
   mapSingleAttribute(attr: any){
-    return new PositionAttributeValue(attr.attributeCode, attr.value);
+    return new PositionAttributeValue(attr.attribute, attr.value);
   }
 
 }

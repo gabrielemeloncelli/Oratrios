@@ -18,7 +18,7 @@ export class MaterialStoreService
     var _resultArray = new Array<Material[]>();
     var result = new Subject<Array<Material>>();
     this._http
-        .get(this.BASE_URL + "/" + materialId.toString())
+        .get(this.BASE_URL + "/" + materialId.toString() + '/' + partId)
         .map((res:Response) => res.json())
         .subscribe(res => {
           var resultArray = new Array<Material>();
