@@ -14,7 +14,8 @@ import { NodeSelectorService } from './fill-bom/node-selector.service';
 import { CoreEstService } from './fill-bom/core-est.service';//TODO : remove
 import { UiStatusService } from './core/ui-status.service';
 import { FillBomModule } from './fill-bom/fill-bom.module';
-import { FillBomComponent } from './fill-bom/fill-bom.component';
+import { SelectProjectModule } from './select-project/select-project.module';
+
 import { AppRoutingModule }   from './app-routing.module';
 
 
@@ -31,7 +32,8 @@ import { AppRoutingModule }   from './app-routing.module';
     FillBomModule,
     TreeViewModule,
     ModalModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SelectProjectModule
   ],
   declarations: [ AppComponent ],
   bootstrap:    [ AppComponent ],
