@@ -8,9 +8,9 @@ import { ProjectDisciplineStoreService } from './project-discipline-store.servic
 
 @Injectable()
 export class ProjectDisciplineService{
-  private _projectDisciplines: BehaviorSubject<Array<ProjectDiscipline>> = new BehaviorSubject(new Array<ProjectDiscipline>());
+  private _projectDisciplines: Subject<Array<ProjectDiscipline>> = new Subject<ProjectDiscipline[]>();
   public projectDisciplines: Observable<Array<ProjectDiscipline>> = this._projectDisciplines.asObservable();
-  private _discipline: BehaviorSubject<ProjectDiscipline> = new BehaviorSubject(null);
+  private _discipline: Subject<ProjectDiscipline> = new Subject<ProjectDiscipline>();
   public discipline: Observable<ProjectDiscipline> = this._discipline.asObservable();
   private nodeId: number = 0;
 

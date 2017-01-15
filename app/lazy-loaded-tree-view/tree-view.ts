@@ -161,8 +161,10 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
 
   selectRoot()
   {
-    this._selectorService.selectNode(this.root);
-    console.log("TreeWiewComponent - selector service invoked." + this.root.id); //TODO: remove
+    if (this.root.id > 0)
+    {
+      this._selectorService.selectNode(this.root);
+    }
   }
 
 }

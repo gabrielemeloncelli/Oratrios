@@ -17,10 +17,16 @@ export class SelectProjectComponent{
     private _router: Router ){
     this.buildMockProjects();
     this.projects = this._mockProjects;
+    this._uiStatusService.projectCode = "";
+    this._uiStatusService.projectId = 0;
+    this._uiStatusService.disciplineId = 0;
+    this._uiStatusService.disciplineCode = "";
+    this._uiStatusService.projectDisciplineId = 0;
   }
 
   ngOnInit()
   {
+    console.log('select-project.component -- ngOnInit()');//TODO:remove
      this._projectDisciplineService.projectDisciplines.subscribe(
       projectDisciplines => this.projectDisciplinesRetrieved(projectDisciplines)
     );
@@ -34,10 +40,7 @@ export class SelectProjectComponent{
   selectProject(code: string){
     console.log('select-project.component -- selectProject -- code: ' + code); //TODO: remove
     this._projectDisciplineService.selectProject(code);
-    /*
-    _disciplineService.getDisciplines(code)
-    .subscribe(d => this.selectProjectDiscipline(d))
-    */
+
   }
 
   buildMockProjects()
@@ -70,11 +73,13 @@ export class SelectProjectComponent{
 
   projectDisciplineRetrieved(projectDiscipline: ProjectDiscipline)
   {
+    console.log('select-project.component -- projectDisciplineRetrieved');//TODO:remove
     if (projectDiscipline != null)
     {
       this._uiStatusService.disciplineId = projectDiscipline.discipline.id;
       this._uiStatusService.disciplineCode = projectDiscipline.discipline.code;
       this._uiStatusService.projectDisciplineId = projectDiscipline.id;
+      console.log('select-project.component -- projectDisciplineRetrieved -- navigate');//TODO:remove
       this._router.navigate(['/fill-bom']);
     }
   }

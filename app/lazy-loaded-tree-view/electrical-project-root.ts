@@ -3,6 +3,7 @@ import {TreeView} from './tree-view';
 import {TreeNode} from './tree-node';
 import {TreeNodeService} from './tree-node.service';
 import {BubbleNodeMessageInterface} from './bubble-node-message.interface';
+import { UiStatusService } from '../core/ui-status.service';
 
 @Component({
   selector:'tree-viewx',
@@ -16,8 +17,9 @@ export class ElectricalProjectRoot implements OnInit, BubbleNodeMessageInterface
   root: TreeNode;
   currentView: any;
 
-  constructor(private _treeNodeService:TreeNodeService){
-    this.root  = new TreeNode(0, 'api/Nodest/0/nodes.json', 'Project F01233', 'project', 0, false, "");
+  constructor(private _treeNodeService:TreeNodeService, private _uiStatusService: UiStatusService){
+    this.root  = new TreeNode(0, 'api/Nodest/0/nodes.json', 'Project ' + _uiStatusService.projectCode + ' - '
+    + _uiStatusService.disciplineCode, 'project', 0, false, "");
     this.root.expand();
   }
 
