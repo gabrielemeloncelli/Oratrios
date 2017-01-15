@@ -19,6 +19,8 @@ export class UiStatusService
   public disciplineCode = "";
   public disciplineId = 0;
   public projectDisciplineId = 0;
+  public projectId = 0;
+  public projectCode = "";
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {

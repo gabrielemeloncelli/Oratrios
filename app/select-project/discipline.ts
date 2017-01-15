@@ -1,3 +1,3 @@
-export class Project{
+export class Discipline{
   constructor(public id: number, public code: string){}
 }

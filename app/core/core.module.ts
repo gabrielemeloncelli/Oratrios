@@ -11,6 +11,7 @@ import { SessionServiceConfig } from './session.service';
 import { ModalModule } from '../ng2-bs3-modal/ng2-bs3-modal.module';
 
 
+
 @NgModule({
   imports:      [ CommonModule, FormsModule, SelectModule, ModalModule ],
   exports:      [ CommonModule, FormsModule, SelectModule, ModalModule ],
