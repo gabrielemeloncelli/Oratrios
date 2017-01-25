@@ -4,10 +4,13 @@ import { Observable } from 'rxjs/observable';
 import { Subject } from 'rxjs/subject';
 import { ProjectDiscipline } from './project-discipline';
 import { ProjectDisciplineStoreService } from './project-discipline-store.service';
+import { Project } from './project';
 
 
 @Injectable()
 export class ProjectDisciplineService{
+  private _projects: Subject<Array<Project>> = new Subject<Array<Project>>();
+  public projects: Observable<Project[]> = this._projects.asObservable();
   private _projectDisciplines: Subject<Array<ProjectDiscipline>> = new Subject<ProjectDiscipline[]>();
   public projectDisciplines: Observable<Array<ProjectDiscipline>> = this._projectDisciplines.asObservable();
   private _discipline: Subject<ProjectDiscipline> = new Subject<ProjectDiscipline>();
@@ -16,9 +19,14 @@ export class ProjectDisciplineService{
 
   constructor(private _storeService: ProjectDisciplineStoreService){}
 
+  selectUser(){
+    this._storeService.selectUser().subscribe(
+      projects => this._projects.next(projects)
+    );
+  }
+
   selectProject(projectCode: string)
   {
-    console.log('project-discipline.service -- selectProject -- projectCode: ' + projectCode);//TODO: remove
     this._storeService.selectProject(projectCode).subscribe(
       projectDisciplines => this._projectDisciplines.next(projectDisciplines)
     );

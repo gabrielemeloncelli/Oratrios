@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/observable';
-import { BehaviorSubject} from 'rxjs/behaviorsubject';
+import { Subject} from 'rxjs/subject';
 import { BomPosition } from '../fill-bom/bom-position';
 import { InsertPositionDetails } from '../fill-bom/insert-position-details';
 
 @Injectable()
 export class UiStatusService
 {
-  private _insertPosition: BehaviorSubject<InsertPositionDetails> = new BehaviorSubject<InsertPositionDetails>(new InsertPositionDetails());
+  private _insertPosition: Subject<InsertPositionDetails> = new Subject<InsertPositionDetails>();
   public insertPosition: Observable<InsertPositionDetails> = this._insertPosition.asObservable();
-  private _editPositionSubject: BehaviorSubject<BomPosition> = new BehaviorSubject<BomPosition>(null);
+  private _editPositionSubject: Subject<BomPosition> = new Subject<BomPosition>();
   public editPositionObservable: Observable<BomPosition> = this._editPositionSubject.asObservable();
   public commodityGroupCode: string;
   public commodityPartCode: string;

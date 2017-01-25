@@ -1,8 +1,10 @@
 <div>
   <h1>Select project</h1>
   <ul>
-    <li *ngFor="let project of projects">
-      <a (click)="selectProject(project.code)"><span class="glyphicon glyphicon-check"></span> </a>{{project.code}}
+    <li *ngFor="let project of projects" class>
+          <div class="project-node">
+      <div class="pull-left project-label">{{project.code}}&nbsp;</div><a class="btn btn-xs btn-success" (click)="selectProject(project.code)"><span class="glyphicon glyphicon-check"></span> </a>
+    </div>
     </li>
   </ul>
 </div>

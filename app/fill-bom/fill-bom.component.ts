@@ -46,6 +46,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
     this.sessionService = sessionService;
+
   }
 
   @ViewChild(ModalComponent)

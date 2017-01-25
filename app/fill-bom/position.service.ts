@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/observable';
 import { Subject } from 'rxjs/subject';
 import { BomPosition } from './bom-position';
@@ -9,7 +8,7 @@ import { PositionStoreService } from './position-store.service';
 
 @Injectable()
 export class PositionService{
-  private _positions: BehaviorSubject<Array<BomPosition>> = new BehaviorSubject(new Array<BomPosition>());
+  private _positions: Subject<Array<BomPosition>> = new Subject<Array<BomPosition>>();
   public positions: Observable<Array<BomPosition>> = this._positions.asObservable();
   private nodeId: number = 0;
 

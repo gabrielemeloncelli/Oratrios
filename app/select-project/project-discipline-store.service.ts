@@ -9,9 +9,21 @@ import { ProjectDiscipline } from './project-discipline';
 @Injectable()
 export class ProjectDisciplineStoreService{
   private BASE_URL = 'api/projectdiscipline';
+  private PRJ_BASE_URL = 'api/projects';
   constructor(private _http: Http){}
 
+  selectUser(): Observable<Project[]>{
+    var _resultArray = new Array<Project[]>();
+    var result = new Subject<Array<Project>>();
+    this._http
+        .get(this.PRJ_BASE_URL)
+        .map((res:Response) => res.json())
+        .subscribe(res => {
+          result.next(res.map((pos: any) => this.mapProject(pos)));
+        });
+    return result.asObservable();
 
+  }
 
   selectProject(projectCode: string): Observable<ProjectDiscipline[]>{
 
@@ -39,6 +51,10 @@ export class ProjectDisciplineStoreService{
     var resultProject = new Project(res.project.id, res.project.code);
     var resultDiscipline = new Discipline(res.discipline.id, res.discipline.code);
     return new ProjectDiscipline(res.id, resultProject, resultDiscipline);
+  }
+
+  mapProject(res: any): Project{
+    return new Project(0, res.code);
   }
 
 }

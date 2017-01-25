@@ -6,7 +6,8 @@ import { ProjectDiscipline } from './project-discipline';
 import { Router } from '@angular/router';
 
 @Component({
-    templateUrl: 'app/select-project/select-project.component.html'
+    templateUrl: 'app/select-project/select-project.component.html',
+    styleUrls:['app/select-project/select-project.component.css']
   }
 )
 export class SelectProjectComponent{
@@ -15,8 +16,8 @@ export class SelectProjectComponent{
 
   constructor(private _projectDisciplineService: ProjectDisciplineService, private _uiStatusService: UiStatusService,
     private _router: Router ){
-    this.buildMockProjects();
-    this.projects = this._mockProjects;
+    //this.buildMockProjects();
+    //this.projects = this._mockProjects;
     this._uiStatusService.projectCode = "";
     this._uiStatusService.projectId = 0;
     this._uiStatusService.disciplineId = 0;
@@ -26,13 +27,20 @@ export class SelectProjectComponent{
 
   ngOnInit()
   {
-    console.log('select-project.component -- ngOnInit()');//TODO:remove
+
+     this._projectDisciplineService.projects.subscribe(
+       projects => this.projectsRetrieved(projects)
+     );
+
      this._projectDisciplineService.projectDisciplines.subscribe(
       projectDisciplines => this.projectDisciplinesRetrieved(projectDisciplines)
     );
     this._projectDisciplineService.discipline.subscribe(
       projectDiscipline => this.projectDisciplineRetrieved(projectDiscipline)
     );
+
+    this._projectDisciplineService.selectUser();
+
 
   }
 
@@ -81,6 +89,18 @@ export class SelectProjectComponent{
       this._uiStatusService.projectDisciplineId = projectDiscipline.id;
       console.log('select-project.component -- projectDisciplineRetrieved -- navigate');//TODO:remove
       this._router.navigate(['/fill-bom']);
+    }
+  }
+
+  projectsRetrieved(projects: Project[])
+  {
+    if (projects == null)
+    {
+      this.projects = new Array<Project>();
+    }
+    else
+    {
+      this.projects = projects;
     }
   }
 
