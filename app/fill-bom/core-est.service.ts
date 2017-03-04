@@ -28,7 +28,7 @@ export class CoreEstService{
 
   private nodes : any = {};
 
-  private BASE_URL : string = '/api/Nodes';
+  private BASE_URL : string = 'api/Nodes';
 
   private getChildNodesUrl(id : number) : string
   {

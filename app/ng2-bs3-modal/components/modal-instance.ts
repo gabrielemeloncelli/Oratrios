@@ -5,6 +5,12 @@ import 'rxjs/add/observable/fromEvent';
 
 declare var jQuery: any;
 
+export enum ModalResult {
+    None,
+    Close,
+    Dismiss
+}
+
 export class ModalInstance {
 
     private suffix: string = '.ng2-bs3-modal';
@@ -14,7 +20,7 @@ export class ModalInstance {
 
     shown: Observable<void>;
     hidden: Observable<ModalResult>;
-    result: ModalResult;
+    result: number;
     visible: boolean = false;
 
     constructor(private element: ElementRef) {
@@ -71,7 +77,7 @@ export class ModalInstance {
 
         this.hidden = Observable.fromEvent(this.$modal, this.hiddenEventName)
             .map(() => {
-                let result = (!this.result || this.result === ModalResult.None)
+                let result = ((!this.result) || (this.result == ModalResult.None))
                     ? ModalResult.Dismiss : this.result;
 
                 this.result = ModalResult.None;
@@ -104,8 +110,3 @@ function toPromise<T>(observable: Observable<T>): Promise<T> {
     });
 }
 
-export enum ModalResult {
-    None,
-    Close,
-    Dismiss
-}

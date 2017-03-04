@@ -69,6 +69,7 @@ export class TreeNodeService{
       });
     }
     if (action.name === "DELETE_NODE"){
+      console.log('tree-node.service -- handleAction -- action.url: ' + action.url);//TODO:remove
       this._http.delete(action.url)
       .subscribe(res => {
         this.nodes[action.id] = null;
@@ -86,6 +87,8 @@ export class TreeNodeService{
 
   persistNode(action: any)
   {
+    console.log('tree-node.service -- persistNode -- action.name: ' + action.name);//TODO:remove
+    console.log('tree-node.service -- persistNode -- action.url: ' + action.url);//TODO:remove
     if (action.name === "STORE_NODE"){
       action.node.projectDisciplineId = this._uiStatusService.projectDisciplineId;
       return this._http.post(action.url, action.node)

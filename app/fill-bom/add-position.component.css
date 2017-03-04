@@ -21,3 +21,13 @@ table > thead > th
   padding: 5px;
   border: 1px solid black;
 }
+.errorMessage
+{
+  font-size: large;
+  color: red;
+}
+
+.control-error
+{
+  background-color: #ffaaaa;
+}

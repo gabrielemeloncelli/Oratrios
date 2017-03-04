@@ -13,5 +13,6 @@ export class BomPosition{
   public quantity: number;
   public isTwm: boolean;
   public description2: string;
+  public unit: string;
   public attributes: PositionAttributeValue[];
 }

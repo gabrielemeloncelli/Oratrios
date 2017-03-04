@@ -52,6 +52,10 @@ export class AddPositionComponent
   public attributeValues: string[];
   private _groups: CommodityGroup[];
   private _parts: CommodityPart[];
+  public errorMessage: string;
+  public tagError: boolean;
+  private _savedCount: number;
+  private _saveFailedCount: number;
 
 
   @ViewChild(Select)
@@ -73,6 +77,7 @@ export class AddPositionComponent
   {
     this.uiStatusService.insertPosition.subscribe(
       detail => {
+        console.log("insertPositionCallback - detail == null: " + (detail == null))
         if (detail.displayInsertPosition)
         {
           this._isTag = detail.positionFromTag;
@@ -83,7 +88,7 @@ export class AddPositionComponent
     );
     this.uiStatusService.editPositionObservable.subscribe(
       position => {
-        console.log("ahflashdflas - position == null: " + (position == null))
+        console.log("editPositionCallback - position == null: " + (position == null))
         if (position)
         {
           this._isTag = position.isTwm;
@@ -341,12 +346,12 @@ export class AddPositionComponent
     this._selectedMaterial.commodityCode = positionToEdit.commodityCode;
     this._selectedMaterial.description = positionToEdit.description;
     this._selectedMaterial.description2 = positionToEdit.description2;
+    this._selectedMaterial.unit = positionToEdit.unit;
     this.setAttributes(positionToEdit.attributes);
-    console.log("add-position.component - editPositionByObject - this._selectedMaterial.description2: " + this._selectedMaterial.description2);//TODO: remove
     if (!positionToEdit.isTwm) {
       setTimeout(() => this._materialService.getSingle(positionToEdit.materialId, positionToEdit.partId), 100);
     }
-    console.log("add-position.component - editPositionByObject - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
+
 
   }
 
@@ -366,7 +371,7 @@ export class AddPositionComponent
 
   resetMaterial()
   {
-    this._selectedMaterial = new Material(0, "", "", 0, "", "", "");
+    this._selectedMaterial = new Material(0, "", "", 0, "", "", "", "");
     this.resetMaterialDetails();
   }
 
@@ -377,7 +382,10 @@ export class AddPositionComponent
     this._selectedMaterial.description = "";
     this._selectedMaterial.description2 = "";
     this._description2Keypress = false;
+    this._selectedMaterial.unit = "";
     this.attributeValues = new Array<string>();
+    this.errorMessage = "";
+    this.tagError = false;
   }
 
   resetPositionModel()
@@ -402,6 +410,7 @@ export class AddPositionComponent
     newPosition.commodityCode = this._selectedMaterial.commodityCode;
     newPosition.description = this._selectedMaterial.description;
     newPosition.description2 = this._selectedMaterial.description2;
+    newPosition.unit = this._selectedMaterial.unit;
     newPosition.nodeId = this.position.nodeId;
     newPosition.attributes = new Array<PositionAttributeValue>();
 
@@ -412,7 +421,7 @@ export class AddPositionComponent
 
   selectMaterialFromCache(materialId: number)
   {
-    var foundMaterial = new Material(0, "", "", 0, "", "", "");
+    var foundMaterial = new Material(0, "", "", 0, "", "", "", "");
     for(var materialIndex = 0; materialIndex < this.materials.length; materialIndex += 1)
     {
       if (this.materials[materialIndex].id === materialId)
@@ -424,6 +433,9 @@ export class AddPositionComponent
   }
   savePosition()
   {
+    this.errorMessage = "";
+    this._savedCount = 0;
+    this._saveFailedCount = 0;
     console.log("add-position.component -- savePosition -- this._isEdit: " + this._isEdit); //TODO: remove
     console.log("add-position.component -- savePosition -- this._isTag: " + this._isTag); //TODO: remove
     if (this._isEdit || this._isTag)
@@ -449,6 +461,8 @@ export class AddPositionComponent
     newPosition.commodityCode = this._selectedMaterial.commodityCode;
     newPosition.description = this._selectedMaterial.description;
     newPosition.description2 = this._selectedMaterial.description2;
+    newPosition.unit = this._selectedMaterial.unit;
+    console.log('add-position-component - saveSinglePosition - this._selectedMaterial.unit: ' + this._selectedMaterial.unit);//TODO remove
     newPosition.isTwm = this._isTag;
     newPosition.nodeId = this.position.nodeId;
 
@@ -465,11 +479,22 @@ export class AddPositionComponent
     }
     else
     {
-      this._positionService.addPosition(newPosition).subscribe(
+      this._positionService.addPosition(newPosition)
+        .subscribe(
         p => {
           this._selectorService.refreshNode();
+          this.modalComponent.dismiss();
+        },
+        e => 
+        {
+          this.errorMessage = e.message;
+          if (this.errorMessage === "Duplicated Tag")
+          {
+            this.tagError = true;
+          }
         }
-      );
+      )
+      ;
     }
 
   }
@@ -480,18 +505,89 @@ export class AddPositionComponent
     var i: number;
     for (i = 0; i < this.addedPositions.length; i += 1)
     {
-      var bomPosition = this.addedPositions[i].bomPosition;
-      bomPosition.attributes  = this.fetchAttributesFromArray(this.addedPositions[i].attributes);
-      addedBomPositions.push(bomPosition);
+      this.savePositionInArray(i);
     }
+    
 
-      this._positionService.addPositionList(addedBomPositions).subscribe(
+  }
+
+  savePositionInArray(index: number)
+  {
+    var newPosition: BomPosition = new BomPosition();
+    newPosition.id = 0;
+    newPosition.materialId = this.addedPositions[index].bomPosition.materialId;
+    newPosition.groupCode = this.addedPositions[index].bomPosition.groupCode;
+    newPosition.partCode = this.addedPositions[index].bomPosition.partCode;
+    newPosition.partId = this.addedPositions[index].bomPosition.partId;
+    newPosition.commodityCode = this.addedPositions[index].bomPosition.commodityCode;
+    newPosition.description = this.addedPositions[index].bomPosition.description;
+    newPosition.description2 = this.addedPositions[index].bomPosition.description2;
+    newPosition.unit = this.addedPositions[index].bomPosition.unit;
+    console.log('savePositionInArray - saveSinglePosition - this.addedPositions[index].bomPosition.unit: ' + this.addedPositions[index].bomPosition.unit);//TODO remove
+    newPosition.isTwm = false;
+    newPosition.nodeId = this.addedPositions[index].bomPosition.nodeId;
+
+    newPosition.tag = this.addedPositions[index].bomPosition.tag;
+    newPosition.quantity = this.addedPositions[index].bomPosition.quantity;
+
+    newPosition.attributes = this.fetchAttributesFromArray(this.addedPositions[index].attributes);
+    
+    this._positionService.addPosition(newPosition)
+      .subscribe(
         p => {
-          this._selectorService.refreshNode();
+          this.addedPositions[index].saved = true;
+          this._savedCount += 1;
+          this.checkAllPositionSaved();
+        },
+        e => 
+        {
+          this.addedPositions[index].saveFailed = true;
+          this._saveFailedCount += 1;
+          if (this.errorMessage && this.errorMessage.length > 0)
+          {
+            this.errorMessage += " - ";
+          }
+          this.errorMessage += e.message;
+          if (e.message === "Duplicated Tag")
+          {
+            this.addedPositions[index].tagError = true;
+          }
         }
       );
+    
+    
+  }
 
+  checkAllPositionSaved(): void
+  {
+    if (this._savedCount === this.addedPositions.length)
+    {
+      this._selectorService.refreshNode();
+      this.modalComponent.dismiss();
+      return;
+    }
+    if (this._savedCount + this._saveFailedCount === this.addedPositions.length)
+    {
+      this.purgeSavedPositions();
+    }
+  }
 
+  purgeSavedPositions(): void
+  {
+    var purgedCount = 0;
+    var index = 0;
+    while (index < this.addedPositions.length)
+    {
+      if (this.addedPositions[index].saved)
+      {
+        this.addedPositions.splice(index, 1)
+      }
+      else
+      {
+        this.addedPositions[index].saveFailed = false;
+        index += 1;
+      }
+    }
   }
 
   fetchAttributesFromArray(attributeArray: string[]): PositionAttributeValue[]
@@ -557,6 +653,15 @@ export class AddPositionComponent
   savePositionLabel(): string
   {
     return this._isEdit ? "Edit" : "Add";
+  }
+
+  tagChanged(index: number): void
+  {
+    console.log('add-position.component -- tagChanged -- index: ' + index);//TODO: remove
+    if(this.addedPositions && this.addedPositions[index])
+    {
+      this.addedPositions[index].tagError = false;
+    }
   }
 
 }

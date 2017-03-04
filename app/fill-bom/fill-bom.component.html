@@ -1,5 +1,7 @@
 <div class="row">
 <nav class="col-sm-5">
+  <a class='btn btn-success' href="index.html">Select project</a>
+  <a class='btn btn-success' (click)='exportFile()'> Export OMI file</a>
 <tree-viewx [message]="outMessage">Loading Tree ...</tree-viewx>
 </nav>
 <div class="col-sm-7">
@@ -9,7 +11,7 @@
     <positions-list></positions-list>
   </div>
 <div>
-  <addposition *ngIf="positionAdd"></addposition>
+  <addposition></addposition>
 </div>
 <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" (onClose)="storeNode()" #navigateModal>
     <modal-header [show-close]="true">

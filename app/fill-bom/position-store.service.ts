@@ -14,10 +14,22 @@ export class PositionStoreService{
     var headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     var result = new Subject<BomPosition>();
+    console.log('PositionStoreService -- addPosition -- JSON.stringify(newPosition): ' + JSON.stringify(newPosition));//TODO remove
     this._http.put(this.BASE_URL, JSON.stringify(newPosition), options)
     .map((res:Response) => res.json())
     .subscribe(pos => {
           result.next(this.mapPosition(pos));
+        },
+        err =>
+        {
+          if (err["status"] === 500)
+          {
+            result.error({message: JSON.parse(err["_body"])["ExceptionMessage"]});
+          }
+          else
+          {
+            result.error(err);
+          }
         }
       );
       return result.asObservable();
@@ -93,6 +105,7 @@ export class PositionStoreService{
     resultPosition.quantity = res.quantity;
     resultPosition.isTwm = res.isTwm;
     resultPosition.description2 = res.description2;
+    resultPosition.unit = res.unit;
     resultPosition.attributes = this.mapAttributes(res.attributes);
 
     return resultPosition;

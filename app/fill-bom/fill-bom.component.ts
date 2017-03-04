@@ -1,14 +1,16 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild }  from '@angular/core';
+import { Router }                               from '@angular/router';
+
 import { BubbleNodeMessageInterface } from '../lazy-loaded-tree-view/bubble-node-message.interface';
-import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
-import { TreeNodeService } from '../lazy-loaded-tree-view/tree-node.service';
-import { CoreEstService } from './core-est.service';
-import { SessionService } from '../core/session.service';
-import { SessionUser } from '../core/session.service';
-import { UiStatusService } from '../core/ui-status.service';
-import { CommodityGroupService } from './commodity-group.service';
-import { ModalComponent } from '../ng2-bs3-modal/components/modal';
-import { NodeDTO } from '../lazy-loaded-tree-view/nodeDTO';
+import { TreeNode }                   from '../lazy-loaded-tree-view/tree-node';
+import { TreeNodeService }            from '../lazy-loaded-tree-view/tree-node.service';
+import { CoreEstService }             from './core-est.service';
+import { SessionService }             from '../core/session.service';
+import { SessionUser }                from '../core/session.service';
+import { UiStatusService }            from '../core/ui-status.service';
+import { CommodityGroupService }      from './commodity-group.service';
+import { ModalComponent }             from '../ng2-bs3-modal/components/modal';
+import { NodeDTO }                    from '../lazy-loaded-tree-view/nodeDTO';
 
 @Component({
   templateUrl: 'app/fill-bom/fill-bom.component.html',
@@ -41,7 +43,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   positionIsTag: boolean = false;
 
   constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService, sessionService: SessionService,
-     private _uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService)
+     private _uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
+     private router: Router)
   {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
@@ -161,11 +164,11 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     newNode.nodeType = this.selectedNodeType;
     newNode.locked = this.nodeLocked;
     newNode.lockedBy = this.sessionUser.login;
-    console.log("app.component - storeNode - lockedBy: " +  newNode.lockedBy);
-    console.log("app.component - storeNode - nodeType: " +  this.selectedNodeType); //TODO: remove
+    console.log("fill-bom.component - storeNode -+- lockedBy: " +  newNode.lockedBy);
+    console.log("fill-bom.component - storeNode - nodeType: " +  this.selectedNodeType); //TODO: remove
     newNode.idFather = this.fatherNodeId;
     newNode.url = 'api/Nodes/' + newNode.id;
-    action = { name: null, url: '/api/Nodes/' + this.currentNodeId, node: newNode};
+    action = { name: null, url: 'api/Nodes/' + this.currentNodeId, node: newNode};
     switch (this.actionType)
     {
       case 'add':
@@ -192,6 +195,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     }
     if (action.name)
     {
+      console.log('fill-bom.component - storeNode - afterActionSwitch - action.url' + action.url);//TODO remove
       this.treeNodeService.persistNode(action)
       .subscribe(() => {this.refreshTree();});
     }
@@ -250,6 +254,12 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   refreshChildNodes() : void {}
 
   refreshCurrentNode(modifiedChildNode : boolean) : void {}
+
+  public exportFile()
+  {
+    console.log('add-position.component -- exportFile'); //TODO remove
+    this.router.navigate(['/export']);
+  }
 
   /* *****************************************
   Test dropdown selector
