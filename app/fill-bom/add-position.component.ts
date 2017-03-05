@@ -664,4 +664,20 @@ export class AddPositionComponent
     }
   }
 
+  propagateAttrValues(index: number): void
+  {
+    console.log("add-position.component -- propagateAttrValues -- index: " + index); //TODO: remove
+    if (index)
+    {
+      var i: number;
+      for(i = 0; i < this.addedPositions[index-1].attributes.length; i += 1)
+      {
+        if (this.addedPositions[index-1].attributes[i] != null)
+        {
+          this.addedPositions[index].attributes[i] = this.addedPositions[index-1].attributes[i];
+        }      
+      }
+    }
+  }
+
 }
