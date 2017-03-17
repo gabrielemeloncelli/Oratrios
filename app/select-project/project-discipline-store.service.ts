@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/observable';
-import { Subject } from 'rxjs/subject';
+import { Injectable }                               from '@angular/core';
+import { Http, Response, Headers, RequestOptions }  from '@angular/http';
+import { Observable }                               from 'rxjs/Observable';
+import { Subject }                                  from 'rxjs/Subject';
+
 import { Project } from './project';
 import { Discipline } from './discipline';
 import { ProjectDiscipline } from './project-discipline';

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Project } from './project';
+import { Component, OnInit }  from '@angular/core';
+import { Router }             from '@angular/router';
+
+import { Project }                  from './project';
 import { ProjectDisciplineService } from './project-discipline.service';
-import { UiStatusService } from '../core/ui-status.service';
-import { ProjectDiscipline } from './project-discipline';
-import { Router } from '@angular/router';
+import { UiStatusService }          from '../core/ui-status.service';
+import { ProjectDiscipline }        from './project-discipline';
+
 
 @Component({
     templateUrl: 'app/select-project/select-project.component.html',
@@ -72,10 +74,18 @@ export class SelectProjectComponent{
   {
     if (projectDisciplines != null && projectDisciplines.length > 0)
     {
+      console.log("select-project.component -- projectDisciplinesRetrieved -- projectDisciplines.length: " + projectDisciplines.length); //TODO:remove
       var selectedDiscipline = projectDisciplines[0];
       this._uiStatusService.projectCode = selectedDiscipline.project.code;
       this._uiStatusService.projectId = selectedDiscipline.project.id;
-      this._projectDisciplineService.selectDiscipline(this._uiStatusService.projectId, selectedDiscipline.discipline.code)
+      if (projectDisciplines.length === 1)
+      {
+        this._projectDisciplineService.selectDiscipline(this._uiStatusService.projectId, selectedDiscipline.discipline.code);
+      }
+      else
+      {
+        this._router.navigate(['/discipline-select']);
+      }
     }
   }
 

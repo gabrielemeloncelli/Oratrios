@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommodityTableValue } from './commodity-table-value';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/subject';
+import { Subject } from 'rxjs/Subject';
 import { Http, Response } from '@angular/http';
 
 @Injectable()

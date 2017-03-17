@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/observable';
-import { Subject } from 'rxjs/subject';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { BomPosition } from './bom-position';
 import { PositionAttributeValue } from './position-attribute-value';
 

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/observable';
-import { CommodityPart } from './commodity-part';
-import { CommodityPartStoreService } from './commodity-part-store.service';
+import { Injectable }       from '@angular/core';
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
+import { Observable }       from 'rxjs/Observable';
+
+import { CommodityPart }              from './commodity-part';
+import { CommodityPartStoreService }  from './commodity-part-store.service';
 
 
 @Injectable()

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/observable';
-import { CommodityTableValue } from './commodity-table-value';
-import { CommodityTableValueStoreService } from './commodity-table-value-store.service';
+import { Injectable }       from '@angular/core';
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
+import { Observable }       from 'rxjs/Observable';
+
+import { CommodityTableValue }              from './commodity-table-value';
+import { CommodityTableValueStoreService }  from './commodity-table-value-store.service';
 
 
 @Injectable()

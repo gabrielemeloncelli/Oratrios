@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Attribute } from './attribute';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/subject';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Injectable }                               from '@angular/core';
+import { Http, Response, Headers, RequestOptions }  from '@angular/http';
+import { Observable }                               from 'rxjs/Observable';
+import { Subject }                                  from 'rxjs/Subject';
+
+import { Attribute }  from './attribute';
 
 @Injectable()
 export class AttributeStoreService

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/observable';
-import { Subject } from 'rxjs/subject';
-import { BomPosition } from './bom-position';
-import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
+import { Injectable }   from '@angular/core';
+import { Observable }   from 'rxjs/Observable';
+import { Subject }      from 'rxjs/Subject';
+
+import { BomPosition }          from './bom-position';
+import { TreeNode }             from '../lazy-loaded-tree-view/tree-node';
 import { PositionStoreService } from './position-store.service';
 
 

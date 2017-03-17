@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { BomPosition } from './bom-position';
-import { NodeSelectorService } from './node-selector.service';
-import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
-import { PositionService } from './position.service';
-import { BehaviorSubject } from 'rxjs/behaviorsubject';
-import { Observable } from 'rxjs/observable';
-import { UiStatusService } from '../core/ui-status.service';
+import { Component }        from '@angular/core';
+import { Observable }       from 'rxjs/Observable';
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
+
+import { BomPosition }          from './bom-position';
+import { NodeSelectorService }  from './node-selector.service';
+import { TreeNode }             from '../lazy-loaded-tree-view/tree-node';
+import { PositionService }      from './position.service';
+import { UiStatusService }      from '../core/ui-status.service';
 
 
 @Component({

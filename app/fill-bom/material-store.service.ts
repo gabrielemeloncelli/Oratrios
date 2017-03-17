@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Material } from './material';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/subject';
+import { Subject } from 'rxjs/Subject';
 import { TableAndSizeFilter } from './table-and-size-filter';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 

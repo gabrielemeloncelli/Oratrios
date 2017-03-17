@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/behaviorsubject';
-import { Observable } from 'rxjs/observable';
-import { PositionAttributeStoreService } from './position-attribute-store.service';
-import { PositionAttribute } from './position-attribute';
+import { Injectable }       from '@angular/core';
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
+import { Observable }       from 'rxjs/Observable';
+
+import { PositionAttributeStoreService }  from './position-attribute-store.service';
+import { PositionAttribute }              from './position-attribute';
 
 @Injectable()
 export class PositionAttributeService{

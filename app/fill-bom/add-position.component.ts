@@ -56,6 +56,7 @@ export class AddPositionComponent
   public tagError: boolean;
   private _savedCount: number;
   private _saveFailedCount: number;
+  private _toBeSavedIndex: number;
 
 
   @ViewChild(Select)
@@ -502,11 +503,9 @@ export class AddPositionComponent
   savePositionList()
   {
     var addedBomPositions = new Array<BomPosition>();
-    var i: number;
-    for (i = 0; i < this.addedPositions.length; i += 1)
-    {
-      this.savePositionInArray(i);
-    }
+    this._toBeSavedIndex = 0;
+    this.savePositionInArray(this._toBeSavedIndex);
+
     
 
   }
@@ -566,7 +565,12 @@ export class AddPositionComponent
       this.modalComponent.dismiss();
       return;
     }
-    if (this._savedCount + this._saveFailedCount === this.addedPositions.length)
+    if (this._toBeSavedIndex < this.addedPositions.length - 1)
+    {
+      this._toBeSavedIndex += 1;
+      this.savePositionInArray(this._toBeSavedIndex);
+    }
+    else
     {
       this.purgeSavedPositions();
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/behaviorsubject';
-import { Observable } from 'rxjs/observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { Material } from './material';
 import { TableAndSizeFilter } from './table-and-size-filter';
 import { MaterialStoreService } from './material-store.service';

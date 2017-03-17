@@ -15,6 +15,7 @@
     "node_modules",
     "public",
 	  "dist",
+	"typings/main",
     "typings/browser",
     "typings/browser.d.ts"
   ]

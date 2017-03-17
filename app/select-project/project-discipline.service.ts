@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/observable';
-import { Subject } from 'rxjs/subject';
-import { ProjectDiscipline } from './project-discipline';
-import { ProjectDisciplineStoreService } from './project-discipline-store.service';
-import { Project } from './project';
+import { Injectable }       from '@angular/core';
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
+import { Observable }       from 'rxjs/Observable';
+import { Subject }          from 'rxjs/Subject';
+
+import { ProjectDiscipline }              from './project-discipline';
+import { ProjectDisciplineStoreService }  from './project-discipline-store.service';
+import { Project }                        from './project';
 
 
 @Injectable()

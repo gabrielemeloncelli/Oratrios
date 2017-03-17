@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http , Response } from '@angular/http';
 import { CommodityGroup } from './commodity-group';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/subject';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class CommodityGroupStoreService
