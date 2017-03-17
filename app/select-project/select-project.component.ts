@@ -1,10 +1,10 @@
 import { Component, OnInit }  from '@angular/core';
 import { Router }             from '@angular/router';
 
-import { Project }                  from './project';
-import { ProjectDisciplineService } from './project-discipline.service';
+import { Project }                  from '../core/project';
+import { ProjectDisciplineService } from '../core/project-discipline.service';
 import { UiStatusService }          from '../core/ui-status.service';
-import { ProjectDiscipline }        from './project-discipline';
+import { ProjectDiscipline }        from '../core/project-discipline';
 
 
 @Component({

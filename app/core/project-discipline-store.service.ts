@@ -3,9 +3,9 @@ import { Http, Response, Headers, RequestOptions }  from '@angular/http';
 import { Observable }                               from 'rxjs/Observable';
 import { Subject }                                  from 'rxjs/Subject';
 
-import { Project } from './project';
-import { Discipline } from './discipline';
-import { ProjectDiscipline } from './project-discipline';
+import { Project }            from './project';
+import { Discipline }         from './discipline';
+import { ProjectDiscipline }  from './project-discipline';
 
 @Injectable()
 export class ProjectDisciplineStoreService{
