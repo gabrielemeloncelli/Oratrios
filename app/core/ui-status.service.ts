@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Subject} from 'rxjs/Subject';
-import { BomPosition } from '../fill-bom/bom-position';
-import { InsertPositionDetails } from '../fill-bom/insert-position-details';
+import { Subject}     from 'rxjs/Subject';
+
+import { BomPosition }            from '../fill-bom/bom-position';
+import { InsertPositionDetails }  from '../fill-bom/insert-position-details';
+import { ProjectDiscipline }      from './project-discipline';
 
 @Injectable()
 export class UiStatusService
@@ -21,6 +23,7 @@ export class UiStatusService
   public projectDisciplineId = 0;
   public projectId = 0;
   public projectCode = "";
+  public projectDisciplines: ProjectDiscipline[]
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {

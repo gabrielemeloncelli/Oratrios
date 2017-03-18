@@ -1,1 +1,11 @@
-<h1>Discipline selection</h1>
+<h1>Select Discipline</h1>
+<div class="btn-group" dropdown>
+  <button id="split-button" type="button" class="btn btn-primary">Discipline</button>
+  <button type="button" class="btn btn-primary dropdown-toggle-split" dropdownToggle>
+    <span class="caret"></span>
+    <span class="sr-only">Split button!</span>
+  </button>
+  <ul class="dropdown-menu" dropdownMenu role="menu" aria-labelledby="split-button">
+    <li *ngFor="let projectDiscipline of projectDisciplines" role="menuitem"><a class="dropdown-item" (click)="selectProjectDiscipline(projectDiscipline)">{{projectDiscipline.discipline.code}}</a></li>
+  </ul>
+</div>

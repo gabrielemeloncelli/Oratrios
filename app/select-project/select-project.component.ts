@@ -84,6 +84,7 @@ export class SelectProjectComponent{
       }
       else
       {
+        this._uiStatusService.projectDisciplines = projectDisciplines;
         this._router.navigate(['/discipline-select']);
       }
     }

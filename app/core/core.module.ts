@@ -3,9 +3,10 @@ import {
   ModuleWithProviders,
   NgModule,
   Optional,
-  SkipSelf }            from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule }  from '@angular/forms';
+  SkipSelf }              from '@angular/core';
+import { CommonModule }   from '@angular/common';
+import { FormsModule }    from '@angular/forms';
+import { DropdownModule } from 'ng2-bootstrap';
 
 import { SelectModule }                   from '../ng2-select/select.module'
 import { SessionService }                 from './session.service';
@@ -18,8 +19,9 @@ import { ProjectDisciplineStoreService }  from './project-discipline-store.servi
 
 
 @NgModule({
-  imports:      [ CommonModule, FormsModule, SelectModule, ModalModule ],
-  exports:      [ CommonModule, FormsModule, SelectModule, ModalModule ],
+  imports:      [ CommonModule, FormsModule, SelectModule, ModalModule,
+    DropdownModule.forRoot() ],
+  exports:      [ CommonModule, FormsModule, SelectModule, ModalModule, DropdownModule ],
   providers:    [ ProjectDisciplineService, ProjectDisciplineStoreService ]
 })
 export class CoreModule {
