@@ -48,7 +48,6 @@ export class SelectProjectComponent{
 
 
   selectProject(code: string){
-    console.log('select-project.component -- selectProject -- code: ' + code); //TODO: remove
     this._projectDisciplineService.selectProject(code);
 
   }
@@ -78,6 +77,7 @@ export class SelectProjectComponent{
       var selectedDiscipline = projectDisciplines[0];
       this._uiStatusService.projectCode = selectedDiscipline.project.code;
       this._uiStatusService.projectId = selectedDiscipline.project.id;
+      this._uiStatusService.selectProject(selectedDiscipline.project.id);
       if (projectDisciplines.length === 1)
       {
         this._projectDisciplineService.selectDiscipline(this._uiStatusService.projectId, selectedDiscipline.discipline.code);

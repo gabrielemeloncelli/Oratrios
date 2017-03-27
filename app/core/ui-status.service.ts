@@ -5,6 +5,8 @@ import { Subject}     from 'rxjs/Subject';
 import { BomPosition }            from '../fill-bom/bom-position';
 import { InsertPositionDetails }  from '../fill-bom/insert-position-details';
 import { ProjectDiscipline }      from './project-discipline';
+import { NodeTypeService }        from './node-type.service';
+import { NodeType }               from './node-type';
 
 @Injectable()
 export class UiStatusService
@@ -24,6 +26,9 @@ export class UiStatusService
   public projectId = 0;
   public projectCode = "";
   public projectDisciplines: ProjectDiscipline[]
+  public nodeTypes: NodeType[];
+
+  constructor(private nodeTypeService: NodeTypeService) { }
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {
@@ -36,7 +41,13 @@ export class UiStatusService
 
    editPosition(positionToEdit: BomPosition)
    {
-     console.log("ui-status.service - editPosition");//TODO: remove
      this._editPositionSubject.next(positionToEdit);
+   }
+
+   selectProject(projectId: number)
+   {
+     this.nodeTypes = new Array<NodeType>();
+     this.nodeTypeService.getNodeTypes(projectId)
+     .subscribe(nodes => this.nodeTypes = nodes);
    }
  }

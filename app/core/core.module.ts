@@ -14,6 +14,7 @@ import { SessionServiceConfig }           from './session.service';
 import { ModalModule }                    from '../ng2-bs3-modal/ng2-bs3-modal.module';
 import { ProjectDisciplineService }       from './project-discipline.service';
 import { ProjectDisciplineStoreService }  from './project-discipline-store.service';
+import { NodeTypeService }                from './node-type.service';
 
 
 
@@ -22,7 +23,7 @@ import { ProjectDisciplineStoreService }  from './project-discipline-store.servi
   imports:      [ CommonModule, FormsModule, SelectModule, ModalModule,
     DropdownModule.forRoot() ],
   exports:      [ CommonModule, FormsModule, SelectModule, ModalModule, DropdownModule ],
-  providers:    [ ProjectDisciplineService, ProjectDisciplineStoreService ]
+  providers:    [ ProjectDisciplineService, ProjectDisciplineStoreService, NodeTypeService ]
 })
 export class CoreModule {
 

@@ -24,19 +24,19 @@
         <input *ngIf="!nodeTypeDisabled" class="form-control" name="nodeName" id="nodeName" [(ngModel)]="nodeNameBg" #nodeName />
         <span *ngIf="nodeTypeDisabled" class="form-control" name="nodeName" id="nodeName">{{nodeNameBg}}</span>
       </p>
-      <p>
-        <label for="nodeType">Node type&nbsp;</label>
-        <ng-select id="nodeType" name="nodeType" [allowClear]="false"
-                    [items]="nodeTypes"
-                    [disabled]="nodeTypeDisabled"
-                    [initData]="nodeTypeBg"
-                    (data)="refreshValue($event)"
-                    (selected)="nodeTypeSelected($event)"
-                    (removed)="removed($event)"
-                    (typed)="typed($event)"
-                    placeholder="No type selected">
-        </ng-select>
-      </p>
+      <div>
+        <div class="btn-group" dropdown>
+          <button id="split-button" type="button" class="btn btn-primary">Node Type</button>
+          <button type="button" class="btn btn-primary dropdown-toggle-split" dropdownToggle>
+            <span class="caret"></span>
+            <span class="sr-only">Split button!</span>
+          </button>
+          <ul class="dropdown-menu" dropdownMenu role="menu" aria-labelledby="split-button">
+            <li *ngFor="let nodeType of nodeTypes" role="menuitem"><a class="dropdown-item" (click)="nodeTypeSelected2(nodeType)">{{nodeType.code + " - " + nodeType.shortDescription}}</a></li>
+          </ul>
+        </div>
+        <label class="form-control">{{selectedNodeType}}</label>
+      </div>
       <p *ngIf(nodePositionVisibility)>
         <input type="radio" id="child" [(ngModel)]="childSibling" name="addRelationship" value="child" #addChild /><label for="child">&nbsp;Child</label><br/>
         <input type="radio" id="sibling" [(ngModel)]="childSibling" name="addRelationship" checked='checked' #addSibling value="sibling" /><label for="sibling">&nbsp;Same level</label>

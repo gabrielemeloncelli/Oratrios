@@ -11,6 +11,7 @@ import { UiStatusService }            from '../core/ui-status.service';
 import { CommodityGroupService }      from './commodity-group.service';
 import { ModalComponent }             from '../ng2-bs3-modal/components/modal';
 import { NodeDTO }                    from '../lazy-loaded-tree-view/nodeDTO';
+import { NodeType }                   from '../core/node-type';
 
 @Component({
   templateUrl: 'app/fill-bom/fill-bom.component.html',
@@ -32,7 +33,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   eventParentNodeView : BubbleNodeMessageInterface = null;
   treeNodeService : TreeNodeService;
   root: TreeNode = null;
-  nodeTypes: any[] = [];
+  nodeTypes: NodeType[];
   coreService: any;
   coreEstService : CoreEstService;
   nodeLocked : boolean = false;
@@ -82,6 +83,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.handleNode(node);
     this.nodeNameBg = '';
     this.nodeTypeBg = [];
+    this.selectedNodeType = '';
     this.nodePositionVisibility = true;
     this.modalComponent.open();
 
@@ -121,8 +123,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
      this._uiStatusService.disciplineCode = "ELEC-MI"; //TODO: replace
      this._commodityGroupService.getAll(this._uiStatusService.disciplineId);
-     this.coreEstService.nodeTypes()
-     .subscribe((r : any) => this.nodeTypes.push(r));
+     this.nodeTypes = this._uiStatusService.nodeTypes;
      console.log('app.component - OnInit - this.sessionService.userLogin: ' + this.sessionService.userLogin);//TODO: remove
 
 
@@ -281,9 +282,10 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     console.log("app.component - disabledV - nodeTypeDisabled: " + this.nodeTypeDisabled); //TODO: remove
   }
 
-  public nodeTypeSelected(value:any):void {
+
+  public nodeTypeSelected2(value: NodeType):void {
     console.log('Selected value is: ', value);
-    this.selectedNodeType = value.id;
+    this.selectedNodeType = value.code;
   }
 
   public removed(value:any):void {
