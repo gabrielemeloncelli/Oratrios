@@ -59,7 +59,8 @@ export class TreeNodeService{
       .subscribe(res => {
         this.nodes[action.id] = null;
         this.handleAction.bind(this,{name: 'LOAD_NODES', url: 'api/Nodes/' + action.id + '/' + this._uiStatusService.projectDisciplineId + '/nodes', id: action.id});
-      });
+      },
+        error => {throw(error)});
     }
     if (action.name === "EDIT_NODE"){
       this._http.put(action.url, action.node)
@@ -92,7 +93,8 @@ export class TreeNodeService{
     if (action.name === "STORE_NODE"){
       action.node.projectDisciplineId = this._uiStatusService.projectDisciplineId;
       return this._http.post(action.url, action.node)
-      .map((res:Response) => null);
+      .map((res:Response) => null)
+      .catch(this.handleError);
     }
     if (action.name === "EDIT_NODE")
     {
@@ -122,5 +124,19 @@ export class TreeNodeService{
         .get(this.getChildNodesUrl(id))
         .map((res:Response) => treeNodeReducer(res.json()));
 
+  }
+
+  handleError(error: Response | any){
+      // In a real world app, you might use a remote logging infrastructure
+  let errMsg: string;
+  let status = 0;
+  let message = '';
+  if (error instanceof Response) {
+    status = error.status;
+    message = error.text();
+  } else {
+    errMsg = error.message ? error.message : error.toString();
+  }
+  return Observable.throw({message: message, status: status});
   }
 }

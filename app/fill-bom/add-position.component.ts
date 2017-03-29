@@ -1,26 +1,28 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { UiStatusService } from '../core/ui-status.service';
-import { ModalComponent } from '../ng2-bs3-modal/components/modal';
-import { CommodityGroup } from './commodity-group';
-import { CommodityGroupService } from './commodity-group.service';
-import { CommodityPart } from './commodity-part';
-import { CommodityPartService } from './commodity-part.service';
-import { MappedTable } from './mapped-table';
-import { CommodityTableService } from './commodity-table.service';
-import { SelectItem } from '../ng2-select/select/select-item';
-import { Material } from './material';
-import { MaterialService } from './material.service';
-import { TableAndSizeFilter } from './table-and-size-filter';
-import { TableFilter } from './table-filter';
-import { BomPosition } from './bom-position';
-import { Select } from '../ng2-select/select/select';
-import { NodeSelectorService } from './node-selector.service';
-import { PositionService } from './position.service';
-import { CommodityTable } from  './commodity-table';
-import { AttributeService } from './attribute.service';
-import { Attribute } from './attribute';
+import { Component, OnInit, ViewChild, AfterViewInit }  from '@angular/core';
+import { Option }                                       from 'angular2-select/dist/option';
+import { SelectComponent }                              from 'angular2-select/dist/select.component';
+
+import { UiStatusService }        from '../core/ui-status.service';
+import { ModalComponent }         from '../ng2-bs3-modal/components/modal';
+import { CommodityGroup }         from './commodity-group';
+import { CommodityGroupService }  from './commodity-group.service';
+import { CommodityPart }          from './commodity-part';
+import { CommodityPartService }   from './commodity-part.service';
+import { MappedTable }            from './mapped-table';
+import { CommodityTableService }  from './commodity-table.service';
+import { Material }               from './material';
+import { MaterialService }        from './material.service';
+import { TableAndSizeFilter }     from './table-and-size-filter';
+import { TableFilter }            from './table-filter';
+import { BomPosition }            from './bom-position';
+import { NodeSelectorService }    from './node-selector.service';
+import { PositionService }        from './position.service';
+import { CommodityTable }         from  './commodity-table';
+import { AttributeService }       from './attribute.service';
+import { Attribute }              from './attribute';
 import { PositionAttributeValue } from './position-attribute-value';
-import { PositionInput } from './position-input';
+import { PositionInput }          from './position-input';
+
 
 @Component({
 
@@ -34,9 +36,9 @@ export class AddPositionComponent
 
   @ViewChild(ModalComponent)
   private modalComponent: ModalComponent;
-  public groups: SelectItem[] = new Array<SelectItem>();
+  public groups: Option[] = new Array<Option>();
   public groupsDisabled: boolean = false;
-  public parts: SelectItem[] = new Array<SelectItem>();
+  public parts: Option[] = new Array<Option>();
   public materials: Material[] = new Array<Material>();
   public addedPositions: PositionInput[] = new Array<PositionInput>();
   tables = new Array<MappedTable>();
@@ -57,10 +59,11 @@ export class AddPositionComponent
   private _savedCount: number;
   private _saveFailedCount: number;
   private _toBeSavedIndex: number;
+  private _allowedUnits: Option[];
 
 
-  @ViewChild(Select)
-  private selectComponent: Select;
+  @ViewChild(SelectComponent)
+  private selectComponent: SelectComponent;
 
 
   constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
@@ -68,7 +71,9 @@ export class AddPositionComponent
      private _materialService: MaterialService, private _selectorService: NodeSelectorService,
      private _positionService: PositionService, private _attributeService: AttributeService)
   {
-
+    this._allowedUnits = new Array<Option>();
+    this._allowedUnits.push(new Option("U", "U"));
+    this._allowedUnits.push(new Option("M2", "M2"));
     this.resetMaterial();
     this.resetAddedPositions();
 
@@ -111,14 +116,14 @@ export class AddPositionComponent
 
     this._commodityGroupService.groups.subscribe(
       (groups: CommodityGroup[]) => {
-        this.groups = groups.map(g => new SelectItem({id: g.id, text: g.code + " - " + g.description}));
+        this.groups = groups.map(g => new Option(g.id.toString(), g.code + " - " + g.description));
         this._groups = groups;
       }
     );
 
     this._commodityPartService.parts.subscribe(
       (parts: CommodityPart[]) => {
-        this.parts = parts.map(p => new SelectItem({id: p.id, text: p.code + " - " + p.description}));
+        this.parts = parts.map(p => new Option(p.id.toString(), p.code + " - " + p.description));
         this._parts = parts;
         this.changeGroup();
       }
@@ -154,15 +159,15 @@ export class AddPositionComponent
 
   groupSelected(event: any)
   {
-    console.log("add-position.component -- groupSelected -- event.id: " + event.id);
-    console.log("add-position.component -- groupSelected -- event.text: " + event.text);
-    console.log("add-position.component -- groupSelected -- event.id === event.id + 0: " + (event.id === event.id + 0));
+    console.log("add-position.component -- groupSelected -- event.value: " + event.value);
+    console.log("add-position.component -- groupSelected -- event.label: " + event.label);
+    console.log("add-position.component -- groupSelected -- event.value === +event.value: " + (event.value === +event.value));
     console.log("add-position.component -- groupSelected -- getting group");
-    var foundGroup: CommodityGroup = this.findSelectedGroup(event.id);
+    var foundGroup: CommodityGroup = this.findSelectedGroup(+event.value);
     console.log("add-position.component -- groupSelected -- group recovered");
     this._selectedMaterial.groupCode = foundGroup.code;
     this.uiStatusService.commodityGroupCode = foundGroup.code;
-    this._commodityPartService.getAll(event.id);//TODO:verify the returned type and property values of the event
+    this._commodityPartService.getAll(event.value);//TODO:verify the returned type and property values of the event
   }
 
   findSelectedGroup(id: number): CommodityGroup{
@@ -182,13 +187,13 @@ export class AddPositionComponent
     return result;
   }
 
-  partSelected(event: any)
+  partSelected(event: Option)
   {
-    var foundPart: CommodityPart = this.findSelectedPart(event.id);
+    var foundPart: CommodityPart = this.findSelectedPart(+event.value);
     this.resetMaterial();
-    this._selectedMaterial.partId = event.id;
+    this._selectedMaterial.partId = +event.value;
     this._selectedMaterial.partCode = foundPart.code;
-    this.uiStatusService.partId = event.id;
+    this.uiStatusService.partId = +event.value;
     this.uiStatusService.commodityPartCode = foundPart.code;
     if (this._isTag)
     {
@@ -220,7 +225,7 @@ export class AddPositionComponent
     return result;
   }
 
-  tableSelected(event: any, tableName: string)
+  tableSelected(event: Option, tableName: string)
   {
     var foundFilter: TableFilter = null;
     for(var tableIndex = 0; tableIndex < this._tableFilters.length; tableIndex += 1)
@@ -232,12 +237,12 @@ export class AddPositionComponent
     }
     if (!foundFilter)
     {
-      foundFilter = new TableFilter(tableName, event.id);
+      foundFilter = new TableFilter(tableName, event.value);
       this._tableFilters.push(foundFilter);
     }
     else
     {
-      foundFilter.detail = event.id;
+      foundFilter.detail = event.value;
     }
   }
 
@@ -259,6 +264,19 @@ export class AddPositionComponent
     if (foundFilterPosition > -1)
     {
       this._tableFilters.splice(foundFilterPosition, 1);
+    }
+  }
+
+  unitRemoved()
+  {
+    this._selectedMaterial.unit = "";
+  }
+
+  unitSelected(option: Option)
+  {
+    if (option)
+    {
+      this._selectedMaterial.unit = option.value;
     }
   }
 
@@ -298,14 +316,17 @@ export class AddPositionComponent
 
   resetGroupAndPart()
   {
+    if (this.selectComponent)
+    {
+      this.selectComponent.clear();
+    }
+    this.uiStatusService.commodityGroupCode = "";
+    this.uiStatusService.commodityPartCode = "";
+    this.uiStatusService.partId = 0;
+    this.uiStatusService.tablesAndSizesVisible = false;
+    this._tableFilters = new Array<TableFilter>();
 
-      this.selectComponent.remove(null);
-      this.uiStatusService.commodityGroupCode = "";
-      this.uiStatusService.commodityPartCode = "";
-      this.uiStatusService.partId = 0;
-      this.uiStatusService.tablesAndSizesVisible = false;
-      this._tableFilters = new Array<TableFilter>();
-      this.resetPart();
+    this.resetPart();
 
   }
 

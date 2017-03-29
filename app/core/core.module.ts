@@ -7,8 +7,8 @@ import {
 import { CommonModule }   from '@angular/common';
 import { FormsModule }    from '@angular/forms';
 import { DropdownModule } from 'ng2-bootstrap';
+import { SelectModule }   from 'angular2-select';
 
-import { SelectModule }                   from '../ng2-select/select.module'
 import { SessionService }                 from './session.service';
 import { SessionServiceConfig }           from './session.service';
 import { ModalModule }                    from '../ng2-bs3-modal/ng2-bs3-modal.module';

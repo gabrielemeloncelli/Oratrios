@@ -8,4 +8,5 @@ export class NodeDTO{
   locked: boolean;
   lockedBy: string;
   projectDisciplineId: number;
+  forceDifferentType: boolean;
 }

@@ -27,6 +27,11 @@ table > thead > th
   color: red;
 }
 
+.ng-select
+{
+  background-color: #ffffff;
+}
+
 .control-error
 {
   background-color: #ffaaaa;

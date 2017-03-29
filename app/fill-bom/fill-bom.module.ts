@@ -23,12 +23,11 @@ import { AttributeService } from './attribute.service';
 import { FillBomRoutingModule } from './fill-bom-routing.module';
 import { FillBomComponent } from './fill-bom.component';
 import { TreeViewModule } from '../lazy-loaded-tree-view/tree-view.module';
-import { SelectModule } from '../ng2-select/select.module';
 import { ModalModule } from '../ng2-bs3-modal/ng2-bs3-modal.module';
 
 
 @NgModule({
-  imports: [ CoreModule, FillBomRoutingModule, TreeViewModule, SelectModule, ModalModule ],
+  imports: [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule ],
   declarations: [ PositionsListComponent, AddPositionComponent, FillBomComponent ],
   exports:      [ PositionsListComponent, AddPositionComponent ],
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,

@@ -41,9 +41,14 @@
         <input type="radio" id="child" [(ngModel)]="childSibling" name="addRelationship" value="child" #addChild /><label for="child">&nbsp;Child</label><br/>
         <input type="radio" id="sibling" [(ngModel)]="childSibling" name="addRelationship" checked='checked' #addSibling value="sibling" /><label for="sibling">&nbsp;Same level</label>
       </p>
+      <p *ngIf="confirmStoreNode">
+        <label class="form-control">{{warningMessage}}</label>
+        <br/>
+        <button type="button" class="btn btn-warning" (click)="storeNodeConfirm()">Confirm</button>
+      <p>
     </modal-body>
     <modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="navigateModal.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" autofocus (click)="navigateModal.close()">{{confirmButtonText}}</button>
+        <button type="button" class="btn btn-primary" autofocus (click)="tryStoreNode()">{{confirmButtonText}}</button>
     </modal-footer>
 </modal>

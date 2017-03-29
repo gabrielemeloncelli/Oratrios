@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { Router }                               from '@angular/router';
+import { Observable }                           from 'rxjs/Observable';
 
 import { BubbleNodeMessageInterface } from '../lazy-loaded-tree-view/bubble-node-message.interface';
 import { TreeNode }                   from '../lazy-loaded-tree-view/tree-node';
@@ -42,6 +43,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   sessionService: SessionService = null;
   positionAdd: boolean = false;
   positionIsTag: boolean = false;
+  confirmStoreNode: boolean = false;
+  warningMessage: string = '';
 
   constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService, sessionService: SessionService,
      private _uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
@@ -60,6 +63,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   handleNode(node: TreeNode) : void
   {
+    this.confirmStoreNode = false;
+    this.warningMessage = '';
     this.nodeLocked = node.locked;
     this.nodeNameBg = node.name;
     this.nodeTypeBg = [{"id": node.type, "name": node.type}];
@@ -154,6 +159,77 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
         );
 
 
+   }
+
+   tryStoreNode(): void
+   {
+      return this.baseStoreNode(false);
+   }
+
+   storeNodeConfirm(): void
+   {
+     return this.baseStoreNode(true);
+   }
+
+   baseStoreNode(forceDifferentType: boolean): void
+   {
+      var newNode: NodeDTO = new NodeDTO();
+      var action: any;
+      newNode.id = this.currentNodeId;
+      newNode.name = this.nodeNameBg;
+      newNode.nodeType = this.selectedNodeType;
+      newNode.locked = this.nodeLocked;
+      newNode.lockedBy = this.sessionUser.login;
+      console.log("fill-bom.component - storeNode -+- lockedBy: " +  newNode.lockedBy);
+      console.log("fill-bom.component - storeNode - nodeType: " +  this.selectedNodeType); //TODO: remove
+      newNode.idFather = this.fatherNodeId;
+      newNode.url = 'api/Nodes/' + newNode.id;
+      newNode.forceDifferentType = forceDifferentType;
+      action = { name: null, url: 'api/Nodes/' + this.currentNodeId, node: newNode};
+      switch (this.actionType)
+      {
+        case 'add':
+          newNode.id = 0;
+          newNode.url = 'api/Nodes/' + newNode.id;
+          if (this.childSibling === 'child')
+          {
+            newNode.idFather = this.eventNode.id;
+          }
+          else
+          {
+            newNode.idFather = this.eventParentNodeView.root.id;
+          }
+          action.name = 'STORE_NODE';
+          action.url = 'api/Nodes';
+          break;
+        case 'edit':
+        case 'togglelock':
+          action.name = 'EDIT_NODE';
+          break;
+        case 'delete':
+          action.name = 'DELETE_NODE';
+          break;
+      }
+      if (action.name)
+      {
+        console.log('fill-bom.component - storeNode - afterActionSwitch - action.url' + action.url);//TODO remove
+        this.treeNodeService.persistNode(action)
+        .subscribe(() => 
+          {
+            this.refreshTree();
+            this.modalComponent.dismiss();
+          }
+          , error => 
+            {
+              console.log('fill-bom.component - storeNode - error.status: ' + error.status);//TODO remove
+              if (error.status && error.status === 409)
+              {
+                console.log('fill-bom.component - storeNode - error.status: ' + error.status);//TODO remove
+                this.warningMessage = error.message;
+                this.confirmStoreNode = true;
+              }
+            });
+      }   
    }
 
   storeNode(): void
