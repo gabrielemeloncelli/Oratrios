@@ -191,11 +191,14 @@ export class AddPositionComponent
   partSelected(event: Option)
   {
     var foundPart: CommodityPart = this.findSelectedPart(+event.value);
+    this.tables = new Array<MappedTable>();
+    this._tableFilters = new Array<TableFilter>();
     this.resetMaterial();
     this._selectedMaterial.partId = +event.value;
     this._selectedMaterial.partCode = foundPart.code;
     this.uiStatusService.partId = +event.value;
     this.uiStatusService.commodityPartCode = foundPart.code;
+    
     if (this._isTag)
     {
       this._tagAndQuantityVisible = true;
@@ -524,6 +527,7 @@ export class AddPositionComponent
 
   savePositionList()
   {
+    this.clearErrorMessages();
     var addedBomPositions = new Array<BomPosition>();
     var loopPosition: PositionInput;
     var newPosition: BomPosition;
