@@ -6,7 +6,8 @@ import {
   SkipSelf }              from '@angular/core';
 import { CommonModule }   from '@angular/common';
 import { FormsModule }    from '@angular/forms';
-import { DropdownModule } from 'ng2-bootstrap';
+import { DropdownModule,
+          TooltipModule } from 'ng2-bootstrap';
 import { SelectModule }   from 'angular2-select';
 
 import { SessionService }                 from './session.service';
@@ -21,8 +22,8 @@ import { NodeTypeService }                from './node-type.service';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, SelectModule, ModalModule,
-    DropdownModule.forRoot() ],
-  exports:      [ CommonModule, FormsModule, SelectModule, ModalModule, DropdownModule ],
+    DropdownModule.forRoot(), TooltipModule.forRoot() ],
+  exports:      [ CommonModule, FormsModule, SelectModule, ModalModule, DropdownModule, TooltipModule ],
   providers:    [ ProjectDisciplineService, ProjectDisciplineStoreService, NodeTypeService ]
 })
 export class CoreModule {

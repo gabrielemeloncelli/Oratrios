@@ -22,6 +22,7 @@ import { AttributeService }       from './attribute.service';
 import { Attribute }              from './attribute';
 import { PositionAttributeValue } from './position-attribute-value';
 import { PositionInput }          from './position-input';
+import { PositionError }          from './position-error';
 
 
 @Component({
@@ -524,11 +525,81 @@ export class AddPositionComponent
   savePositionList()
   {
     var addedBomPositions = new Array<BomPosition>();
-    this._toBeSavedIndex = 0;
-    this.savePositionInArray(this._toBeSavedIndex);
+    var loopPosition: PositionInput;
+    var newPosition: BomPosition;
+    var index: number;
+    for(index = 0; index < this.addedPositions.length; index += 1)
+    {
+      newPosition = new BomPosition();
+      newPosition.id = 0;
+      newPosition.materialId = this.addedPositions[index].bomPosition.materialId;
+      newPosition.groupCode = this.addedPositions[index].bomPosition.groupCode;
+      newPosition.partCode = this.addedPositions[index].bomPosition.partCode;
+      newPosition.partId = this.addedPositions[index].bomPosition.partId;
+      newPosition.commodityCode = this.addedPositions[index].bomPosition.commodityCode;
+      newPosition.description = this.addedPositions[index].bomPosition.description;
+      newPosition.description2 = this.addedPositions[index].bomPosition.description2;
+      newPosition.unit = this.addedPositions[index].bomPosition.unit;
+      console.log('savePositionInArray - saveSinglePosition - this.addedPositions[index].bomPosition.unit: ' + this.addedPositions[index].bomPosition.unit);//TODO remove
+      newPosition.isTwm = false;
+      newPosition.nodeId = this.addedPositions[index].bomPosition.nodeId;
 
-    
+      newPosition.tag = this.addedPositions[index].bomPosition.tag;
+      newPosition.quantity = this.addedPositions[index].bomPosition.quantity;
 
+      newPosition.attributes = this.fetchAttributesFromArray(this.addedPositions[index].attributes);
+
+      addedBomPositions.push(newPosition); 
+    }
+    this._positionService.addPositionList(addedBomPositions)
+    .subscribe(result => {
+      this._savedCount = this.addedPositions.length;
+      this.checkAllPositionSaved();
+    },
+    result => {
+      this.errorMessage = result.message;
+      console.log('add-position.component -- savePositionList -- result.errorObject: ' + JSON.stringify(result.errorObject));//TODO: remove
+      this.setDetailErrorMessages(this.parseErrorMessages(result.errorObject));
+    }
+    );
+  }
+
+  parseErrorMessages(errorMessages: any[]): PositionError[]
+  {
+    var result = new Array<PositionError>();
+    var loopMessage: any;
+    var newMessage: PositionError;
+    for (loopMessage of errorMessages)
+    {
+      newMessage = new PositionError();
+      newMessage.index = loopMessage.index;
+      newMessage.message = loopMessage.message;
+      result.push(newMessage);
+    }
+    return result;
+  }
+
+  setDetailErrorMessages(errorMessages: PositionError[])
+  {
+    var loopMessage: PositionError;
+    for(loopMessage of errorMessages)
+    {
+      console.log('add-position.component -- setDetailErrorMessages -- loopMessage.index: ' + loopMessage.index);//TODO: remove
+      this.addedPositions[loopMessage.index].errorMessage = loopMessage.message;
+    }
+  }
+
+  clearErrorMessages()
+  {
+    this.errorMessage = "";
+    if (this.addedPositions)
+    {
+     var position: PositionInput;
+     for (position of this.addedPositions)
+     {
+       position.errorMessage = null;
+     }
+    }
   }
 
   savePositionInArray(index: number)
@@ -687,6 +758,17 @@ export class AddPositionComponent
     {
       this.addedPositions[index].tagError = false;
     }
+  }
+
+  positionHasError(position: PositionInput): boolean
+  {
+    console.log('add-position.component -- positionHasError -- position.errorMessage: ' + position.errorMessage);//TODO: remove
+    if (!(position.errorMessage))
+    {
+      return false;
+    }
+    console.log('add-position.component -- positionHasError -- position.errorMessage && position.errorMessage.length: ' + position.errorMessage && position.errorMessage.length);//TODO: remove
+    return position.errorMessage.length > 0;
   }
 
   propagateAttrValues(index: number): void

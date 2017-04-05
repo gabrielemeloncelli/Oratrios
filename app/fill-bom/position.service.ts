@@ -5,6 +5,7 @@ import { Subject }      from 'rxjs/Subject';
 import { BomPosition }          from './bom-position';
 import { TreeNode }             from '../lazy-loaded-tree-view/tree-node';
 import { PositionStoreService } from './position-store.service';
+import { PositionErrorList }    from './position-error-list';
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class PositionService{
     return this._storeService.addPosition(newPosition);
   }
 
-  addPositionList(newPositions: BomPosition[]): Observable<BomPosition[]>
+  addPositionList(newPositions: BomPosition[]): Observable<PositionErrorList>
   {
     return this._storeService.addPositionList(newPositions);
   }

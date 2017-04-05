@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { BomPosition } from './bom-position';
+import { Injectable }                               from '@angular/core';
+import { Http, Response, Headers, RequestOptions }  from '@angular/http';
+import { Observable }                               from 'rxjs/Observable';
+import { Subject }                                  from 'rxjs/Subject';
+
+import { BomPosition }            from './bom-position';
 import { PositionAttributeValue } from './position-attribute-value';
+import { PositionErrorList }      from './position-error-list';
+import { PositionError }          from './position-error';
 
 @Injectable()
 export class PositionStoreService{
@@ -35,18 +38,15 @@ export class PositionStoreService{
       return result.asObservable();
   }
 
-  addPositionList(newPositions: BomPosition[]): Observable<BomPosition[]>
+  addPositionList(newPositions: BomPosition[]): Observable<PositionErrorList>
   {
     var headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    var result = new Subject<BomPosition[]>();
-    this._http.put(this.BASE_URL + "/multiple", JSON.stringify(newPositions), options)
+    var result = new Subject<PositionErrorList>();
+    return this._http.put(this.BASE_URL + "/multiple", JSON.stringify(newPositions), options)
     .map((res:Response) => res.json())
-    .subscribe(pos => {
-          result.next(this.mapPositions(pos));
-        }
-      );
-      return result.asObservable();
+    .catch((res:Response) => this.mapError(res))
+
   }
 
   editPosition(modifiedPosition: BomPosition): Observable<BomPosition>
@@ -63,7 +63,36 @@ export class PositionStoreService{
       return result.asObservable();
   }
 
+  mapError(errorResponse: any): Observable<PositionErrorList>
+  {
+    var list: PositionErrorList = new PositionErrorList();
+    console.log("position-store.service -- mapError -- errorResponse: " + errorResponse); //TODO: remove
+    console.log("position-store.service -- mapError -- errorResponse.json(): " + errorResponse.json()); //TODO: remove
+    var parsedJson = errorResponse.json();
+    list.message = parsedJson.message;
+    console.log("position-store.service -- mapError -- parsedJson: " + parsedJson); //TODO: remove
+    console.log("position-store.service -- mapError -- parsedJson.message: " + parsedJson.message); //TODO: remove
+    list.errorObject = this.mapPositionErrors(parsedJson.errorObject);
+    console.log("position-store.service -- mapError -- parsedJson.errorObject: " + parsedJson.errorObject); //TODO: remove
+    return Observable.throw(list);
+  }
 
+  mapPositionErrors(parsedPositionErrors: any[]): PositionError[]
+  {
+    var result = new Array<PositionError>();
+    var index: number;
+    var currentError: PositionError;
+    for(index = 0; index < parsedPositionErrors.length; index += 1)
+    {
+      currentError = new PositionError();
+      console.log("position-store.service -- mapPositionErrors -- parsedPositionErrors[index].Index: " + parsedPositionErrors[index].Index);//TODO: remove
+      currentError.index = parsedPositionErrors[index].Index;
+      currentError.message = parsedPositionErrors[index].Message;
+      result.push(currentError);
+    }
+
+    return result;
+  }
 
   selectNode(nodeId: number): Observable<BomPosition[]>{
 

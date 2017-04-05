@@ -6,4 +6,5 @@ export class PositionInput{
   public tagError: boolean;
   public saved: boolean;
   public saveFailed: boolean;
+  public errorMessage: string;
 }
