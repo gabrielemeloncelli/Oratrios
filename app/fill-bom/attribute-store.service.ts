@@ -23,7 +23,7 @@ export class AttributeStoreService
     this._http
         .get(this.BASE_URL + "/" + projDisciplineId, options)
         .map((res:Response) => res.json())
-        .subscribe(res => { result.next(res.map((a: any) => new Attribute(a.id, a.code, a.description, a.mandatory)))});
+        .subscribe(res => { result.next(res.map((a: any) => new Attribute(a.id, a.code, a.description, a.mandatory, a.maxlength)))});
 
     return result.asObservable();
   }
