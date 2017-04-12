@@ -44,7 +44,7 @@ export class PositionStoreService{
     let options = new RequestOptions({ headers: headers });
     var result = new Subject<PositionErrorList>();
     return this._http.put(this.BASE_URL + "/multiple", JSON.stringify(newPositions), options)
-    .map((res:Response) => res.json())
+    .map(() => this.emptyError())
     .catch((res:Response) => this.mapError(res))
 
   }
@@ -76,6 +76,17 @@ export class PositionStoreService{
     console.log("position-store.service -- mapError -- parsedJson.errorObject: " + parsedJson.errorObject); //TODO: remove
     return Observable.throw(list);
   }
+
+  emptyError(): Observable<PositionErrorList>
+  {
+    var list: PositionErrorList = new PositionErrorList();
+    list.message = "";
+    list.errorObject =  new Array<PositionError>();
+    var result = new Subject<PositionErrorList>();
+    result.next(list);
+    return result.asObservable();
+  }
+
 
   mapPositionErrors(parsedPositionErrors: any[]): PositionError[]
   {

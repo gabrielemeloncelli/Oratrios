@@ -23,6 +23,8 @@ import { Attribute }              from './attribute';
 import { PositionAttributeValue } from './position-attribute-value';
 import { PositionInput }          from './position-input';
 import { PositionError }          from './position-error';
+import { AllowedValue }           from './allowed-value';
+import { AllowedValueService }    from './allowed-value.service';
 
 
 @Component({
@@ -61,6 +63,7 @@ export class AddPositionComponent
   private _saveFailedCount: number;
   private _toBeSavedIndex: number;
   private _allowedUnits: Option[];
+  public allowedValues = new Array<Option[]>();
 
 
   @ViewChild(SelectComponent)
@@ -70,7 +73,8 @@ export class AddPositionComponent
   constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
      private _commodityPartService: CommodityPartService, private _commodityTableService: CommodityTableService,
      private _materialService: MaterialService, private _selectorService: NodeSelectorService,
-     private _positionService: PositionService, private _attributeService: AttributeService)
+     private _positionService: PositionService, private _attributeService: AttributeService,
+     private _allowedValueService: AllowedValueService)
   {
     this._allowedUnits = new Array<Option>();
     this._allowedUnits.push(new Option("U", "U"));
@@ -105,11 +109,29 @@ export class AddPositionComponent
       }
     );
     this._attributeService.attributes.subscribe(
-      attributes => {this.attributes = attributes;
+      attributes => {
+        this.attributes = attributes;
+        for (let attribute of attributes)
+        {
+          this.allowedValues[attribute.spmatId] = new Array<Option>();
+          this._allowedValueService.getAll(attribute.spmatId)
+          .subscribe(v => 
+          {
+            console.log("add-position.component -- ngAfterViewInit -- v.length: " + v.length);//TODO: remove
+            if (true && v && v.length > 0)
+            {
+              let index = v[0].attributeId;
+              this.allowedValues[index] = v.map(v1 =>  new Option(v1.value, v1.value));
+            }
+
+          } );
+        }
       console.log("add-position.component -- ngAfterViewInit -- attributes.length: " + attributes.length); //TODO: remove
     }
     );
-    this._attributeService.getAll(1);
+    this._attributeService.getAll(this.uiStatusService.projectDisciplineId);
+
+    this._allowedValueService.getAll
   }
   ngOnInit()
   {
@@ -655,7 +677,7 @@ export class AddPositionComponent
 
   checkAllPositionSaved(): void
   {
-    if (this._savedCount === this.addedPositions.length)
+    if (!(this.addedPositions) || this._savedCount === this.addedPositions.length)
     {
       this._selectorService.refreshNode();
       this.modalComponent.dismiss();
