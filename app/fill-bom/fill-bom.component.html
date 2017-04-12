@@ -37,10 +37,6 @@
         </div>
         <label class="form-control">{{selectedNodeType}}</label>
       </div>
-      <p *ngIf(nodePositionVisibility)>
-        <input type="radio" id="child" [(ngModel)]="childSibling" name="addRelationship" value="child" #addChild /><label for="child">&nbsp;Child</label><br/>
-        <input type="radio" id="sibling" [(ngModel)]="childSibling" name="addRelationship" checked='checked' #addSibling value="sibling" /><label for="sibling">&nbsp;Same level</label>
-      </p>
       <p *ngIf="confirmStoreNode">
         <label class="form-control">{{warningMessage}}</label>
         <br/>

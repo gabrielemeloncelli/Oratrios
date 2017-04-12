@@ -25,9 +25,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   nodeNameBg : string = "InitialValue";
   nodeTypeBg : Array<any> = [];
   confirmButtonText : string = "Add";
-  nodePositionVisibility : boolean = false;
   nodeType : string = "";
-  childSibling : string = 'child';
   actionType : string = '';
   eventNodeView : BubbleNodeMessageInterface = null;
   eventNode : TreeNode = null;
@@ -75,7 +73,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.fatherNodeId = node.idFather;
     this.currentNodeId = node.id;
     this.confirmButtonText = 'Add';
-    this.nodePositionVisibility = false;
     this.disabledV = '0';
 
 
@@ -89,7 +86,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.nodeNameBg = '';
     this.nodeTypeBg = [];
     this.selectedNodeType = '';
-    this.nodePositionVisibility = true;
     this.modalComponent.open();
 
   }
@@ -191,14 +187,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
         case 'add':
           newNode.id = 0;
           newNode.url = 'api/Nodes/' + newNode.id;
-          if (this.childSibling === 'child')
-          {
-            newNode.idFather = this.eventNode.id;
-          }
-          else
-          {
-            newNode.idFather = this.eventParentNodeView.root.id;
-          }
+          newNode.idFather = this.eventNode.id;
           action.name = 'STORE_NODE';
           action.url = 'api/Nodes';
           break;
@@ -251,14 +240,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
       case 'add':
         newNode.id = 0;
         newNode.url = 'api/Nodes/' + newNode.id;
-        if (this.childSibling === 'child')
-        {
-          newNode.idFather = this.eventNode.id;
-        }
-        else
-        {
-          newNode.idFather = this.eventParentNodeView.root.id;
-        }
+        newNode.idFather = this.eventNode.id;
         action.name = 'STORE_NODE';
         action.url = 'api/Nodes';
         break;
@@ -308,14 +290,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     switch(this.actionType)
     {
       case 'add':
-        if (this.childSibling === 'child')
-        {
-          this.eventNodeView.refreshCurrentNode(true);
-        }
-        else
-        {
-          this.eventParentNodeView.refreshCurrentNode(true);
-        }
+        this.eventNodeView.refreshCurrentNode(true);
         break;
       case 'delete':
         this.eventParentNodeView.refreshCurrentNode(true);
