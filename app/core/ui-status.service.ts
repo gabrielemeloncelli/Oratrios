@@ -27,6 +27,8 @@ export class UiStatusService
   public projectCode = "";
   public projectDisciplines: ProjectDiscipline[]
   public nodeTypes: NodeType[];
+  public GROUP_CODE = "C_GROUP";
+  public PART_CODE = "C_PART";
 
   constructor(private nodeTypeService: NodeTypeService) { }
 

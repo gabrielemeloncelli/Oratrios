@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { Router }                               from '@angular/router';
 import { Observable }                           from 'rxjs/Observable';
+import { Option }                               from 'angular2-select/dist/option';
+import { SelectComponent }                      from 'angular2-select/dist/select.component';
 
 import { BubbleNodeMessageInterface } from '../lazy-loaded-tree-view/bubble-node-message.interface';
 import { TreeNode }                   from '../lazy-loaded-tree-view/tree-node';
@@ -43,6 +45,11 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   positionIsTag: boolean = false;
   confirmStoreNode: boolean = false;
   warningMessage: string = '';
+  nodeTypeOptions: Option[];
+  @ViewChild('nodeTypeSelector')
+  nodeSelectorComponent: SelectComponent;
+  nodeTypeChangeDisabled: boolean;
+  nodeSelectorPlaceholder: string;
 
   constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService, sessionService: SessionService,
      private _uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
@@ -67,14 +74,24 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.nodeNameBg = node.name;
     this.nodeTypeBg = [{"id": node.type, "name": node.type}];
     this.selectedNodeType = node.type;
-    console.log('nodeTypeBg: ' + this.nodeTypeBg);//TODO: remove
-    console.log('nodeTypeBg[0]: ' + this.nodeTypeBg[0]);//TODO: remove
-    console.log('nodeTypeBg[0].id: ' + this.nodeTypeBg[0].id);//TODO: remove
+    console.log('fill-bom.component -- handleNode -- nodeTypeBg: ' + this.nodeTypeBg);//TODO: remove
+    console.log('fill-bom.component -- handleNode -- nodeTypeBg[0]: ' + this.nodeTypeBg[0]);//TODO: remove
+    console.log('fill-bom.component -- handleNode -- nodeTypeBg[0].id: ' + this.nodeTypeBg[0].id);//TODO: remove
     this.fatherNodeId = node.idFather;
     this.currentNodeId = node.id;
     this.confirmButtonText = 'Add';
-    this.disabledV = '0';
-
+    this.nodeNameDisabled = false;
+    this.nodeTypeChangeDisabled = false;
+    console.log('fill-bom.component -- handleNode -- this.nodeSelectorComponent: ' + this.nodeSelectorComponent);//TODO: remove
+    console.log('fill-bom.component -- handleNode -- this.nodeSelectorComponent.value: ' + this.nodeSelectorComponent.value);//TODO: remove
+    
+    if (this.nodeSelectorComponent)
+    {
+      if (this.nodeSelectorComponent.value)
+      {
+        this.nodeSelectorComponent.clear();
+      }
+    }
 
   }
 
@@ -104,7 +121,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.handleNode(node);
     this.confirmButtonText = 'Delete';
     this.modalComponent.open();
-    this.disabledV = '1';
+    this.nodeNameDisabled = true;
+    this.nodeTypeChangeDisabled = true;
   }
 
   toggleLockNode(node: TreeNode) : void
@@ -114,6 +132,19 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.handleNode(node);
     this.nodeLocked = !node.locked;
     this.storeNode();
+  }
+
+  createNodeTypeOptions(): Option[]
+  {
+    let result = new Array<Option>();
+    for(let loopNodeType of this.nodeTypes)
+    {
+      if (loopNodeType.code != this._uiStatusService.PART_CODE)
+      {
+        result.push(new Option(loopNodeType.code, loopNodeType.code + " - " + loopNodeType.description));
+      }
+    }
+    return result;
   }
 
 
@@ -152,9 +183,9 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
          this.positionIsTag = false;
        }
          }
-        );
-
-
+      );
+      this.nodeTypeOptions = this.createNodeTypeOptions();
+      this.nodeSelectorPlaceholder = "Select / Change node type";
    }
 
    tryStoreNode(): void
@@ -313,30 +344,16 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.router.navigate(['/export']);
   }
 
-  /* *****************************************
-  Test dropdown selector
-  ******************************************* */
-
 
   private value:any = {};
-  private _nodeTypeDisabledV:string = '0';
-  private nodeTypeDisabled:boolean = false;
-
-  private get disabledV():string {
-    return this._nodeTypeDisabledV;
-  }
-
-  private set disabledV(value:string) {
-
-    this._nodeTypeDisabledV = value;
-    this.nodeTypeDisabled = this._nodeTypeDisabledV === '1';
-    console.log("app.component - disabledV - nodeTypeDisabled: " + this.nodeTypeDisabled); //TODO: remove
-  }
+  private nodeNameDisabled:boolean = false;
 
 
-  public nodeTypeSelected2(value: NodeType):void {
+
+
+  public nodeTypeSelected(value: Option):void {
     console.log('Selected value is: ', value);
-    this.selectedNodeType = value.code;
+    this.selectedNodeType = value.value;
   }
 
   public removed(value:any):void {
@@ -350,7 +367,5 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   public refreshValue(value:any):void {
     this.value = value;
   }
-  /* *****************************************
-  End Test dropdown selector
-  ******************************************* */
+
 }

@@ -21,11 +21,21 @@
       <p>
         <label for="nodeName">Node name&nbsp;</label>
         <br/>
-        <input *ngIf="!nodeTypeDisabled" class="form-control" name="nodeName" id="nodeName" [(ngModel)]="nodeNameBg" #nodeName />
-        <span *ngIf="nodeTypeDisabled" class="form-control" name="nodeName" id="nodeName">{{nodeNameBg}}</span>
+        <input *ngIf="!nodeNameDisabled" class="form-control" name="nodeName" id="nodeName" [(ngModel)]="nodeNameBg" #nodeName />
+        <span *ngIf="nodeNameDisabled" class="form-control" name="nodeName" id="nodeName">{{nodeNameBg}}</span>
       </p>
       <div>
-        <div class="btn-group" dropdown>
+        <label for="nodeType">Node type&nbsp;</label>
+        <ng-select
+          *ngIf="!nodeTypeChangeDisabled"
+          name="nodeTye"
+          #nodeTypeSelector [allowClear]="false"
+          [options]="nodeTypeOptions"
+          (selected)="nodeTypeSelected($event)"
+          [placeholder]="nodeSelectorPlaceholder"
+          class="ng-select">
+        </ng-select>
+        <div *ngIf="nodeTypeVisible" class="btn-group" dropdown>
           <button id="split-button" type="button" class="btn btn-primary">Node Type</button>
           <button type="button" class="btn btn-primary dropdown-toggle-split" dropdownToggle>
             <span class="caret"></span>
