@@ -12,9 +12,12 @@ import { SessionService }             from '../core/session.service';
 import { SessionUser }                from '../core/session.service';
 import { UiStatusService }            from '../core/ui-status.service';
 import { CommodityGroupService }      from './commodity-group.service';
+import { CommodityPartService }       from './commodity-part.service';
 import { ModalComponent }             from '../ng2-bs3-modal/components/modal';
 import { NodeDTO }                    from '../lazy-loaded-tree-view/nodeDTO';
 import { NodeType }                   from '../core/node-type';
+import { CommodityGroup }             from './commodity-group';
+import { CommodityPart }              from './commodity-part';
 
 @Component({
   templateUrl: 'app/fill-bom/fill-bom.component.html',
@@ -22,12 +25,7 @@ import { NodeType }                   from '../core/node-type';
 })
 export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   outMessage = this;
-  fatherNodeId : number = 0;
-  currentNodeId : number = 0;
-  nodeNameBg : string = "InitialValue";
-  nodeTypeBg : Array<any> = [];
   confirmButtonText : string = "Add";
-  nodeType : string = "";
   actionType : string = '';
   eventNodeView : BubbleNodeMessageInterface = null;
   eventNode : TreeNode = null;
@@ -37,8 +35,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   nodeTypes: NodeType[];
   coreService: any;
   coreEstService : CoreEstService;
-  nodeLocked : boolean = false;
-  selectedNodeType : string = null;
   sessionUser: SessionUser = null;
   sessionService: SessionService = null;
   positionAdd: boolean = false;
@@ -50,10 +46,15 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   nodeSelectorComponent: SelectComponent;
   nodeTypeChangeDisabled: boolean;
   nodeSelectorPlaceholder: string;
+  nameIsPullDown: boolean;
+  nodeNameOptions: Option[];
+  commodityGroups: CommodityGroup[] = new Array<CommodityGroup>();
+  commodityParts: CommodityPart[] = new Array<CommodityPart>();
+  changedNode = new TreeNode(0,"","","",0,false,"",null, null);
 
   constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService, sessionService: SessionService,
-     private _uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
-     private router: Router)
+     private uiStatusService: UiStatusService, private commodityGroupService: CommodityGroupService,
+     private router: Router, private commodityPartService: CommodityPartService)
   {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
@@ -66,28 +67,18 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
 
 
-  handleNode(node: TreeNode) : void
+  handleNode(): void
   {
     this.confirmStoreNode = false;
     this.warningMessage = '';
-    this.nodeLocked = node.locked;
-    this.nodeNameBg = node.name;
-    this.nodeTypeBg = [{"id": node.type, "name": node.type}];
-    this.selectedNodeType = node.type;
-    console.log('fill-bom.component -- handleNode -- nodeTypeBg: ' + this.nodeTypeBg);//TODO: remove
-    console.log('fill-bom.component -- handleNode -- nodeTypeBg[0]: ' + this.nodeTypeBg[0]);//TODO: remove
-    console.log('fill-bom.component -- handleNode -- nodeTypeBg[0].id: ' + this.nodeTypeBg[0].id);//TODO: remove
-    this.fatherNodeId = node.idFather;
-    this.currentNodeId = node.id;
     this.confirmButtonText = 'Add';
     this.nodeNameDisabled = false;
     this.nodeTypeChangeDisabled = false;
-    console.log('fill-bom.component -- handleNode -- this.nodeSelectorComponent: ' + this.nodeSelectorComponent);//TODO: remove
-    console.log('fill-bom.component -- handleNode -- this.nodeSelectorComponent.value: ' + this.nodeSelectorComponent.value);//TODO: remove
-    
-    if (this.nodeSelectorComponent)
+    this.nameIsPullDown = false;
+   
+    if (!!this.nodeSelectorComponent)
     {
-      if (this.nodeSelectorComponent.value)
+      if (!!this.nodeSelectorComponent.value)
       {
         this.nodeSelectorComponent.clear();
       }
@@ -96,41 +87,53 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   }
 
 
-  addChildNode(node: TreeNode): void
+  addChildNode(): void
   {
     this.actionType = 'add';
-    this.handleNode(node);
-    this.nodeNameBg = '';
-    this.nodeTypeBg = [];
-    this.selectedNodeType = '';
+    this.changedNode = new TreeNode(0, "", "", "", this.eventNode.id, false, "", null, null)
+    this.handleNode();
+    if (this.eventNode && !!this.eventNode.commodityGroup && !this.eventNode.commodityPart)
+    {
+      this.changedNode.commodityGroup = this.eventNode.commodityGroup;
+      this.changedNode.type = this.uiStatusService.PART_CODE;
+      this.nodeTypeChangeDisabled = true;
+      this.nameIsPullDown = true;
+      this.nodeNameOptions = new Array<Option>();
+      if (this.eventNode && this.eventNode.commodityGroup)
+      {
+        this.commodityPartService.getAll(this.eventNode.commodityGroup.id);
+      }
+    }
     this.modalComponent.open();
 
   }
 
-  editNode(node: TreeNode) : void
+  editNode() : void
   {
     this.actionType = 'edit';
-    this.handleNode(node);
+    this.changedNode = this.eventNode;
+    this.handleNode();
     this.confirmButtonText = 'Edit';
     this.modalComponent.open();
   }
 
-  deleteNode(node: TreeNode) : void
+  deleteNode() : void
   {
     this.actionType = 'delete';
-    this.handleNode(node);
+    this.changedNode = this.eventNode;
+    this.handleNode();
     this.confirmButtonText = 'Delete';
     this.modalComponent.open();
     this.nodeNameDisabled = true;
     this.nodeTypeChangeDisabled = true;
   }
 
-  toggleLockNode(node: TreeNode) : void
+  toggleLockNode() : void
   {
-    console.log('toggleLockNode');//TODO: remove
     this.actionType = 'togglelock';
-    this.handleNode(node);
-    this.nodeLocked = !node.locked;
+    this.changedNode = this.eventNode;
+    this.handleNode();
+    this.changedNode.locked = !this.eventNode.locked;
     this.storeNode();
   }
 
@@ -139,12 +142,18 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     let result = new Array<Option>();
     for(let loopNodeType of this.nodeTypes)
     {
-      if (loopNodeType.code != this._uiStatusService.PART_CODE)
+      if (loopNodeType.code != this.uiStatusService.PART_CODE)
       {
         result.push(new Option(loopNodeType.code, loopNodeType.code + " - " + loopNodeType.description));
       }
     }
     return result;
+  }
+
+  createPartNameOptions(parts: CommodityPart[]): Option[]
+  {
+    this.commodityParts = parts;
+    return parts.map(p => new Option(p.id.toString(), p.code + " - " + p.description));
   }
 
 
@@ -153,9 +162,9 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
    ngOnInit(){
 
 
-     this._uiStatusService.disciplineCode = "ELEC-MI"; //TODO: replace
-     this._commodityGroupService.getAll(this._uiStatusService.disciplineId);
-     this.nodeTypes = this._uiStatusService.nodeTypes;
+     this.uiStatusService.disciplineCode = "ELEC-MI"; //TODO: replace
+     this.commodityGroupService.getAll(this.uiStatusService.disciplineId);
+     this.nodeTypes = this.uiStatusService.nodeTypes;
      console.log('app.component - OnInit - this.sessionService.userLogin: ' + this.sessionService.userLogin);//TODO: remove
 
 
@@ -168,12 +177,12 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
        console.log("app.component - OnInit - subscribe callback - this.sessionUser.isAdministrator: " + this.sessionUser.isAdministrator); //TODO: remove
      });
 
-     this._uiStatusService.insertPosition.subscribe(
+     this.uiStatusService.insertPosition.subscribe(
        details => { this.positionAdd = details.displayInsertPosition;
         this.positionIsTag = details.positionFromTag;
           }
        );
-      this._uiStatusService.editPositionObservable.subscribe(
+      this.uiStatusService.editPositionObservable.subscribe(
         position => { this.positionAdd = true;
           if (position) {
          this.positionIsTag = position.isTwm;
@@ -186,6 +195,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
       );
       this.nodeTypeOptions = this.createNodeTypeOptions();
       this.nodeSelectorPlaceholder = "Select / Change node type";
+      this.commodityPartService.parts.subscribe(p => this.nodeNameOptions = this.createPartNameOptions(p));
+      
    }
 
    tryStoreNode(): void
@@ -200,72 +211,61 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
    baseStoreNode(forceDifferentType: boolean): void
    {
-      var newNode: NodeDTO = new NodeDTO();
-      var action: any;
-      newNode.id = this.currentNodeId;
-      newNode.name = this.nodeNameBg;
-      newNode.nodeType = this.selectedNodeType;
-      newNode.locked = this.nodeLocked;
-      newNode.lockedBy = this.sessionUser.login;
-      console.log("fill-bom.component - storeNode -+- lockedBy: " +  newNode.lockedBy);
-      console.log("fill-bom.component - storeNode - nodeType: " +  this.selectedNodeType); //TODO: remove
-      newNode.idFather = this.fatherNodeId;
-      newNode.url = 'api/Nodes/' + newNode.id;
-      newNode.forceDifferentType = forceDifferentType;
-      action = { name: null, url: 'api/Nodes/' + this.currentNodeId, node: newNode};
-      switch (this.actionType)
-      {
-        case 'add':
-          newNode.id = 0;
-          newNode.url = 'api/Nodes/' + newNode.id;
-          newNode.idFather = this.eventNode.id;
-          action.name = 'STORE_NODE';
-          action.url = 'api/Nodes';
-          break;
-        case 'edit':
-        case 'togglelock':
-          action.name = 'EDIT_NODE';
-          break;
-        case 'delete':
-          action.name = 'DELETE_NODE';
-          break;
-      }
-      if (action.name)
-      {
-        console.log('fill-bom.component - storeNode - afterActionSwitch - action.url' + action.url);//TODO remove
-        this.treeNodeService.persistNode(action)
-        .subscribe(() => 
+     var newNode = this.createNodeDTO();
+     newNode.forceDifferentType = forceDifferentType;
+     var action = this.createNodeAction(newNode);
+     if (action.name)
+     {
+       this.treeNodeService.persistNode(action)
+       .subscribe(
+        () =>
+        {
+          this.refreshTree();
+          this.modalComponent.dismiss();
+        },
+        error =>
           {
-            this.refreshTree();
-            this.modalComponent.dismiss();
-          }
-          , error => 
+            if (error.status && error.status === 409)
             {
-              console.log('fill-bom.component - storeNode - error.status: ' + error.status);//TODO remove
-              if (error.status && error.status === 409)
-              {
-                console.log('fill-bom.component - storeNode - error.status: ' + error.status);//TODO remove
-                this.warningMessage = error.message;
-                this.confirmStoreNode = true;
-              }
-            });
+              this.warningMessage = error.message;
+              this.confirmStoreNode = true;
+            }
+          });
       }   
    }
 
   storeNode(): void
   {
+    var newNode = this.createNodeDTO();
+    var action = this.createNodeAction(newNode);
+    if (action.name)
+    {
+      this.treeNodeService.persistNode(action)
+      .subscribe(() => {this.refreshTree();});
+    }
+  }
+
+  private createNodeDTO(): NodeDTO
+  {
+
     var newNode: NodeDTO = new NodeDTO();
-    var action: any;
-    newNode.id = this.currentNodeId;
-    newNode.name = this.nodeNameBg;
-    newNode.nodeType = this.selectedNodeType;
-    newNode.locked = this.nodeLocked;
+    newNode.id = 0;
+    newNode.nodeType = this.changedNode.type;
+    newNode.name = this.changedNode.name;
+    newNode.locked = this.changedNode.locked;
     newNode.lockedBy = this.sessionUser.login;
-    console.log("fill-bom.component - storeNode -+- lockedBy: " +  newNode.lockedBy);
-    console.log("fill-bom.component - storeNode - nodeType: " +  this.selectedNodeType); //TODO: remove
-    newNode.idFather = this.fatherNodeId;
+    newNode.idFather = this.changedNode.idFather;
     newNode.url = 'api/Nodes/' + newNode.id;
-    action = { name: null, url: 'api/Nodes/' + this.currentNodeId, node: newNode};
+    newNode.commodityGroup = this.changedNode.commodityGroup;
+    newNode.commodityPart = this.changedNode.commodityPart;
+    
+    return newNode;
+  }
+
+  private createNodeAction(newNode: NodeDTO): any
+  {
+    var action: any;
+    action = { name: null, url: 'api/Nodes/' + this.eventNode.id.toString(), node: newNode};
     switch (this.actionType)
     {
       case 'add':
@@ -283,12 +283,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
         action.name = 'DELETE_NODE';
         break;
     }
-    if (action.name)
-    {
-      console.log('fill-bom.component - storeNode - afterActionSwitch - action.url' + action.url);//TODO remove
-      this.treeNodeService.persistNode(action)
-      .subscribe(() => {this.refreshTree();});
-    }
+    return action;
   }
 
   bubbleNodeMessage(action: string, callingView: BubbleNodeMessageInterface, parentView: BubbleNodeMessageInterface)
@@ -299,16 +294,16 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     switch (action)
     {
       case 'add':
-        this.addChildNode(callingView.root);
+        this.addChildNode();
         break;
       case 'delete':
-        this.deleteNode(callingView.root);
+        this.deleteNode();
         break;
       case 'edit':
-        this.editNode(callingView.root);
+        this.editNode();
         break;
       case 'togglelock':
-        this.toggleLockNode(callingView.root);
+        this.toggleLockNode();
         break;
     }
 
@@ -352,8 +347,11 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
 
   public nodeTypeSelected(value: Option):void {
-    console.log('Selected value is: ', value);
-    this.selectedNodeType = value.value;
+    this.changedNode.type = value.value;
+  }
+
+  public nodeNameSelected(value: Option):void {
+    this.changedNode.name = this.selectGroupOrPart(+value.value);
   }
 
   public removed(value:any):void {
@@ -366,6 +364,26 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   public refreshValue(value:any):void {
     this.value = value;
+  }
+
+  private selectGroupOrPart(entityId: number): string
+  {
+    console.log("fill-bom.component -- selectGroupOrPart -- entityId: " + entityId.toString());//TODO:remove
+    var entityCode= "";
+    var useGroup = (!!this.eventNode.commodityGroup && !this.eventNode.commodityPart && this.actionType === "add")
+     || (!!this.eventNode.commodityGroup && !!this.eventNode.commodityPart && this.actionType === "edit");
+    console.log("fill-bom.component -- selectGroupOrPart -- useGroup: " + useGroup.toString());//TODO:remove
+    if (useGroup)
+    {
+      var filtered = this.commodityParts.filter(g => g.id === entityId);
+      if (filtered.length > 0)
+      {
+        entityCode = filtered[0].code;
+        this.changedNode.commodityPart = filtered[0];
+      }
+    }
+
+    return entityCode;
   }
 
 }

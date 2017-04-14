@@ -1,3 +1,6 @@
+import { CommodityGroup } from '../fill-bom/commodity-group';
+import { CommodityPart }  from '../fill-bom/commodity-part';
+
 export class TreeNode{
   expanded : boolean = false;
   cssClass : string = null;
@@ -5,7 +8,16 @@ export class TreeNode{
 
 
 
-  constructor(public id: number, public url: string, public name: string, public type: string, public idFather: number, public locked: boolean, public lockedBy: string){
+  constructor(public id: number,
+   public url: string,
+   public name: string,
+   public type: string,
+   public idFather: number,
+   public locked: boolean,
+   public lockedBy: string,
+   public commodityGroup: CommodityGroup,
+   public commodityPart: CommodityPart)
+  {
       this.cssClass = this.getCssClass();
   }
 

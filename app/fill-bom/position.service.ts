@@ -3,7 +3,6 @@ import { Observable }   from 'rxjs/Observable';
 import { Subject }      from 'rxjs/Subject';
 
 import { BomPosition }          from './bom-position';
-import { TreeNode }             from '../lazy-loaded-tree-view/tree-node';
 import { PositionStoreService } from './position-store.service';
 import { PositionErrorList }    from './position-error-list';
 

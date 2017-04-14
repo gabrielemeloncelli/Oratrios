@@ -5,7 +5,7 @@ import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
 
 @Injectable()
 export class NodeSelectorService{
-  public lastSelectedNode: TreeNode = new TreeNode(0, "", "", "", 0, false, "");
+  public lastSelectedNode: TreeNode = new TreeNode(0, "", "", "", 0, false, "", null, null);
 
   private selectedNodeSource = new Subject<TreeNode>();
 
