@@ -161,7 +161,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
 
   selectRoot()
   {
-    if (this.root.id > 0)
+    if (this.root.id > 0 && !(!this.root.commodityGroup && !!this.root.commodityPart))
     {
       this._selectorService.selectNode(this.root);
     }

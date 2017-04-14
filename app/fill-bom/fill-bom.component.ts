@@ -156,6 +156,21 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     return parts.map(p => new Option(p.id.toString(), p.code + " - " + p.description));
   }
 
+  createGroupNameOptions(): Option[]
+  {
+    // TODO: remove
+    // ****************************
+    //
+    console.log("fill-bom.component -- createGroupNameOptions -- this.commodityGroups:" + this.commodityGroups);
+    if (!!this.commodityGroups)
+    {
+      console.log("fill-bom.component -- createGroupNameOptions -- this.commodityGroups.length:" + this.commodityGroups.length);
+    }
+    // *************************** 
+    return this.commodityGroups.map(g => new Option(g.id.toString(), g.code + " - " + g.description));
+  }
+
+
 
 
 
@@ -195,6 +210,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
       );
       this.nodeTypeOptions = this.createNodeTypeOptions();
       this.nodeSelectorPlaceholder = "Select / Change node type";
+      this.commodityGroupService.groups.subscribe(g => this.commodityGroups = g);
       this.commodityPartService.parts.subscribe(p => this.nodeNameOptions = this.createPartNameOptions(p));
       
    }
@@ -348,6 +364,17 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   public nodeTypeSelected(value: Option):void {
     this.changedNode.type = value.value;
+    this.nameIsPullDown = false;
+    if (this.changedNode.type === this.uiStatusService.GROUP_CODE)
+    {
+      this.nameIsPullDown = true;
+      this.nodeNameOptions = this.createGroupNameOptions();
+    }
+    else
+    {
+      this.changedNode.commodityGroup = null;
+      this.changedNode.commodityPart = null;
+    }
   }
 
   public nodeNameSelected(value: Option):void {
@@ -375,11 +402,20 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     console.log("fill-bom.component -- selectGroupOrPart -- useGroup: " + useGroup.toString());//TODO:remove
     if (useGroup)
     {
-      var filtered = this.commodityParts.filter(g => g.id === entityId);
-      if (filtered.length > 0)
+      var filteredPart = this.commodityParts.filter(p => p.id === entityId);
+      if (filteredPart.length > 0)
       {
-        entityCode = filtered[0].code;
-        this.changedNode.commodityPart = filtered[0];
+        entityCode = filteredPart[0].code;
+        this.changedNode.commodityPart = filteredPart[0];
+      }
+    }
+    else
+    {
+      var filteredGroup = this.commodityGroups.filter(g => g.id === entityId);
+      if (filteredGroup.length > 0)
+      {
+        entityCode = filteredGroup[0].code;
+        this.changedNode.commodityGroup = filteredGroup[0];
       }
     }
 

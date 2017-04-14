@@ -2,7 +2,8 @@
   <a class="btn btn-success btn-xs" (click)="expand()">
     <span class="{{root.cssClass}}"></span>
   </a>
-  <a (click)="selectRoot()">{{ root.name }}</a>
+  <a *ngIf="root.id > 0 && (!root.commodityGroup || !!root.commodityPart)" (click)="selectRoot()">{{ root.name }}</a>
+  <span *ngIf="root.id == 0 || (!!root.commodityGroup && !root.commodityPart)">{{ root.name }}</span>
   <div class="pull-right">
     <div *ngIf="sessionUser && sessionUser.isAdministrator" class="pull-right" style="width: 80px; padding-left: 5px">
       <div style="width: 25px; height: 25px; border: 1px black; float: left">
@@ -12,7 +13,7 @@
         <a *ngIf="root.id !== 0 && sessionUser && sessionUser.isAdministrator" class="btn btn-xs btn-warning" (click)="editNode()"><span class="glyphicon glyphicon-edit"></span></a>
       </div>
       <div style="width: 25px; height: 25px; border: 1px black; float: left">
-        <a *ngIf="sessionUser && sessionUser.isAdministrator" class="btn btn-xs btn-success" (click)="addNode()"><span class="glyphicon glyphicon-plus"></span></a>
+        <a *ngIf="sessionUser && sessionUser.isAdministrator && !root.commodityPart" class="btn btn-xs btn-success" (click)="addNode()"><span class="glyphicon glyphicon-plus"></span></a>
       </div>
     </div>
     <a *ngIf="root.id !== 0 && sessionUser && (sessionUser.isAdministrator || !root.locked || sessionUser.login === root.lockedBy)" [ngClass]="lockClasses" (click)="toggleLockNode()"><span class="glyphicon glyphicon-lock"></span></a>
