@@ -1,5 +1,7 @@
 /* tslint:disable:member-ordering no-unused-variable */
-import { NgModule }   from '@angular/core';
+import { NgModule }         from '@angular/core';
+import { ToasterModule,
+          ToasterService }  from 'angular2-toaster';
 
 import { PositionsListComponent }           from './positions-list.component';
 import { AddPositionComponent }             from './add-position.component';
@@ -27,15 +29,14 @@ import { AllowedValueService }              from './allowed-value.service';
 import { CoreModule }                       from '../core/core.module';
 import { CoreEstService }                   from './core-est.service';
 
-
-
 @NgModule({
-  imports: [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule ],
+  imports:      [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule, ToasterModule ],
   declarations: [ PositionsListComponent, AddPositionComponent, FillBomComponent ],
   exports:      [ PositionsListComponent, AddPositionComponent ],
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,
-  MaterialStoreService, MaterialService, PositionService, PositionStoreService, CommodityTableService, CommodityTableStoreService,
-  CommodityTableValueService, CommodityTableValueStoreService, AttributeStoreService, AttributeService, AllowedValueService ]
+                  MaterialStoreService, MaterialService, PositionService, PositionStoreService, CommodityTableService, CommodityTableStoreService,
+                  CommodityTableValueService, CommodityTableValueStoreService, AttributeStoreService, AttributeService, AllowedValueService,
+                  ToasterService ]
 })
 export class FillBomModule {
 
