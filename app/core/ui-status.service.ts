@@ -7,6 +7,8 @@ import { InsertPositionDetails }  from '../fill-bom/insert-position-details';
 import { ProjectDiscipline }      from './project-discipline';
 import { NodeTypeService }        from './node-type.service';
 import { NodeType }               from './node-type';
+import { CommodityGroup }         from '../fill-bom/commodity-group';
+import { CommodityPart }          from '../fill-bom/commodity-part';
 
 @Injectable()
 export class UiStatusService
@@ -15,9 +17,7 @@ export class UiStatusService
   public insertPosition: Observable<InsertPositionDetails> = this._insertPosition.asObservable();
   private _editPositionSubject: Subject<BomPosition> = new Subject<BomPosition>();
   public editPositionObservable: Observable<BomPosition> = this._editPositionSubject.asObservable();
-  public commodityGroupCode: string;
-  public commodityPartCode: string;
-  public partId: number;
+  public commodityGroup = new CommodityGroup(0, "", "");
   public tablesAndSizesVisible = false;
   public materialsVisible = false;
   public disciplineCode = "";
@@ -29,6 +29,7 @@ export class UiStatusService
   public nodeTypes: NodeType[];
   public GROUP_CODE = "C_GROUP";
   public PART_CODE = "C_PART";
+  public commodityPart = new CommodityPart(0, "", "", "");
 
   constructor(private nodeTypeService: NodeTypeService) { }
 

@@ -5,7 +5,7 @@
     </modal-header>
     <modal-body>
       <div class="form-group" style="background-color:#D3D3D3">
-      <div class="group-part-block">
+      <div *ngIf="!hideGroupAndPart" class="group-part-block">
         <label for="groupSel" id="groupLabel">Group&nbsp;</label>
         <div class="selectContainer" id="groupSel">
           <ng-select #groupSelect [allowClear]="false"
@@ -17,7 +17,7 @@
           </ng-select>
         </div>
       </div>
-      <div class="group-part-block">
+      <div *ngIf="!hideGroupAndPart" class="group-part-block">
         <label for="partSel">Part&nbsp;</label>
         <div class="selectContainer">
           <ng-select #partSelect id="partSel" name="partSel" [allowClear]="false"

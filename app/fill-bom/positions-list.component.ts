@@ -7,6 +7,8 @@ import { NodeSelectorService }  from './node-selector.service';
 import { TreeNode }             from '../lazy-loaded-tree-view/tree-node';
 import { PositionService }      from './position.service';
 import { UiStatusService }      from '../core/ui-status.service';
+import { CommodityGroup }       from './commodity-group';
+import { CommodityPart }        from './commodity-part';
 
 
 @Component({
@@ -18,7 +20,7 @@ export class PositionsListComponent
   public nodeName: string;
   public nodeLocked: boolean;
   private _node: TreeNode;
-  constructor(private _selectorService: NodeSelectorService, public positionsService: PositionService, private _uiStatusService: UiStatusService)
+  constructor(private _selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService)
   {
   }
 
@@ -32,7 +34,7 @@ export class PositionsListComponent
 
   editPosition(position: BomPosition)
   {
-    this._uiStatusService.editPosition(position);
+    this.uiStatusService.editPosition(position);
   }
 
   deletePosition(position: BomPosition)
@@ -44,18 +46,20 @@ export class PositionsListComponent
     this._node = selectedNode;
     this.nodeName = this._node.name;
     this.nodeLocked = selectedNode.locked;
+    this.uiStatusService.commodityGroup = !selectedNode.commodityGroup ? new CommodityGroup(0, "", "") : selectedNode.commodityGroup;
+    this.uiStatusService.commodityPart = !selectedNode.commodityPart ? new CommodityPart(0, "", "", this.uiStatusService.commodityGroup.code) : selectedNode.commodityPart;
     this.positionsService.selectNode(selectedNode.id);
 
 
     }
     addCatalogItem()
     {
-      this._uiStatusService.setInsertPosition(true, false);
+      this.uiStatusService.setInsertPosition(true, false);
     }
 
     addTagItem()
     {
-      this._uiStatusService.setInsertPosition(true, true);
+      this.uiStatusService.setInsertPosition(true, true);
     }
 
 }

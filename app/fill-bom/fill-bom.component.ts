@@ -59,6 +59,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
     this.sessionService = sessionService;
+    console.log("fill-bom.component -- constructor -- !!this.uiStatusService.commodityPart: " + !!this.uiStatusService.commodityPart); //TODO: remove
+    console.log("fill-bom.component -- constructor -- this.uiStatusService.commodityPart.id: " + this.uiStatusService.commodityPart.id); //TODO: remove
 
   }
 
@@ -174,10 +176,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
 
 
-   ngOnInit(){
-
-
-     this.uiStatusService.disciplineCode = "ELEC-MI"; //TODO: replace
+   ngOnInit(){    
      this.commodityGroupService.getAll(this.uiStatusService.disciplineId);
      this.nodeTypes = this.uiStatusService.nodeTypes;
      console.log('app.component - OnInit - this.sessionService.userLogin: ' + this.sessionService.userLogin);//TODO: remove

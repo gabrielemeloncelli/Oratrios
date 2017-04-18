@@ -64,23 +64,26 @@ export class AddPositionComponent
   private _toBeSavedIndex: number;
   private _allowedUnits: Option[];
   public allowedValues = new Array<Option[]>();
+  public hideGroupAndPart = false;
 
 
   @ViewChild(SelectComponent)
   private selectComponent: SelectComponent;
 
 
-  constructor(public uiStatusService: UiStatusService, private _commodityGroupService: CommodityGroupService,
-     private _commodityPartService: CommodityPartService, private _commodityTableService: CommodityTableService,
-     private _materialService: MaterialService, private _selectorService: NodeSelectorService,
-     private _positionService: PositionService, private _attributeService: AttributeService,
-     private _allowedValueService: AllowedValueService)
+  constructor(public uiStatusService: UiStatusService, private commodityGroupService: CommodityGroupService,
+     private commodityPartService: CommodityPartService, private commodityTableService: CommodityTableService,
+     private materialService: MaterialService, private selectorService: NodeSelectorService,
+     private positionService: PositionService, private attributeService: AttributeService,
+     private allowedValueService: AllowedValueService)
   {
     this._allowedUnits = new Array<Option>();
     this._allowedUnits.push(new Option("U", "U"));
     this._allowedUnits.push(new Option("M2", "M2"));
     this.resetMaterial();
     this.resetAddedPositions();
+    console.log("add-position.component -- constructor -- !!this.uiStatusService.commodityPart: " + !!this.uiStatusService.commodityPart); //TODO: remove
+    console.log("add-position.component -- constructor -- this.uiStatusService.commodityPart.id: " + this.uiStatusService.commodityPart.id); //TODO: remove
 
   }
 
@@ -93,6 +96,8 @@ export class AddPositionComponent
         {
           this._isTag = detail.positionFromTag;
           this.resetPosition();
+          this.hideGroupAndPart = !!this.uiStatusService.commodityPart.id;
+          console.log("add-position.component -- ngAfterViewInit -- insertPosition.subscribe -- this.uiStatusService.commodityPart: " + this.uiStatusService.commodityPart); //TODO: remove
           setTimeout(() => this.modalComponent.open('fs'), 200);
         }
       }
@@ -108,13 +113,13 @@ export class AddPositionComponent
         }
       }
     );
-    this._attributeService.attributes.subscribe(
+    this.attributeService.attributes.subscribe(
       attributes => {
         this.attributes = attributes;
         for (let attribute of attributes)
         {
           this.allowedValues[attribute.spmatId] = new Array<Option>();
-          this._allowedValueService.getAll(attribute.spmatId)
+          this.allowedValueService.getAll(attribute.spmatId)
           .subscribe(v => 
           {
             console.log("add-position.component -- ngAfterViewInit -- v.length: " + v.length);//TODO: remove
@@ -129,22 +134,29 @@ export class AddPositionComponent
       console.log("add-position.component -- ngAfterViewInit -- attributes.length: " + attributes.length); //TODO: remove
     }
     );
-    this._attributeService.getAll(this.uiStatusService.projectDisciplineId);
-
-    this._allowedValueService.getAll
+    this.attributeService.getAll(this.uiStatusService.projectDisciplineId);
+    if (!!this.uiStatusService.commodityGroup)
+    {
+      this._selectedMaterial.groupCode = this.uiStatusService.commodityGroup.code;
+      if (!!this.uiStatusService.commodityPart.id)
+      {
+        this.partObjectSelected(this.uiStatusService.commodityPart, false);
+      }
+    }
+    this.allowedValueService.getAll
   }
+
+
   ngOnInit()
   {
-
-
-    this._commodityGroupService.groups.subscribe(
+    this.commodityGroupService.groups.subscribe(
       (groups: CommodityGroup[]) => {
         this.groups = groups.map(g => new Option(g.id.toString(), g.code + " - " + g.description));
         this._groups = groups;
       }
     );
 
-    this._commodityPartService.parts.subscribe(
+    this.commodityPartService.parts.subscribe(
       (parts: CommodityPart[]) => {
         this.parts = parts.map(p => new Option(p.id.toString(), p.code + " - " + p.description));
         this._parts = parts;
@@ -152,7 +164,7 @@ export class AddPositionComponent
       }
     );
 
-    this._commodityTableService.tables.subscribe(
+    this.commodityTableService.tables.subscribe(
       (tables: CommodityTable[]) => {
         console.log("add-position.component -- ngOnInit -- this._selectedMaterial.partCode: " + this._selectedMaterial.partCode);//TODO:remove
         setTimeout(() => this.uiStatusService.tablesAndSizesVisible = (this._selectedMaterial.partCode != ""), 100);
@@ -161,13 +173,12 @@ export class AddPositionComponent
       }
     );
 
-    this._materialService.materials.subscribe(
+    this.materialService.materials.subscribe(
       (materials: Material[]) => {
         this.materials = materials;
         if (this._isEdit && this.materials.length > 0)
         {
           this._selectedMaterial = this.materials[0];
-          console.log("add-position.component - ngOnInit");//TODO: remove
         }
       }
     )
@@ -182,28 +193,19 @@ export class AddPositionComponent
 
   groupSelected(event: any)
   {
-    console.log("add-position.component -- groupSelected -- event.value: " + event.value);
-    console.log("add-position.component -- groupSelected -- event.label: " + event.label);
-    console.log("add-position.component -- groupSelected -- event.value === +event.value: " + (event.value === +event.value));
-    console.log("add-position.component -- groupSelected -- getting group");
     var foundGroup: CommodityGroup = this.findSelectedGroup(+event.value);
-    console.log("add-position.component -- groupSelected -- group recovered");
     this._selectedMaterial.groupCode = foundGroup.code;
-    this.uiStatusService.commodityGroupCode = foundGroup.code;
-    this._commodityPartService.getAll(event.value);//TODO:verify the returned type and property values of the event
+    this.uiStatusService.commodityGroup = foundGroup;
+    this.commodityPartService.getAll(event.value);//TODO:verify the returned type and property values of the event
   }
 
   findSelectedGroup(id: number): CommodityGroup{
     var result: CommodityGroup = null;
     var i: number;
-    console.log("add-position.component -- findSelectedGroup -- id: " + id);//TODO:remove
-    console.log("add-position.component -- findSelectedGroup -- this._groups.length: " + this._groups.length);//TODO:remove
     for(i = 0; i < this._groups.length; i += 1)
     {
-      console.log("add-position.component -- findSelectedGroup -- this._groups[i].id: " + this._groups[i].id);//TODO:remove
       if(this._groups[i].id === id)
       {
-        console.log("add-position.component -- findSelectedGroup -- group assigned id: " + this._groups[i].id);//TODO:remove
         result = this._groups[i];
       }
     }
@@ -213,23 +215,28 @@ export class AddPositionComponent
   partSelected(event: Option)
   {
     var foundPart: CommodityPart = this.findSelectedPart(+event.value);
+    this.partObjectSelected(foundPart, true);
+  }
+
+  partObjectSelected(selectedPart: CommodityPart, updateUiStatusService: boolean)
+  {
     this.tables = new Array<MappedTable>();
     this._tableFilters = new Array<TableFilter>();
     this.resetMaterial();
-    this._selectedMaterial.partId = +event.value;
-    this._selectedMaterial.partCode = foundPart.code;
-    this.uiStatusService.partId = +event.value;
-    this.uiStatusService.commodityPartCode = foundPart.code;
+    this._selectedMaterial.partId = selectedPart.id;
+    this._selectedMaterial.partCode = selectedPart.code;
+    if (updateUiStatusService)
+    {
+      this.uiStatusService.commodityPart = selectedPart;
+    }  
     
     if (this._isTag)
     {
       this._tagAndQuantityVisible = true;
-      console.log("add-position.component - partSelected - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
-
     }
     else
     {
-      this._commodityTableService.getAll(this.uiStatusService.disciplineCode, this.uiStatusService.commodityGroupCode, foundPart.code);
+      this.commodityTableService.getAll(this.uiStatusService.disciplineCode, selectedPart.groupCode, selectedPart.code);
     }
 
   }
@@ -237,14 +244,10 @@ export class AddPositionComponent
   findSelectedPart(id: number): CommodityPart{
     var result: CommodityPart = null;
     var i: number;
-    console.log("add-position.component -- findSelectedPart -- id: " + id);//TODO:remove
-    console.log("add-position.component -- findSelectedPart -- this._parts.length: " + this._parts.length);//TODO:remove
     for(i = 0; i < this._parts.length; i += 1)
     {
-      console.log("add-position.component -- findSelectedPart -- this._parts[i].id: " + this._parts[i].id);//TODO:remove
       if(this._parts[i].id === id)
       {
-        console.log("add-position.component -- findSelectedPart -- part assigned id: " + this._parts[i].id);//TODO:remove
         result = this._parts[i];
       }
     }
@@ -281,7 +284,7 @@ export class AddPositionComponent
       tableFilters.push(new TableFilter(this._tableFilters[tableIndex].tableName, this._tableFilters[tableIndex].detail));
     }
     var filter: TableAndSizeFilter = new TableAndSizeFilter(tableFilters);
-    this._materialService.getAll(this.uiStatusService.partId, filter);
+    this.materialService.getAll(this.uiStatusService.commodityPart.id, filter);
   }
 
   tableRemoved(tableName: string)
@@ -346,20 +349,28 @@ export class AddPositionComponent
     {
       this.selectComponent.clear();
     }
-    this.uiStatusService.commodityGroupCode = "";
-    this.uiStatusService.commodityPartCode = "";
-    this.uiStatusService.partId = 0;
+    if (!this.uiStatusService.commodityPart.id)
+    {
+      this.uiStatusService.commodityGroup = new CommodityGroup(0, "", "");
+      this.uiStatusService.commodityPart = new CommodityPart(0, "", "","");
+    }
     this.uiStatusService.tablesAndSizesVisible = false;
     this._tableFilters = new Array<TableFilter>();
-
-    this.resetPart();
+    if (!this.uiStatusService.commodityPart.id)
+    {
+      this.resetPart();
+    }
+    else
+    {
+      this.partObjectSelected(this.uiStatusService.commodityPart, false);
+    }
 
   }
 
   resetPart()
   {
     this.changeGroup();
-    this._commodityPartService.getAll(-1);
+    this.commodityPartService.getAll(-1);
   }
 
   changeGroup()
@@ -397,7 +408,7 @@ export class AddPositionComponent
     this._selectedMaterial.unit = positionToEdit.unit;
     this.setAttributes(positionToEdit.attributes);
     if (!positionToEdit.isTwm) {
-      setTimeout(() => this._materialService.getSingle(positionToEdit.materialId, positionToEdit.partId), 100);
+      setTimeout(() => this.materialService.getSingle(positionToEdit.materialId, positionToEdit.partId), 100);
     }
 
 
@@ -440,7 +451,7 @@ export class AddPositionComponent
   {
     console.log("add-position.component - resetPositionModel");//TODO:remove
     this.position = new BomPosition();
-    this.position.nodeId = this._selectorService.lastSelectedNode.id;
+    this.position.nodeId = this.selectorService.lastSelectedNode.id;
   }
 
   selectMaterial(materialId: number)
@@ -519,18 +530,18 @@ export class AddPositionComponent
 
     newPosition.attributes = this.getAttributeValues();
     if (this._isEdit){
-      this._positionService.editPosition(newPosition).subscribe(
+      this.positionService.editPosition(newPosition).subscribe(
         p => {
-          this._selectorService.refreshNode();
+          this.selectorService.refreshNode();
         }
       );
     }
     else
     {
-      this._positionService.addPosition(newPosition)
+      this.positionService.addPosition(newPosition)
         .subscribe(
         p => {
-          this._selectorService.refreshNode();
+          this.selectorService.refreshNode();
           this.modalComponent.dismiss();
         },
         e => 
@@ -577,7 +588,7 @@ export class AddPositionComponent
 
       addedBomPositions.push(newPosition); 
     }
-    this._positionService.addPositionList(addedBomPositions)
+    this.positionService.addPositionList(addedBomPositions)
     .subscribe(result => {
       this._savedCount = this.addedPositions.length;
       this.checkAllPositionSaved();
@@ -649,7 +660,7 @@ export class AddPositionComponent
 
     newPosition.attributes = this.fetchAttributesFromArray(this.addedPositions[index].attributes);
     
-    this._positionService.addPosition(newPosition)
+    this.positionService.addPosition(newPosition)
       .subscribe(
         p => {
           this.addedPositions[index].saved = true;
@@ -679,7 +690,7 @@ export class AddPositionComponent
   {
     if (!(this.addedPositions) || this._savedCount === this.addedPositions.length)
     {
-      this._selectorService.refreshNode();
+      this.selectorService.refreshNode();
       this.modalComponent.dismiss();
       return;
     }

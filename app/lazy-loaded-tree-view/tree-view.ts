@@ -1,10 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TreeNode} from './tree-node';
-//import {Store} from './redux/store';
-import {TreeNodeService} from './tree-node.service';
+import { Component,
+          Input,
+          OnInit }  from '@angular/core';
+
+import { TreeNode }                   from './tree-node';
+import { TreeNodeService }            from './tree-node.service';
 import { BubbleNodeMessageInterface } from './bubble-node-message.interface';
-import { SessionService, SessionUser } from '../core/session.service';
-import { NodeSelectorService } from '../fill-bom/node-selector.service';
+import { SessionService,
+          SessionUser }               from '../core/session.service';
+import { NodeSelectorService }        from '../fill-bom/node-selector.service';
 
 
 @Component({
@@ -25,15 +28,15 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
   sessionUser: SessionUser;
 
 
-  constructor(private _treeNodeService: TreeNodeService, private _sessionService: SessionService, private _selectorService: NodeSelectorService){
+  constructor(private treeNodeService: TreeNodeService, private sessionService: SessionService, private selectorService: NodeSelectorService){
     this.currentView = this;
-    console.log('tree-view - constructor - this._sessionService.user: ' + !!this._sessionService.user);//TODO: remove
+    console.log('tree-view - constructor - this._sessionService.user: ' + !!this.sessionService.user);//TODO: remove
   }
 
   refreshCurrentNode(modifiedChildNode: boolean) : void {
     console.log("tree-view - refreshCurrentNode - root exixst: " + !!this.root); //TODO: remove
     console.log("tree-view - refreshCurrentNode - root.id: " + this.root.id); //TODO: remove
-    this._treeNodeService.getSingleNode(this.root.id)
+    this.treeNodeService.getSingleNode(this.root.id)
      .subscribe((r:any) => {
        this.root.url = r.url;
        this.root.name = r.name;
@@ -55,7 +58,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
   refreshChildNodes() : void {
     if (this.root.url)
     {
-    this._treeNodeService.fetchTreeNodes(this.root.id)
+    this.treeNodeService.fetchTreeNodes(this.root.id)
       .subscribe((r:any) => {  this.items = r; });
     }
   }
@@ -70,7 +73,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
     {
       this.refreshChildNodes();
     }
-    this._sessionService.user.subscribe(
+    this.sessionService.user.subscribe(
       u => this.sessionUser = u
     );
 
@@ -150,7 +153,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
 
   persistNode(action: any)
   {
-    this._treeNodeService.persistNode(action)
+    this.treeNodeService.persistNode(action)
       .subscribe(() => {this.refreshChildNodes();})
   }
 
@@ -163,7 +166,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
   {
     if (this.root.id > 0 && !(!this.root.commodityGroup && !!this.root.commodityPart))
     {
-      this._selectorService.selectNode(this.root);
+      this.selectorService.selectNode(this.root);
     }
   }
 
