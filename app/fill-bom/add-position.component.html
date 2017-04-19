@@ -69,7 +69,7 @@
             </tbody>
           </table>
         </div>
-        <div *ngIf="_selectedMaterialVisible && !_isTag && _isEdit" style="padding: 5px">
+        <div *ngIf="_selectedMaterialVisible && !_isTag && _isEdit">
           <div class="pull-left">
             <label>Commodity Code</label>
             <input type="text" [value]="_selectedMaterial.commodityCode" class="form-control" name="commodityCode" disabled="true"  style="width: 180px"/>
@@ -90,7 +90,7 @@
             <textarea [(ngModel)]="_selectedMaterial.description2" (keydown)="description2KeyPress()" class="form-control" name="materialDescription2" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
           </div>
           <div style="width: 1px; height: 1px; clear: both"></div>
-          <div *ngIf="!_isEdit && !_isTag" style="clear: both; background-color: white">
+          <div *ngIf="!_isEdit && !_isTag" class="addingMaterials" class="addingMaterials">
             <table class="table-bordered">
               <thead>
                 <th>Commodity Code</th>

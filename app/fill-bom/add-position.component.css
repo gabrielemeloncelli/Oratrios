@@ -49,3 +49,11 @@ div.filteredMaterialsLoading
   background-position: center;
   min-height: 80px;
 }
+
+div.addingMaterials
+{
+  clear: both;
+  background-color: white;
+  padding: 5px;
+  overflow-x: auto;
+}
