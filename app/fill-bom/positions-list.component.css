@@ -1,0 +1,7 @@
+div.positionsLoading
+{
+  background-image: url('Content/Images/loader00.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 80px;
+}

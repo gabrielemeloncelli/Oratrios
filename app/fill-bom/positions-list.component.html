@@ -1,8 +1,10 @@
 <h1>{{nodeName}}</h1>
 <div *ngIf="!nodeLocked">
-<a class="btn btn-m btn-success" (click)="addCatalogItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add catalog item</a>
-<a class="btn btn-m btn-success" (click)="addTagItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add tag item</a>
+  <a class="btn btn-m btn-success" (click)="refreshList()"><span class="glyphicon glyphicon-refresh"></span></a>
+  <a class="btn btn-m btn-success" (click)="addCatalogItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add catalog item</a>
+  <a class="btn btn-m btn-success" (click)="addTagItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add tag item</a>
 </div>
+<div [ngClass]="{'positionsLoading': loadingVisible}">
 <table class="table-bordered" style="width: 90%">
   <thead>
     <tr>
@@ -29,6 +31,7 @@
     </tr>
   </tbody>
 </table>
+</div>
 <modal [animation]="animation" [keyboard]="keyboard" [backdrop]="backdrop" #confirmModal>
     <modal-header [show-close]="true">
         <h4 class="modal-title">Confirm deletion</h4>

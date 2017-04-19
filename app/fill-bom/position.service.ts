@@ -32,6 +32,7 @@ export class PositionService{
 
   selectNode(nodeId: number)
   {
+    this._positions.next(new Array<BomPosition>());
     this._storeService.selectNode(nodeId).subscribe(
       positions => this._positions.next(positions)
     );

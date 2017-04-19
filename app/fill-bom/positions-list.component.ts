@@ -19,7 +19,8 @@ import { ModalComponent }       from '../ng2-bs3-modal/components/modal';
 
 @Component({
   selector: "positions-list",
-  templateUrl: "app/fill-bom/positions-list.component.html"
+  templateUrl: "app/fill-bom/positions-list.component.html",
+  styleUrls: ["app/fill-bom/positions-list.component.css"]
 })
 export class PositionsListComponent
 {
@@ -29,6 +30,8 @@ export class PositionsListComponent
   @ViewChild(ModalComponent)
   confirmModal: ModalComponent;
   private _positionToBeDeleted: BomPosition;
+  public loadingVisible = false;
+
   constructor(private selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService,
     private toasterService: ToasterService)
   {
@@ -40,6 +43,7 @@ export class PositionsListComponent
     this.selectorService.selectedNode.subscribe(
       (selectedNode: TreeNode) => { this.updateSelection(selectedNode); }
     );
+    this.positionsService.positions.subscribe(() => this.loadingVisible = false);
   }
 
   editPosition(position: BomPosition)
@@ -60,7 +64,7 @@ export class PositionsListComponent
     this.uiStatusService.commodityGroup = !selectedNode.commodityGroup ? new CommodityGroup(0, "", "") : selectedNode.commodityGroup;
     this.uiStatusService.commodityPart = !selectedNode.commodityPart ? new CommodityPart(0, "", "", this.uiStatusService.commodityGroup.code) : selectedNode.commodityPart;
     this.positionsService.selectNode(selectedNode.id);
-
+    this.loadingVisible = true;
   }
   addCatalogItem()
   {
@@ -83,6 +87,9 @@ export class PositionsListComponent
     this.confirmModal.dismiss();
     this.positionsService.deletePosition(this._positionToBeDeleted).subscribe(p => {this.updateSelection(this._node)});
   }
-
+  refreshList()
+  {
+    this.updateSelection(this._node);
+  }
 
 }
