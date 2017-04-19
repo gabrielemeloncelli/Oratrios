@@ -36,3 +36,16 @@ table > thead > th
 {
   background-color: #ffaaaa;
 }
+
+div.filteredMaterials
+{
+  padding:5px;  
+}
+
+div.filteredMaterialsLoading
+{
+  background-image: url('Content/Images/loader00.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 80px;
+}

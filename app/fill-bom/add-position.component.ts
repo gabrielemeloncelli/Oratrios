@@ -65,6 +65,7 @@ export class AddPositionComponent
   private _allowedUnits: Option[];
   public allowedValues = new Array<Option[]>();
   public hideGroupAndPart = false;
+  public filteredMaterialsLoading = false;
 
 
   @ViewChild(SelectComponent)
@@ -82,8 +83,6 @@ export class AddPositionComponent
     this._allowedUnits.push(new Option("M2", "M2"));
     this.resetMaterial();
     this.resetAddedPositions();
-    console.log("add-position.component -- constructor -- !!this.uiStatusService.commodityPart: " + !!this.uiStatusService.commodityPart); //TODO: remove
-    console.log("add-position.component -- constructor -- this.uiStatusService.commodityPart.id: " + this.uiStatusService.commodityPart.id); //TODO: remove
 
   }
 
@@ -97,7 +96,6 @@ export class AddPositionComponent
           this._isTag = detail.positionFromTag;
           this.resetPosition();
           this.hideGroupAndPart = !!this.uiStatusService.commodityPart.id;
-          console.log("add-position.component -- ngAfterViewInit -- insertPosition.subscribe -- this.uiStatusService.commodityPart: " + this.uiStatusService.commodityPart); //TODO: remove
           setTimeout(() => this.modalComponent.open('fs'), 200);
         }
       }
@@ -122,7 +120,6 @@ export class AddPositionComponent
           this.allowedValueService.getAll(attribute.spmatId)
           .subscribe(v => 
           {
-            console.log("add-position.component -- ngAfterViewInit -- v.length: " + v.length);//TODO: remove
             if (true && v && v.length > 0)
             {
               let index = v[0].attributeId;
@@ -131,7 +128,6 @@ export class AddPositionComponent
 
           } );
         }
-      console.log("add-position.component -- ngAfterViewInit -- attributes.length: " + attributes.length); //TODO: remove
     }
     );
     this.attributeService.getAll(this.uiStatusService.projectDisciplineId);
@@ -166,7 +162,6 @@ export class AddPositionComponent
 
     this.commodityTableService.tables.subscribe(
       (tables: CommodityTable[]) => {
-        console.log("add-position.component -- ngOnInit -- this._selectedMaterial.partCode: " + this._selectedMaterial.partCode);//TODO:remove
         setTimeout(() => this.uiStatusService.tablesAndSizesVisible = (this._selectedMaterial.partCode != ""), 100);
         this.tables = tables.map(t => new MappedTable(t));
 
@@ -175,6 +170,7 @@ export class AddPositionComponent
 
     this.materialService.materials.subscribe(
       (materials: Material[]) => {
+        this.filteredMaterialsLoading = false;
         this.materials = materials;
         if (this._isEdit && this.materials.length > 0)
         {
@@ -278,17 +274,20 @@ export class AddPositionComponent
   findMaterial()
   {
     this.uiStatusService.materialsVisible = true;
+    this.filteredMaterialsLoading = true;
     var tableFilters: TableFilter[] = new Array<TableFilter>();
     for(var tableIndex = 0; tableIndex < this._tableFilters.length; tableIndex += 1)
     {
       tableFilters.push(new TableFilter(this._tableFilters[tableIndex].tableName, this._tableFilters[tableIndex].detail));
     }
     var filter: TableAndSizeFilter = new TableAndSizeFilter(tableFilters);
+    this.materials = new Array<Material>();
     this.materialService.getAll(this.uiStatusService.commodityPart.id, filter);
   }
 
   tableRemoved(tableName: string)
   {
+    console.log("add-position.component -- tableRemoved -- tableName: " + tableName);//TODO: remove
     var foundFilterPosition = this.findFilterPosition(tableName);
     if (foundFilterPosition > -1)
     {
@@ -324,7 +323,6 @@ export class AddPositionComponent
 
   onSubmit()
   {
-    console.log('Form submitted');//TODO: remove
   }
 
   resetTest()
@@ -377,8 +375,6 @@ export class AddPositionComponent
   {
     this._selectedMaterialVisible = false || this._isEdit;
     this._tagAndQuantityVisible = false || this._isEdit;
-    console.log("add-position.component - changeGroup - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
-    console.log("add-position.component - changeGroup - this._isEdit: " + this._isEdit);//TODO: remove
     this.materials = new Array<Material>();
     this.uiStatusService.materialsVisible = false;
     this.uiStatusService.tablesAndSizesVisible = false;
@@ -449,7 +445,6 @@ export class AddPositionComponent
 
   resetPositionModel()
   {
-    console.log("add-position.component - resetPositionModel");//TODO:remove
     this.position = new BomPosition();
     this.position.nodeId = this.selectorService.lastSelectedNode.id;
   }
@@ -474,7 +469,6 @@ export class AddPositionComponent
     newPosition.attributes = new Array<PositionAttributeValue>();
 
     this.addedPositions.push(new PositionInput(newPosition, new Array<string>()));
-    console.log("add-position.component - selectMaterial - this._tagAndQuantityVisible: " + this._tagAndQuantityVisible);//TODO: remove
 
   }
 
@@ -495,16 +489,12 @@ export class AddPositionComponent
     this.errorMessage = "";
     this._savedCount = 0;
     this._saveFailedCount = 0;
-    console.log("add-position.component -- savePosition -- this._isEdit: " + this._isEdit); //TODO: remove
-    console.log("add-position.component -- savePosition -- this._isTag: " + this._isTag); //TODO: remove
     if (this._isEdit || this._isTag)
     {
-      console.log("add-position.component -- savePosition -- invoking saveSinglePosition"); //TODO: remove
       this.saveSinglePosition();
     }
     else
     {
-      console.log("add-position.component -- savePosition -- invoking savePositionList"); //TODO: remove
       this.savePositionList();
     }
   }
@@ -521,7 +511,6 @@ export class AddPositionComponent
     newPosition.description = this._selectedMaterial.description;
     newPosition.description2 = this._selectedMaterial.description2;
     newPosition.unit = this._selectedMaterial.unit;
-    console.log('add-position-component - saveSinglePosition - this._selectedMaterial.unit: ' + this._selectedMaterial.unit);//TODO remove
     newPosition.isTwm = this._isTag;
     newPosition.nodeId = this.position.nodeId;
 
@@ -577,7 +566,6 @@ export class AddPositionComponent
       newPosition.description = this.addedPositions[index].bomPosition.description;
       newPosition.description2 = this.addedPositions[index].bomPosition.description2;
       newPosition.unit = this.addedPositions[index].bomPosition.unit;
-      console.log('savePositionInArray - saveSinglePosition - this.addedPositions[index].bomPosition.unit: ' + this.addedPositions[index].bomPosition.unit);//TODO remove
       newPosition.isTwm = false;
       newPosition.nodeId = this.addedPositions[index].bomPosition.nodeId;
 
@@ -595,7 +583,6 @@ export class AddPositionComponent
     },
     result => {
       this.errorMessage = result.message;
-      console.log('add-position.component -- savePositionList -- result.errorObject: ' + JSON.stringify(result.errorObject));//TODO: remove
       this.setDetailErrorMessages(this.parseErrorMessages(result.errorObject));
     }
     );
@@ -621,7 +608,6 @@ export class AddPositionComponent
     var loopMessage: PositionError;
     for(loopMessage of errorMessages)
     {
-      console.log('add-position.component -- setDetailErrorMessages -- loopMessage.index: ' + loopMessage.index);//TODO: remove
       this.addedPositions[loopMessage.index].errorMessage = loopMessage.message;
     }
   }
@@ -651,7 +637,6 @@ export class AddPositionComponent
     newPosition.description = this.addedPositions[index].bomPosition.description;
     newPosition.description2 = this.addedPositions[index].bomPosition.description2;
     newPosition.unit = this.addedPositions[index].bomPosition.unit;
-    console.log('savePositionInArray - saveSinglePosition - this.addedPositions[index].bomPosition.unit: ' + this.addedPositions[index].bomPosition.unit);//TODO remove
     newPosition.isTwm = false;
     newPosition.nodeId = this.addedPositions[index].bomPosition.nodeId;
 
@@ -740,9 +725,7 @@ export class AddPositionComponent
   getAttributeValues(): PositionAttributeValue[]{
     var result = new Array<PositionAttributeValue>();
     var i: number;
-    console.log("add-position.component -- getAttributeValues -- this.attributeValues.length: " + this.attributeValues.length);//TODO:remove
     var keys = Object.keys(this.attributeValues);
-    console.log("add-position.component -- getAttributeValues -- keys.length: " + keys.length);//TODO:remove
     for(i = 0; i < keys.length; i += 1)
     {
       console.log("add-position.component -- getAttributeValues -- keys[i]: " + keys[i]);
@@ -790,7 +773,6 @@ export class AddPositionComponent
 
   tagChanged(index: number): void
   {
-    console.log('add-position.component -- tagChanged -- index: ' + index);//TODO: remove
     if(this.addedPositions && this.addedPositions[index])
     {
       this.addedPositions[index].tagError = false;
@@ -799,18 +781,15 @@ export class AddPositionComponent
 
   positionHasError(position: PositionInput): boolean
   {
-    console.log('add-position.component -- positionHasError -- position.errorMessage: ' + position.errorMessage);//TODO: remove
     if (!(position.errorMessage))
     {
       return false;
     }
-    console.log('add-position.component -- positionHasError -- position.errorMessage && position.errorMessage.length: ' + position.errorMessage && position.errorMessage.length);//TODO: remove
     return position.errorMessage.length > 0;
   }
 
   propagateAttrValues(index: number): void
   {
-    console.log("add-position.component -- propagateAttrValues -- index: " + index); //TODO: remove
     if (index)
     {
       var i: number;

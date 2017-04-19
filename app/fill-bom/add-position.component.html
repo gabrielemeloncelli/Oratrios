@@ -38,8 +38,7 @@
             <ng-select [allowClear]="true"
                       [options]="table.detailItems"
                     (selected)="tableSelected($event, table.name)"
-                    (removed)="tableRemoved(table.name)"
-                    (typed)="typed($event)"
+                    (deselected)="tableRemoved(table.name)"
                     placeholder="No detail selected"
                     noFilter="true"
                     class="ng-select">
@@ -53,7 +52,7 @@
         </div>
       </div>
 
-        <div *ngIf="uiStatusService.tablesAndSizesVisible && uiStatusService.materialsVisible && !_isTag" style="padding:5px">
+        <div *ngIf="uiStatusService.tablesAndSizesVisible && uiStatusService.materialsVisible && !_isTag" [ngClass]="{'filteredMaterials': true, 'filteredMaterialsLoading': filteredMaterialsLoading}" style="padding:5px">
           <table class="table-bordered" style="width: 800px">
             <thead>
               <tr style="font-weight: bold">
