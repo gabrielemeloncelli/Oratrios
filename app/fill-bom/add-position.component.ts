@@ -47,7 +47,7 @@ export class AddPositionComponent
   tables = new Array<MappedTable>();
   private _tableFilters = new Array<TableFilter>();
   public position: BomPosition = new BomPosition();
-  private _selectedMaterial: Material = null;
+  public selectedMaterial: Material = null;
   private _selectedMaterialVisible = false;
   private _tagAndQuantityVisible = false;
   private _isTag = false;
@@ -133,7 +133,7 @@ export class AddPositionComponent
     this.attributeService.getAll(this.uiStatusService.projectDisciplineId);
     if (!!this.uiStatusService.commodityGroup)
     {
-      this._selectedMaterial.groupCode = this.uiStatusService.commodityGroup.code;
+      this.selectedMaterial.groupCode = this.uiStatusService.commodityGroup.code;
       if (!!this.uiStatusService.commodityPart.id)
       {
         this.partObjectSelected(this.uiStatusService.commodityPart, false);
@@ -162,7 +162,7 @@ export class AddPositionComponent
 
     this.commodityTableService.tables.subscribe(
       (tables: CommodityTable[]) => {
-        setTimeout(() => this.uiStatusService.tablesAndSizesVisible = (this._selectedMaterial.partCode != ""), 100);
+        setTimeout(() => this.uiStatusService.tablesAndSizesVisible = (this.selectedMaterial.partCode != ""), 100);
         this.tables = tables.map(t => new MappedTable(t));
 
       }
@@ -174,7 +174,7 @@ export class AddPositionComponent
         this.materials = materials;
         if (this._isEdit && this.materials.length > 0)
         {
-          this._selectedMaterial = this.materials[0];
+          this.selectedMaterial = this.materials[0];
         }
       }
     )
@@ -190,7 +190,7 @@ export class AddPositionComponent
   groupSelected(event: any)
   {
     var foundGroup: CommodityGroup = this.findSelectedGroup(+event.value);
-    this._selectedMaterial.groupCode = foundGroup.code;
+    this.selectedMaterial.groupCode = foundGroup.code;
     this.uiStatusService.commodityGroup = foundGroup;
     this.commodityPartService.getAll(event.value);//TODO:verify the returned type and property values of the event
   }
@@ -221,8 +221,8 @@ export class AddPositionComponent
     this.resetPositionModel();
     this.resetMaterial();
     this.materials = new Array<Material>();
-    this._selectedMaterial.partId = selectedPart.id;
-    this._selectedMaterial.partCode = selectedPart.code;
+    this.selectedMaterial.partId = selectedPart.id;
+    this.selectedMaterial.partCode = selectedPart.code;
     this._selectedMaterialVisible = false;
     this.uiStatusService.materialsVisible = false;
     if (updateUiStatusService)
@@ -300,14 +300,14 @@ export class AddPositionComponent
 
   unitRemoved()
   {
-    this._selectedMaterial.unit = "";
+    this.selectedMaterial.unit = "";
   }
 
   unitSelected(option: Option)
   {
     if (option)
     {
-      this._selectedMaterial.unit = option.value;
+      this.selectedMaterial.unit = option.value;
     }
   }
 
@@ -399,14 +399,14 @@ export class AddPositionComponent
     this._isEdit = true;
     this._isTag = positionToEdit.isTwm;
     this.position = positionToEdit;
-    this._selectedMaterial.id = positionToEdit.materialId;
-    this._selectedMaterial.groupCode = positionToEdit.groupCode;
-    this._selectedMaterial.partCode = positionToEdit.partCode;
-    this._selectedMaterial.partId = positionToEdit.partId;
-    this._selectedMaterial.commodityCode = positionToEdit.commodityCode;
-    this._selectedMaterial.description = positionToEdit.description;
-    this._selectedMaterial.description2 = positionToEdit.description2;
-    this._selectedMaterial.unit = positionToEdit.unit;
+    this.selectedMaterial.id = positionToEdit.materialId;
+    this.selectedMaterial.groupCode = positionToEdit.groupCode;
+    this.selectedMaterial.partCode = positionToEdit.partCode;
+    this.selectedMaterial.partId = positionToEdit.partId;
+    this.selectedMaterial.commodityCode = positionToEdit.commodityCode;
+    this.selectedMaterial.description = positionToEdit.description;
+    this.selectedMaterial.description2 = positionToEdit.description2;
+    this.selectedMaterial.unit = positionToEdit.unit;
     this.setAttributes(positionToEdit.attributes);
     if (!positionToEdit.isTwm) {
       setTimeout(() => this.materialService.getSingle(positionToEdit.materialId, positionToEdit.partId), 100);
@@ -431,18 +431,18 @@ export class AddPositionComponent
 
   resetMaterial()
   {
-    this._selectedMaterial = new Material(0, "", "", 0, "", "", "", "");
+    this.selectedMaterial = new Material(0, "", "", 0, "", "", "", "");
     this.resetMaterialDetails();
   }
 
   resetMaterialDetails()
   {
-    this._selectedMaterial.partCode = "";
-    this._selectedMaterial.commodityCode = "";
-    this._selectedMaterial.description = "";
-    this._selectedMaterial.description2 = "";
+    this.selectedMaterial.partCode = "";
+    this.selectedMaterial.commodityCode = "";
+    this.selectedMaterial.description = "";
+    this.selectedMaterial.description2 = "";
     this._description2Keypress = false;
-    this._selectedMaterial.unit = "";
+    this.selectedMaterial.unit = "";
     this.attributeValues = new Array<string>();
     this.errorMessage = "";
     this.tagError = false;
@@ -456,20 +456,20 @@ export class AddPositionComponent
 
   selectMaterial(materialId: number)
   {
-    this._selectedMaterial = this.selectMaterialFromCache(materialId);
+    this.selectedMaterial = this.selectMaterialFromCache(materialId);
     this._selectedMaterialVisible = true;
     this._tagAndQuantityVisible = true;
 
     var newPosition: BomPosition = new BomPosition();
     newPosition.id = 0;
-    newPosition.materialId = this._selectedMaterial.id;
-    newPosition.groupCode = this._selectedMaterial.groupCode;
-    newPosition.partCode = this._selectedMaterial.partCode;
-    newPosition.partId = this._selectedMaterial.partId;
-    newPosition.commodityCode = this._selectedMaterial.commodityCode;
-    newPosition.description = this._selectedMaterial.description;
-    newPosition.description2 = this._selectedMaterial.description2;
-    newPosition.unit = this._selectedMaterial.unit;
+    newPosition.materialId = this.selectedMaterial.id;
+    newPosition.groupCode = this.selectedMaterial.groupCode;
+    newPosition.partCode = this.selectedMaterial.partCode;
+    newPosition.partId = this.selectedMaterial.partId;
+    newPosition.commodityCode = this.selectedMaterial.commodityCode;
+    newPosition.description = this.selectedMaterial.description;
+    newPosition.description2 = this.selectedMaterial.description2;
+    newPosition.unit = this.selectedMaterial.unit;
     newPosition.nodeId = this.position.nodeId;
     newPosition.attributes = new Array<PositionAttributeValue>();
 
@@ -508,14 +508,14 @@ export class AddPositionComponent
   {
     var newPosition: BomPosition = new BomPosition();
     newPosition.id = 0;
-    newPosition.materialId = this._selectedMaterial.id;
-    newPosition.groupCode = this._selectedMaterial.groupCode;
-    newPosition.partCode = this._selectedMaterial.partCode;
-    newPosition.partId = this._selectedMaterial.partId;
-    newPosition.commodityCode = this._selectedMaterial.commodityCode;
-    newPosition.description = this._selectedMaterial.description;
-    newPosition.description2 = this._selectedMaterial.description2;
-    newPosition.unit = this._selectedMaterial.unit;
+    newPosition.materialId = this.selectedMaterial.id;
+    newPosition.groupCode = this.selectedMaterial.groupCode;
+    newPosition.partCode = this.selectedMaterial.partCode;
+    newPosition.partId = this.selectedMaterial.partId;
+    newPosition.commodityCode = this.selectedMaterial.commodityCode;
+    newPosition.description = this.selectedMaterial.description;
+    newPosition.description2 = this.selectedMaterial.description2;
+    newPosition.unit = this.selectedMaterial.unit;
     newPosition.isTwm = this._isTag;
     newPosition.nodeId = this.position.nodeId;
 
@@ -536,7 +536,14 @@ export class AddPositionComponent
         .subscribe(
         p => {
           this.selectorService.refreshNode();
-          this.modalComponent.dismiss();
+          if(!this._isTag)
+          {
+            this.modalComponent.dismiss();
+          }
+          else
+          {
+            this.clearTag();
+          }
         },
         e => 
         {
@@ -550,6 +557,19 @@ export class AddPositionComponent
       ;
     }
 
+  }
+
+  clearTag()
+  {
+    this.selectedMaterial.id = 0;
+    this.selectedMaterial.commodityCode = "";
+    this.selectedMaterial.description = "";
+    this.selectedMaterial.description2 = "";
+    this.selectedMaterial.unit = "";
+    this.position.tag = "";
+    this.position.quantity = null;
+    this.clearAttributeValues();
+    this._description2Keypress = false;
   }
 
   savePositionList()
@@ -741,6 +761,16 @@ export class AddPositionComponent
     return result;
   }
 
+  clearAttributeValues()
+  {
+    var i: number;
+    var keys = Object.keys(this.attributeValues);
+    for(i = 0; i < keys.length; i += 1)
+    {
+      this.attributeValues[keys[i]] = "";
+    }   
+  }
+
   getPositionAttribute(id: number): Attribute
   {
     var result: Attribute = null;
@@ -767,7 +797,7 @@ export class AddPositionComponent
   {
     if(!this._description2Keypress)
     {
-      this._selectedMaterial.description2 = this._selectedMaterial.description;
+      this.selectedMaterial.description2 = this.selectedMaterial.description;
     }
   }
 
@@ -806,6 +836,37 @@ export class AddPositionComponent
         }      
       }
     }
+  }
+
+  cancelLabel(): string
+  {
+    if (this._isTag)
+    {
+      return "Back to BoM";
+    }
+    return "Cancel";
+  }
+
+  dismissModal()
+  {
+    if (!!this.selectorService.lastSelectedNode && !!this.selectorService.lastSelectedNode.commodityGroup)
+    {
+      this.uiStatusService.commodityGroup = this.selectorService.lastSelectedNode.commodityGroup;
+    }
+    else
+    {
+      this.uiStatusService.commodityGroup = new CommodityGroup(0, "", "");
+    }
+    if (!!this.selectorService.lastSelectedNode && !!this.selectorService.lastSelectedNode.commodityPart)
+    {
+      this.uiStatusService.commodityPart = this.selectorService.lastSelectedNode.commodityPart;
+    }
+    else
+    {
+      this.uiStatusService.commodityPart = new CommodityPart(0, "", "", this.uiStatusService.commodityGroup.code);
+    }
+
+    this.modalComponent.dismiss();
   }
 
 }

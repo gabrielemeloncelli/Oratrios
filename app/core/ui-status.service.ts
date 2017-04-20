@@ -9,6 +9,7 @@ import { NodeTypeService }        from './node-type.service';
 import { NodeType }               from './node-type';
 import { CommodityGroup }         from '../fill-bom/commodity-group';
 import { CommodityPart }          from '../fill-bom/commodity-part';
+import { TreeNode }               from '../lazy-loaded-tree-view/tree-node';
 
 @Injectable()
 export class UiStatusService
@@ -31,6 +32,7 @@ export class UiStatusService
   public PART_CODE = "C_PART";
   public commodityPart = new CommodityPart(0, "", "", "");
   public nodePath = "";
+
 
   constructor(private nodeTypeService: NodeTypeService) { }
 
