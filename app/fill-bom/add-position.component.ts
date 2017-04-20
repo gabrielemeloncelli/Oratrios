@@ -238,6 +238,7 @@ export class AddPositionComponent
     {
       this.commodityTableService.getAll(this.uiStatusService.disciplineCode, selectedPart.groupCode, selectedPart.code);
     }
+    console.log("add-position.component -- partObjectSelected -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
 
   }
 
@@ -368,6 +369,7 @@ export class AddPositionComponent
     this.uiStatusService.materialsVisible = false;
     this._selectedMaterialVisible = false;
     this._tagAndQuantityVisible = false;
+    console.log("add-position.component -- partObjectSelected -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
   }
 
   resetPart()
@@ -383,6 +385,7 @@ export class AddPositionComponent
     this.materials = new Array<Material>();
     this.uiStatusService.materialsVisible = false;
     this.uiStatusService.tablesAndSizesVisible = false;
+    console.log("add-position.component -- changeGroup -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
     if (!this._isEdit)
     {
       this.resetPositionModel();
@@ -411,7 +414,7 @@ export class AddPositionComponent
     if (!positionToEdit.isTwm) {
       setTimeout(() => this.materialService.getSingle(positionToEdit.materialId, positionToEdit.partId), 100);
     }
-
+    console.log("add-position.component -- editPositionByObject -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
 
   }
 
@@ -474,6 +477,7 @@ export class AddPositionComponent
     newPosition.attributes = new Array<PositionAttributeValue>();
 
     this.addedPositions.push(new PositionInput(newPosition, new Array<string>()));
+    console.log("add-position.component -- selectMaterial -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
 
   }
 

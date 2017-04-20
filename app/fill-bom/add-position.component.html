@@ -134,7 +134,7 @@
           <div *ngIf="_isTag" class="pull-left">
             <label>UoM</label>
             <select required [(ngModel)]="selectedMaterial.unit" name="unitControl" class="form-control">
-              <option *ngFor="let unit of _allowedUnits" value="unit.value">{{unit.label}}</option>
+              <option *ngFor="let unit of _allowedUnits" [value]="unit.value">{{unit.label}}</option>
             </select>
           </div>
           <div *ngIf="_isEdit || _isTag" class="pull-left">
