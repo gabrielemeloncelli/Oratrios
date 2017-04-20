@@ -30,6 +30,7 @@ export class UiStatusService
   public GROUP_CODE = "C_GROUP";
   public PART_CODE = "C_PART";
   public commodityPart = new CommodityPart(0, "", "", "");
+  public nodePath = "";
 
   constructor(private nodeTypeService: NodeTypeService) { }
 

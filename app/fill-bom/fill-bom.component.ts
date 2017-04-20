@@ -59,8 +59,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
     this.sessionService = sessionService;
-    console.log("fill-bom.component -- constructor -- !!this.uiStatusService.commodityPart: " + !!this.uiStatusService.commodityPart); //TODO: remove
-    console.log("fill-bom.component -- constructor -- this.uiStatusService.commodityPart.id: " + this.uiStatusService.commodityPart.id); //TODO: remove
 
   }
 
@@ -160,15 +158,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   createGroupNameOptions(): Option[]
   {
-    // TODO: remove
-    // ****************************
-    //
-    console.log("fill-bom.component -- createGroupNameOptions -- this.commodityGroups:" + this.commodityGroups);
-    if (!!this.commodityGroups)
-    {
-      console.log("fill-bom.component -- createGroupNameOptions -- this.commodityGroups.length:" + this.commodityGroups.length);
-    }
-    // *************************** 
     return this.commodityGroups.map(g => new Option(g.id.toString(), g.code + " - " + g.description));
   }
 
@@ -179,16 +168,12 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
    ngOnInit(){    
      this.commodityGroupService.getAll(this.uiStatusService.disciplineId);
      this.nodeTypes = this.uiStatusService.nodeTypes;
-     console.log('app.component - OnInit - this.sessionService.userLogin: ' + this.sessionService.userLogin);//TODO: remove
 
 
      this.sessionService.user
      .subscribe((r : SessionUser) =>
      {
        this.sessionUser = r;
-       console.log("app.component - OnInit - subscribe callback - session user assigned"); //TODO: remove
-       console.log("app.component - OnInit - subscribe callback - this.sessionUser.login: " + this.sessionUser.login); //TODO: remove
-       console.log("app.component - OnInit - subscribe callback - this.sessionUser.isAdministrator: " + this.sessionUser.isAdministrator); //TODO: remove
      });
 
      this.uiStatusService.insertPosition.subscribe(
@@ -326,8 +311,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   refreshTree()
   {
-    console.log('Refreshing tree'); //TODO: remove
-    console.log('actionType: ' + this.actionType);//TODO: remove
     switch(this.actionType)
     {
       case 'add':
@@ -350,7 +333,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   public exportFile()
   {
-    console.log('add-position.component -- exportFile'); //TODO remove
     this.router.navigate(['/export']);
   }
 
@@ -394,11 +376,9 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   private selectGroupOrPart(entityId: number): string
   {
-    console.log("fill-bom.component -- selectGroupOrPart -- entityId: " + entityId.toString());//TODO:remove
     var entityCode= "";
     var useGroup = (!!this.eventNode.commodityGroup && !this.eventNode.commodityPart && this.actionType === "add")
      || (!!this.eventNode.commodityGroup && !!this.eventNode.commodityPart && this.actionType === "edit");
-    console.log("fill-bom.component -- selectGroupOrPart -- useGroup: " + useGroup.toString());//TODO:remove
     if (useGroup)
     {
       var filteredPart = this.commodityParts.filter(p => p.id === entityId);

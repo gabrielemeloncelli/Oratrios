@@ -31,6 +31,7 @@ export class PositionsListComponent
   confirmModal: ModalComponent;
   private _positionToBeDeleted: BomPosition;
   public loadingVisible = false;
+  public selectedNodePath: string;
 
   constructor(private selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService,
     private toasterService: ToasterService)
@@ -43,6 +44,12 @@ export class PositionsListComponent
     this.selectorService.selectedNode.subscribe(
       (selectedNode: TreeNode) => { this.updateSelection(selectedNode); }
     );
+    this.selectorService.selectedNodePath.subscribe(
+      (path: string) => {
+        this.selectedNodePath = path;
+        this.uiStatusService.nodePath = path;
+      }
+    )
     this.positionsService.positions.subscribe(() => this.loadingVisible = false);
   }
 
@@ -83,7 +90,6 @@ export class PositionsListComponent
 
   confirmDeletion()
   {
-    console.log("positions-list.component -- confirmDeletion");//TODO: remove
     this.confirmModal.dismiss();
     this.positionsService.deletePosition(this._positionToBeDeleted).subscribe(p => {this.updateSelection(this._node)});
   }

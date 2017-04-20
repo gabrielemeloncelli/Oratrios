@@ -224,9 +224,7 @@ export class AddPositionComponent
     this._selectedMaterial.partId = selectedPart.id;
     this._selectedMaterial.partCode = selectedPart.code;
     this._selectedMaterialVisible = false;
-    console.log("add-position.component -- partObjectSelected -- this._selectedMaterialVisible: " + this._selectedMaterialVisible); //TODO:remove
     this.uiStatusService.materialsVisible = false;
-    console.log("add-position.component -- partObjectSelected -- this.uiStatusService.materialsVisible: " + this.uiStatusService.materialsVisible); //TODO:remove
     if (updateUiStatusService)
     {
       this.uiStatusService.commodityPart = selectedPart;
@@ -293,7 +291,6 @@ export class AddPositionComponent
 
   tableRemoved(tableName: string)
   {
-    console.log("add-position.component -- tableRemoved -- tableName: " + tableName);//TODO: remove
     var foundFilterPosition = this.findFilterPosition(tableName);
     if (foundFilterPosition > -1)
     {
@@ -369,9 +366,7 @@ export class AddPositionComponent
       this.partObjectSelected(this.uiStatusService.commodityPart, false);
     }
     this.uiStatusService.materialsVisible = false;
-    console.log("add-position.component -- resetGroupAndPart -- this.uiStatusService.materialsVisible: " + this.uiStatusService.materialsVisible); //TODO:remove
     this._selectedMaterialVisible = false;
-    console.log("add-position.component -- resetGroupAndPart -- this._selectedMaterialVisible: " + this._selectedMaterialVisible); //TODO:remove
     this._tagAndQuantityVisible = false;
   }
 
@@ -384,11 +379,9 @@ export class AddPositionComponent
   changeGroup()
   {
     this._selectedMaterialVisible = false || this._isEdit;
-    console.log("add-position.component -- changeGroup -- this._selectedMaterialVisible: " + this._selectedMaterialVisible); //TODO:remove
     this._tagAndQuantityVisible = false || this._isEdit;
     this.materials = new Array<Material>();
     this.uiStatusService.materialsVisible = false;
-    console.log("add-position.component -- changeGroup -- this.uiStatusService.materialsVisible: " + this.uiStatusService.materialsVisible); //TODO:remove
     this.uiStatusService.tablesAndSizesVisible = false;
     if (!this._isEdit)
     {
@@ -465,7 +458,6 @@ export class AddPositionComponent
   {
     this._selectedMaterial = this.selectMaterialFromCache(materialId);
     this._selectedMaterialVisible = true;
-    console.log("add-position.component -- selectMaterial -- this._selectedMaterialVisible: " + this._selectedMaterialVisible); //TODO:remove
     this._tagAndQuantityVisible = true;
 
     var newPosition: BomPosition = new BomPosition();

@@ -5,3 +5,7 @@ div.positionsLoading
   background-position: center;
   min-height: 80px;
 }
+span.reducedFont
+{
+  font-size: 0.5em;
+}
