@@ -4,46 +4,54 @@
         <h4 class="modal-title">Position details</h4>
     </modal-header>
     <modal-body>
-      <div class="form-group" style="background-color:#D3D3D3">
-      <div *ngIf="!hideGroupAndPart" class="group-part-block">
-        <label for="groupSel" id="groupLabel">Group&nbsp;</label>
-        <div class="selectContainer" id="groupSel">
-          <ng-select #groupSelect [allowClear]="false"
-                    [options]="groups"
-                    [disabled]="groupsDisabled"
-                    (selected)="groupSelected($event)"
-                    placeholder="No group selected"
-                    class="ng-select">
-          </ng-select>
-        </div>
+      <div>
+        <ul  class="nav nav-pills">
+			    <li class="active">
+            <a data-toggle="tab" (click)="commoditySelection = !commoditySelection">Properties</a>
+			    </li>
+			    <li><a data-toggle="tab" (click)="commoditySelection = !commoditySelection">Commodity Code</a>
+			    </li>
+		    </ul>
       </div>
-      <div *ngIf="!hideGroupAndPart" class="group-part-block">
-        <label for="partSel">Part&nbsp;</label>
-        <div class="selectContainer">
-          <ng-select #partSelect id="partSel" name="partSel" [allowClear]="false"
-                    [options]="parts"
-                    [disabled]="groupsDisabled"
-                    (selected)="partSelected($event)"
-                    placeholder="No part selected"
-                    noFilter="true"
-                    class="ng-select">
-          </ng-select>
-        </div>
-      </div>
-      <div style="clear: both; height: 10px; width: 10px">
-      </div>
-      <div *ngIf="uiStatusService.tablesAndSizesVisible && !_isTag">
-          <div *ngFor="let table of tables">
-            <label>{{table.description}}</label>
-            <ng-select [allowClear]="true"
-                      [options]="table.detailItems"
-                    (selected)="tableSelected($event, table.name)"
-                    (deselected)="tableRemoved(table.name)"
-                    placeholder="No detail selected"
-                    noFilter="true"
-                    class="ng-select">
+      <div *ngIf="!commoditySelection" class="form-group" style="background-color:#D3D3D3">
+        <div *ngIf="!hideGroupAndPart" class="group-part-block">
+          <label for="groupSel" id="groupLabel">Group&nbsp;</label>
+          <div class="selectContainer" id="groupSel">
+            <ng-select #groupSelect [allowClear]="false"
+                      [options]="groups"
+                      [disabled]="groupsDisabled"
+                      (selected)="groupSelected($event)"
+                      placeholder="No group selected"
+                      class="ng-select">
             </ng-select>
-
+          </div>
+        </div>
+        <div *ngIf="!hideGroupAndPart" class="group-part-block">
+          <label for="partSel">Part&nbsp;</label>
+          <div class="selectContainer">
+            <ng-select #partSelect id="partSel" name="partSel" [allowClear]="false"
+                      [options]="parts"
+                      [disabled]="groupsDisabled"
+                      (selected)="partSelected($event)"
+                      placeholder="No part selected"
+                      noFilter="true"
+                      class="ng-select">
+            </ng-select>
+          </div>
+        </div>
+        <div style="clear: both; height: 10px; width: 10px">
+        </div>
+        <div *ngIf="uiStatusService.tablesAndSizesVisible && !_isTag">
+        <div *ngFor="let table of tables">
+          <label>{{table.description}}</label>
+          <ng-select [allowClear]="true"
+                     [options]="table.detailItems"
+                     (selected)="tableSelected($event, table.name)"
+                     (deselected)="tableRemoved(table.name)"
+                     placeholder="No detail selected"
+                     noFilter="true"
+                     class="ng-select">
+          </ng-select>
         </div>
         <div style="clear: both; height: 10px; width: 10px">
         </div>
@@ -51,105 +59,112 @@
         <div style="clear: both"></div>
         </div>
       </div>
-
-        <div *ngIf="uiStatusService.tablesAndSizesVisible && uiStatusService.materialsVisible && !_isTag" [ngClass]="{'filteredMaterials': true, 'filteredMaterialsLoading': filteredMaterialsLoading}" style="padding:5px">
-          <table class="table-bordered" style="width: 800px">
+      <div *ngIf="!!commoditySelection" class="form-group">
+        <label class="commodity-label">Commodity Code</label>
+        <br/>
+        <input class="form-control commodity-input pull-left" maxlength="20" [(ngModel)]="commodityCodeToBeFound" name="commodity-code"/>
+        <a class="btn btn-sm btn-success" (click)="findCommodityCode()"><span class="glyphicon glyphicon-check"></span></a>
+        <br class="clearfix"/>
+        <br/>
+        <label class="commodity-error">{{commoditySelectionError}}</label>
+      </div>
+      <div *ngIf="uiStatusService.tablesAndSizesVisible && uiStatusService.materialsVisible && !_isTag" [ngClass]="{'filteredMaterials': true, 'filteredMaterialsLoading': filteredMaterialsLoading}" style="padding:5px">
+        <table class="table-bordered" style="width: 800px">
+          <thead>
+            <tr style="font-weight: bold">
+              <td>Commodity Code</td>
+              <td>Description</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let material of materials">
+              <td>{{material.commodityCode}}</td>
+              <td>{{material.description}}</td>
+              <td><a class="btn btn-xs btn-success" (click)="selectMaterial(material.id)"><span class="glyphicon glyphicon-check"></span></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="_selectedMaterialVisible && !_isTag && _isEdit">
+        <div class="pull-left">
+          <label>Commodity Code</label>
+          <input type="text" [value]="selectedMaterial.commodityCode" class="form-control" name="commodityCode" disabled="true"  style="width: 180px"/>
+        </div>
+        <div class="pull-left">
+          <label>Description</label>
+          <textarea [(ngModel)]="selectedMaterial.description" class="form-control" name="materialDescription" disabled cols="100" rows="3"></textarea>
+        </div>
+        <div style="width: 1px; height: 1px; clear: both"></div>
+      </div>
+      <div *ngIf="_tagAndQuantityVisible" style="padding: 5px">
+        <div *ngIf="_isTag" class="pull-left">
+          <label>Description 1</label>
+          <textarea [(ngModel)]="selectedMaterial.description" (keyup)="descriptionChanged()"  class="form-control" name="materialDescription" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
+        </div>
+        <div *ngIf="_isTag" class="pull-left">
+          <label>Description 2</label>
+          <textarea [(ngModel)]="selectedMaterial.description2" (keydown)="description2KeyPress()" class="form-control" name="materialDescription2" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
+        </div>
+        <div style="width: 1px; height: 1px; clear: both"></div>
+        <div *ngIf="!_isEdit && !_isTag" class="addingMaterials" class="addingMaterials">
+          <h4>{{uiStatusService.nodePath}}</h4>
+          <table class="table-bordered">
             <thead>
-              <tr style="font-weight: bold">
-                <td>Commodity Code</td>
-                <td>Description</td>
-              </tr>
+              <th>Commodity Code</th>
+              <th>Quantity</th>
+              <th>Tag</th>
+              <th><span class="glyphicon glyphicon-paste"></span></th>
+              <th *ngFor="let attribute of attributes">
+                {{attribute.code}}
+              </th>
             </thead>
             <tbody>
-              <tr *ngFor="let material of materials">
-                <td>{{material.commodityCode}}</td>
-                <td>{{material.description}}</td>
-                <td><a class="btn btn-xs btn-success" (click)="selectMaterial(material.id)"><span class="glyphicon glyphicon-check"></span></a></td>
+              <tr *ngFor="let addedPosition of addedPositions; let aIndex = index">
+                <td><span [ngClass]="{'control-error': positionHasError(addedPosition)}" tooltip="{{addedPosition.errorMessage}}">{{addedPosition.bomPosition.commodityCode}}</span></td>
+                <td>
+                  <input type="text" [(ngModel)]="addedPosition.bomPosition.quantity" class="form-control" name="{{'quantity_' + aIndex}}" pattern="[0-9]{1,5}([.][0-9]{1,3})?" autocomplete="off" required/></td>
+                <td>
+                  <input type="text" [(ngModel)]="addedPosition.bomPosition.tag" maxlength="60" (keyup)="tagChanged(aIndex)" [ngClass]="{'form-control': true, 'control-error': addedPosition.tagError}" name="{{'tag_' + aIndex}}" autocomplete="off" /></td>
+                <td><a *ngIf="aIndex > 0" (click)="propagateAttrValues(aIndex)" class="btn btn-xs btn-success"><span type="button" class="glyphicon glyphicon-paste"></span></a></td>  
+                <td *ngFor="let attribute of attributes">
+                  <input *ngIf="allowedValues[attribute.spmatId].length == 0" type="text" [(ngModel)]="addedPosition.attributes[attribute.id]" maxlength="{{attribute.maxlength}}" name="{{'attr_' + aIndex + '_' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null" autocomplete="off"/>
+                  <ng-select *ngIf="allowedValues[attribute.spmatId].length > 0"
+                    [allowClear]="true"
+                    [options]="allowedValues[attribute.spmatId]"
+                    (selected)="addedPosition.attributes[attribute.id] = $event.value"
+                    (removed)="addedPosition.attributes[attribute.id] = ''"
+                    noFilter="true"
+                    class="ng-select">
+                  </ng-select>
+                </td>
+                <td><td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div *ngIf="_selectedMaterialVisible && !_isTag && _isEdit">
-          <div class="pull-left">
-            <label>Commodity Code</label>
-            <input type="text" [value]="selectedMaterial.commodityCode" class="form-control" name="commodityCode" disabled="true"  style="width: 180px"/>
-          </div>
-          <div class="pull-left">
-            <label>Description</label>
-            <textarea [(ngModel)]="selectedMaterial.description" class="form-control" name="materialDescription" disabled cols="100" rows="3"></textarea>
-          </div>
-          <div style="width: 1px; height: 1px; clear: both"></div>
+        <h4 *ngIf="_isTag">{{uiStatusService.nodePath}}</h4>
+        <div *ngIf="_isEdit || _isTag" class="pull-left">
+          <label>Quantity</label>
+          <input type="text" [(ngModel)]="position.quantity" class="form-control" name="quantity" pattern="[0-9]{1,5}([.][0-9]{1,3})?" autocomplete="off" required/>
         </div>
-        <div *ngIf="_tagAndQuantityVisible" style="padding: 5px">
-          <div *ngIf="_isTag" class="pull-left">
-            <label>Description 1</label>
-            <textarea [(ngModel)]="selectedMaterial.description" (keyup)="descriptionChanged()"  class="form-control" name="materialDescription" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
+        <div *ngIf="_isTag" class="pull-left">
+          <label>UoM</label>
+          <select required [(ngModel)]="selectedMaterial.unit" name="unitControl" class="form-control">
+            <option *ngFor="let unit of _allowedUnits" [value]="unit.value">{{unit.label}}</option>
+          </select>
+        </div>
+        <div *ngIf="_isEdit || _isTag" class="pull-left">
+          <label>Tag</label>
+          <input type="text" [(ngModel)]="position.tag" name="tag" [ngClass]="{'form-control': true, 'control-error': tagError}" [required]="_isTag ? 'true' : null" maxlength="20" autocomplete="off" #tagInput/>
+        </div>
+        <div *ngIf="_isEdit || _isTag">
+          <div *ngFor="let attribute of attributes" class="pull-left">
+            <label>{{attribute.code}}</label>
+            <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null" autocomplete="off"/>
           </div>
-          <div *ngIf="_isTag" class="pull-left">
-            <label>Description 2</label>
-            <textarea [(ngModel)]="selectedMaterial.description2" (keydown)="description2KeyPress()" class="form-control" name="materialDescription2" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
-          </div>
-          <div style="width: 1px; height: 1px; clear: both"></div>
-          <div *ngIf="!_isEdit && !_isTag" class="addingMaterials" class="addingMaterials">
-            <h4>{{uiStatusService.nodePath}}</h4>
-            <table class="table-bordered">
-              <thead>
-                <th>Commodity Code</th>
-                <th>Quantity</th>
-                <th>Tag</th>
-                <th><span class="glyphicon glyphicon-paste"></span></th>
-                <th *ngFor="let attribute of attributes">
-                  {{attribute.code}}
-                </th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let addedPosition of addedPositions; let aIndex = index">
-                  <td><span [ngClass]="{'control-error': positionHasError(addedPosition)}" tooltip="{{addedPosition.errorMessage}}">{{addedPosition.bomPosition.commodityCode}}</span></td>
-                  <td>
-                    <input type="text" [(ngModel)]="addedPosition.bomPosition.quantity" class="form-control" name="{{'quantity_' + aIndex}}" pattern="[0-9]{1,5}([.][0-9]{1,3})?" autocomplete="off" required/></td>
-                  <td>
-                    <input type="text" [(ngModel)]="addedPosition.bomPosition.tag" maxlength="60" (keyup)="tagChanged(aIndex)" [ngClass]="{'form-control': true, 'control-error': addedPosition.tagError}" name="{{'tag_' + aIndex}}" autocomplete="off" /></td>
-                  <td><a *ngIf="aIndex > 0" (click)="propagateAttrValues(aIndex)" class="btn btn-xs btn-success"><span type="button" class="glyphicon glyphicon-paste"></span></a></td>  
-                  <td *ngFor="let attribute of attributes">
-                    <input *ngIf="allowedValues[attribute.spmatId].length == 0" type="text" [(ngModel)]="addedPosition.attributes[attribute.id]" maxlength="{{attribute.maxlength}}" name="{{'attr_' + aIndex + '_' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null" autocomplete="off"/>
-                    <ng-select *ngIf="allowedValues[attribute.spmatId].length > 0"
-                      [allowClear]="true"
-                      [options]="allowedValues[attribute.spmatId]"
-                      (selected)="addedPosition.attributes[attribute.id] = $event.value"
-                      (removed)="addedPosition.attributes[attribute.id] = ''"
-                      noFilter="true"
-                      class="ng-select">
-                    </ng-select>
-                  </td>
-                  <td><td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <h4 *ngIf="_isTag">{{uiStatusService.nodePath}}</h4>
-          <div *ngIf="_isEdit || _isTag" class="pull-left">
-            <label>Quantity</label>
-            <input type="text" [(ngModel)]="position.quantity" class="form-control" name="quantity" pattern="[0-9]{1,5}([.][0-9]{1,3})?" autocomplete="off" required/>
-          </div>
-          <div *ngIf="_isTag" class="pull-left">
-            <label>UoM</label>
-            <select required [(ngModel)]="selectedMaterial.unit" name="unitControl" class="form-control">
-              <option *ngFor="let unit of _allowedUnits" [value]="unit.value">{{unit.label}}</option>
-            </select>
-          </div>
-          <div *ngIf="_isEdit || _isTag" class="pull-left">
-            <label>Tag</label>
-            <input type="text" [(ngModel)]="position.tag" name="tag" [ngClass]="{'form-control': true, 'control-error': tagError}" [required]="_isTag ? 'true' : null" maxlength="20" autocomplete="off" #tagInput/>
-          </div>
-
-          <div *ngIf="_isEdit || _isTag">
-            <div *ngFor="let attribute of attributes" class="pull-left">
-              <label>{{attribute.code}}</label>
-              <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null" autocomplete="off"/>
-            </div>
           <div style="clear: both"></div>
         </div>
-        </div>
+      </div>
       <div>
         <span class='errorMessage'>{{errorMessage}}</span>
       </div>

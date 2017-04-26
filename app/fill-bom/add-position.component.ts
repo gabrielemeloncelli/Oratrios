@@ -66,6 +66,9 @@ export class AddPositionComponent
   public allowedValues = new Array<Option[]>();
   public hideGroupAndPart = false;
   public filteredMaterialsLoading = false;
+  public commoditySelection = false;
+  public commoditySelectionError = "";
+  public commodityCodeToBeFound: string;
 
 
   @ViewChild(SelectComponent)
@@ -369,6 +372,8 @@ export class AddPositionComponent
     this.uiStatusService.materialsVisible = false;
     this._selectedMaterialVisible = false;
     this._tagAndQuantityVisible = false;
+    this.commodityCodeToBeFound = "";
+    this.commoditySelectionError = "";
     console.log("add-position.component -- partObjectSelected -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
   }
 
@@ -399,6 +404,8 @@ export class AddPositionComponent
   {
     this.resetPosition();
     this._tagAndQuantityVisible = true;
+    this.commodityCodeToBeFound = "";
+    this.commoditySelectionError = "";
     this._isEdit = true;
     this._isTag = positionToEdit.isTwm;
     this.position = positionToEdit;
@@ -871,6 +878,12 @@ export class AddPositionComponent
     }
 
     this.modalComponent.dismiss();
+  }
+
+  findCommodityCode()
+  {
+    this.commoditySelectionError = "";
+    this.commoditySelectionError = "Test error";//TODO: replace
   }
 
 }

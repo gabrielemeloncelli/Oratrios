@@ -57,3 +57,17 @@ div.addingMaterials
   padding: 5px;
   overflow-x: auto;
 }
+ .commodity-input
+ {
+   width: 200px;
+ }
+
+.commodity-error
+{
+  color: #ff0000;
+}
+
+.commodity-label
+{
+  padding: 5px 10px 0;
+}
