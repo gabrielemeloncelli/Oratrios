@@ -62,11 +62,10 @@
       <div *ngIf="!!commoditySelection" class="form-group">
         <label class="commodity-label">Commodity Code</label>
         <br/>
-        <input class="form-control commodity-input pull-left" maxlength="20" [(ngModel)]="commodityCodeToBeFound" name="commodity-code"/>
-        <a class="btn btn-sm btn-success" (click)="findCommodityCode()"><span class="glyphicon glyphicon-check"></span></a>
+        <input class="form-control commodity-input pull-left" maxlength="25" [(ngModel)]="commodityCodeToBeFound" name="commodity-code"/>
+        <button class="btn btn-default" (click)="findCommodityCode()">Find</button>
         <br class="clearfix"/>
         <br/>
-        <label class="commodity-error">{{commoditySelectionError}}</label>
       </div>
       <div *ngIf="uiStatusService.tablesAndSizesVisible && uiStatusService.materialsVisible && !_isTag" [ngClass]="{'filteredMaterials': true, 'filteredMaterialsLoading': filteredMaterialsLoading}" style="padding:5px">
         <table class="table-bordered" style="width: 800px">
@@ -84,6 +83,7 @@
             </tr>
           </tbody>
         </table>
+        <label class="commodity-error">{{materialLoadingError}}</label>
       </div>
       <div *ngIf="_selectedMaterialVisible && !_isTag && _isEdit">
         <div class="pull-left">

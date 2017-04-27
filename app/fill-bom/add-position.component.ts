@@ -67,8 +67,9 @@ export class AddPositionComponent
   public hideGroupAndPart = false;
   public filteredMaterialsLoading = false;
   public commoditySelection = false;
-  public commoditySelectionError = "";
+  public materialLoadingError = "";
   public commodityCodeToBeFound: string;
+  private _loadingTimeoutExpired = false;
 
 
   @ViewChild(SelectComponent)
@@ -173,8 +174,20 @@ export class AddPositionComponent
 
     this.materialService.materials.subscribe(
       (materials: Material[]) => {
-        this.filteredMaterialsLoading = false;
+        if (this._loadingTimeoutExpired)
+        {
+          this.filteredMaterialsLoading = false;
+        }
+        else
+        {
+          setTimeout(() => this.filteredMaterialsLoading = false, 500);
+        }
         this.materials = materials;
+        this.materialLoadingError = "";
+        if (materials.length == 0)
+        {
+          this.materialLoadingError = "No material found.";
+        }
         if (this._isEdit && this.materials.length > 0)
         {
           this.selectedMaterial = this.materials[0];
@@ -195,6 +208,7 @@ export class AddPositionComponent
     var foundGroup: CommodityGroup = this.findSelectedGroup(+event.value);
     this.selectedMaterial.groupCode = foundGroup.code;
     this.uiStatusService.commodityGroup = foundGroup;
+    this.uiStatusService.commodityPart = new CommodityPart(0, "", "", foundGroup.code);
     this.commodityPartService.getAll(event.value);//TODO:verify the returned type and property values of the event
   }
 
@@ -224,6 +238,7 @@ export class AddPositionComponent
     this.resetPositionModel();
     this.resetMaterial();
     this.materials = new Array<Material>();
+    this.materialLoadingError = "";
     this.selectedMaterial.partId = selectedPart.id;
     this.selectedMaterial.partCode = selectedPart.code;
     this._selectedMaterialVisible = false;
@@ -290,6 +305,9 @@ export class AddPositionComponent
     }
     var filter: TableAndSizeFilter = new TableAndSizeFilter(tableFilters);
     this.materials = new Array<Material>();
+    this.materialLoadingError = "";
+    this._loadingTimeoutExpired = false;
+    setTimeout(() => this._loadingTimeoutExpired = true, 1000);
     this.materialService.getAll(this.uiStatusService.commodityPart.id, filter);
   }
 
@@ -373,7 +391,8 @@ export class AddPositionComponent
     this._selectedMaterialVisible = false;
     this._tagAndQuantityVisible = false;
     this.commodityCodeToBeFound = "";
-    this.commoditySelectionError = "";
+    this.materialLoadingError = "";
+    this.materialLoadingError = "";
     console.log("add-position.component -- partObjectSelected -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
   }
 
@@ -388,6 +407,7 @@ export class AddPositionComponent
     this._selectedMaterialVisible = false || this._isEdit;
     this._tagAndQuantityVisible = false || this._isEdit;
     this.materials = new Array<Material>();
+    this.materialLoadingError = "";
     this.uiStatusService.materialsVisible = false;
     this.uiStatusService.tablesAndSizesVisible = false;
     console.log("add-position.component -- changeGroup -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
@@ -405,7 +425,7 @@ export class AddPositionComponent
     this.resetPosition();
     this._tagAndQuantityVisible = true;
     this.commodityCodeToBeFound = "";
-    this.commoditySelectionError = "";
+    this.materialLoadingError = "";
     this._isEdit = true;
     this._isTag = positionToEdit.isTwm;
     this.position = positionToEdit;
@@ -882,8 +902,21 @@ export class AddPositionComponent
 
   findCommodityCode()
   {
-    this.commoditySelectionError = "";
-    this.commoditySelectionError = "Test error";//TODO: replace
+    this.uiStatusService.materialsVisible = true;
+    this.uiStatusService.tablesAndSizesVisible = true;
+    this.filteredMaterialsLoading = true;
+    this._loadingTimeoutExpired = false;
+    this.materials = new Array<Material>();
+    this.materialLoadingError = "";
+    setTimeout(() => this._loadingTimeoutExpired = true, 1000);
+    if(!!this.uiStatusService.commodityPart && this.uiStatusService.commodityPart.id > 0)
+    {
+      this.materialService.getByCommodityCodeAndPart(this.uiStatusService.disciplineId, this.uiStatusService.commodityPart.id, this.commodityCodeToBeFound);
+    }
+    else
+    {
+      this.materialService.getByCommodityCode(this.uiStatusService.disciplineId, this.commodityCodeToBeFound);
+     }   
   }
 
 }

@@ -21,6 +21,15 @@ constructor(private _storeService: MaterialStoreService){}
   {
     this._storeService.getAll(partId, filter).subscribe( materials => this._materials.next(materials));
   }
+  getByCommodityCode(disciplineId: number, commodityCode: string)
+  {
+    this._storeService.getByCommodityCode(disciplineId, commodityCode).subscribe( materials => this._materials.next(materials));
+  }
+
+  getByCommodityCodeAndPart(disciplineId: number, partId: number, commodityCode: string)
+  {
+    this._storeService.getByCommodityCodeAndPart(disciplineId, partId, commodityCode).subscribe( materials => this._materials.next(materials));
+  }
 
   clear()
   {
