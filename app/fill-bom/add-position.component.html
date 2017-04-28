@@ -2,9 +2,10 @@
   <form (ngSubmit)="onSubmit()" #addPositionForm="ngForm">
     <modal-header [show-close]="true">
         <h4 class="modal-title">Position details</h4>
+        <h3>{{uiStatusService.nodePath}}</h3>
     </modal-header>
     <modal-body>
-      <div>
+      <div *ngIf="_commodityPropertiesSwitch">
         <ul  class="nav nav-pills">
 			    <li class="active">
             <a data-toggle="tab" (click)="commoditySelection = !commoditySelection">Properties</a>
@@ -97,17 +98,21 @@
         <div style="width: 1px; height: 1px; clear: both"></div>
       </div>
       <div *ngIf="_tagAndQuantityVisible" style="padding: 5px">
-        <div *ngIf="_isTag" class="pull-left">
+        <div *ngIf="_isTag && !_isEdit"  class="pull-left">
+          <label>Tag</label>
+          <input type="text" [(ngModel)]="position.tag" name="tag" [ngClass]="{'form-control': true, 'control-error': tagError}" [required]="_isTag ? 'true' : null" maxlength="20" autocomplete="off" #tagInput/>
+          <button class="btn btn-default" (click)="confirmTag()">Confirm</button>
+        </div>
+        <div *ngIf="_isTag && _tagStep2" class="pull-left">
           <label>Description 1</label>
           <textarea [(ngModel)]="selectedMaterial.description" (keyup)="descriptionChanged()"  class="form-control" name="materialDescription" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
         </div>
-        <div *ngIf="_isTag" class="pull-left">
+        <div *ngIf="_isTag && _tagStep2" class="pull-left">
           <label>Description 2</label>
           <textarea [(ngModel)]="selectedMaterial.description2" (keydown)="description2KeyPress()" class="form-control" name="materialDescription2" cols="100" rows="3" pattern=".{1,511}" maxlength="511" required></textarea>
         </div>
         <div style="width: 1px; height: 1px; clear: both"></div>
         <div *ngIf="!_isEdit && !_isTag" class="addingMaterials" class="addingMaterials">
-          <h4>{{uiStatusService.nodePath}}</h4>
           <table class="table-bordered">
             <thead>
               <th>Commodity Code</th>
@@ -142,22 +147,21 @@
             </tbody>
           </table>
         </div>
-        <h4 *ngIf="_isTag">{{uiStatusService.nodePath}}</h4>
-        <div *ngIf="_isEdit || _isTag" class="pull-left">
+        <div *ngIf="_isEdit || (_isTag && _tagStep2)" class="pull-left">
           <label>Quantity</label>
           <input type="text" [(ngModel)]="position.quantity" class="form-control" name="quantity" pattern="[0-9]{1,5}([.][0-9]{1,3})?" autocomplete="off" required/>
         </div>
-        <div *ngIf="_isTag" class="pull-left">
+        <div *ngIf="_isTag && _tagStep2" class="pull-left">
           <label>UoM</label>
           <select required [(ngModel)]="selectedMaterial.unit" name="unitControl" class="form-control">
             <option *ngFor="let unit of _allowedUnits" [value]="unit.value">{{unit.label}}</option>
           </select>
         </div>
-        <div *ngIf="_isEdit || _isTag" class="pull-left">
+        <div *ngIf="_isEdit && !_isTag" class="pull-left">
           <label>Tag</label>
           <input type="text" [(ngModel)]="position.tag" name="tag" [ngClass]="{'form-control': true, 'control-error': tagError}" [required]="_isTag ? 'true' : null" maxlength="20" autocomplete="off" #tagInput/>
         </div>
-        <div *ngIf="_isEdit || _isTag">
+        <div *ngIf="_isEdit || (_isTag  && _tagStep2)">
           <div *ngFor="let attribute of attributes" class="pull-left">
             <label>{{attribute.code}}</label>
             <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null" autocomplete="off"/>
@@ -171,7 +175,7 @@
     </modal-body>
     <modal-footer>
      <button type="button" class="btn btn-default pull-left" (click)="resetPosition()">Reset</button>
-     <button type="submit" [ngClass]="{'btn': true, 'btn-default': addPositionForm.form.valid, 'btn-error': !addPositionForm.form.valid}" (click)="savePosition()" [disabled]="!_tagAndQuantityVisible || !addPositionForm.form.valid">{{savePositionLabel()}}</button>
+     <button type="submit" [ngClass]="{'btn': true, 'btn-default': addPositionForm.form.valid, 'btn-error': !addPositionForm.form.valid}" (click)="savePosition()" [disabled]="!_tagAndQuantityVisible  || !_tagStep2 || !addPositionForm.form.valid">{{savePositionLabel()}}</button>
      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="dismissModal()">{{cancelLabel()}}</button>
     </modal-footer>
   </form>

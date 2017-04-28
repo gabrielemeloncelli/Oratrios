@@ -70,6 +70,8 @@ export class AddPositionComponent
   public materialLoadingError = "";
   public commodityCodeToBeFound: string;
   private _loadingTimeoutExpired = false;
+  private _tagStep2 = false;
+  private _commodityPropertiesSwitch = true;
 
 
   @ViewChild(SelectComponent)
@@ -98,8 +100,11 @@ export class AddPositionComponent
         if (detail.displayInsertPosition)
         {
           this._isTag = detail.positionFromTag;
+          this._tagStep2 = false;
+          this._commodityPropertiesSwitch = !this._isTag;
           this.resetPosition();
           this.hideGroupAndPart = !!this.uiStatusService.commodityPart.id;
+          this._tagAndQuantityVisible = this.hideGroupAndPart && this._isTag;
           setTimeout(() => this.modalComponent.open('fs'), 200);
         }
       }
@@ -110,6 +115,8 @@ export class AddPositionComponent
         if (position)
         {
           this._isTag = position.isTwm;
+          this._tagStep2 = true;
+          this._commodityPropertiesSwitch = true;
           this.editPositionByObject(position);
           setTimeout(() => this.modalComponent.open('fs'), 200);
         }
@@ -193,7 +200,9 @@ export class AddPositionComponent
           this.selectedMaterial = this.materials[0];
         }
       }
-    )
+    );
+    
+    this.modalComponent.onDismiss.subscribe(() => this.cleanupModal());
 
 
   }
@@ -880,6 +889,10 @@ export class AddPositionComponent
 
   dismissModal()
   {
+    this.modalComponent.dismiss();
+  }
+  cleanupModal()
+  {
     if (!!this.selectorService.lastSelectedNode && !!this.selectorService.lastSelectedNode.commodityGroup)
     {
       this.uiStatusService.commodityGroup = this.selectorService.lastSelectedNode.commodityGroup;
@@ -895,9 +908,7 @@ export class AddPositionComponent
     else
     {
       this.uiStatusService.commodityPart = new CommodityPart(0, "", "", this.uiStatusService.commodityGroup.code);
-    }
-
-    this.modalComponent.dismiss();
+    }    
   }
 
   findCommodityCode()
@@ -917,6 +928,11 @@ export class AddPositionComponent
     {
       this.materialService.getByCommodityCode(this.uiStatusService.disciplineId, this.commodityCodeToBeFound);
      }   
+  }
+
+  confirmTag()
+  {
+    this._tagStep2 = true;
   }
 
 }
