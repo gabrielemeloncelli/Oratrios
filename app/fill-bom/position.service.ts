@@ -36,8 +36,11 @@ export class PositionService{
     this._storeService.selectNode(nodeId).subscribe(
       positions => this._positions.next(positions)
     );
+  }
 
-
+  getTag(tag: string, projectDisciplineId: number): Observable<BomPosition[]>
+  {
+    return this._storeService.getTag(tag, projectDisciplineId);
   }
 
   deletePosition(position: BomPosition): Observable<BomPosition>

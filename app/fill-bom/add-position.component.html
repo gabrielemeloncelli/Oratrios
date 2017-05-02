@@ -101,7 +101,7 @@
         <div *ngIf="_isTag && !_isEdit"  class="pull-left">
           <label>Tag</label>
           <input type="text" [(ngModel)]="position.tag" name="tag" [ngClass]="{'form-control': true, 'control-error': tagError}" [required]="_isTag ? 'true' : null" maxlength="20" autocomplete="off" #tagInput/>
-          <button class="btn btn-default" (click)="confirmTag()">Confirm</button>
+          <button *ngIf="!_tagStep2" class="btn btn-default" (click)="confirmTag()">Confirm</button>
         </div>
         <div *ngIf="_isTag && _tagStep2" class="pull-left">
           <label>Description 1</label>

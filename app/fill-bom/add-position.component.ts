@@ -932,7 +932,16 @@ export class AddPositionComponent
 
   confirmTag()
   {
-    this._tagStep2 = true;
+    this.positionService.getTag(this.position.tag, this.uiStatusService.projectDisciplineId)
+    .subscribe(tagPositions => 
+    {
+      if (!!tagPositions && !!tagPositions[0])
+      {
+        this.selectedMaterial.description = tagPositions[0].description;
+        this.selectedMaterial.description2 = tagPositions[0].description2;
+      }
+      this._tagStep2 = true;
+    });
   }
 
 }

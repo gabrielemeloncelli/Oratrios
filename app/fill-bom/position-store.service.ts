@@ -176,4 +176,17 @@ export class PositionStoreService{
     return new PositionAttributeValue(attr.attribute, attr.value);
   }
 
+  getTag(tag: string, projectDisciplineId: number): Observable<BomPosition[]>
+  {
+    var _resultArray = new Array<BomPosition[]>();
+    var result = new Subject<Array<BomPosition>>();
+    this._http
+        .get(this.BASE_URL + "/projectDiscipline/" + projectDisciplineId.toString() + "/tag/?tag=" + encodeURIComponent(tag))
+        .map((res:Response) => res.json())
+        .subscribe(res => {
+          result.next(res.map((pos: any) => this.mapPosition(pos)));
+        });
+    return result.asObservable();
+  }
+
 }
