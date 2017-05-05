@@ -3,12 +3,12 @@ import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
 import { Observable }       from 'rxjs/Observable';
 
 import { PositionAttributeStoreService }  from './position-attribute-store.service';
-import { PositionAttribute }              from './position-attribute';
+import { Attribute }              from './attribute';
 
 @Injectable()
 export class PositionAttributeService{
-  private _attributes: BehaviorSubject<Array<PositionAttribute>> = new BehaviorSubject(new Array<PositionAttribute>());
-  public attributes: Observable<Array<PositionAttribute>> = this._attributes.asObservable();
+  private _attributes: BehaviorSubject<Array<Attribute>> = new BehaviorSubject(new Array<Attribute>());
+  public attributes: Observable<Array<Attribute>> = this._attributes.asObservable();
 
   constructor(private _storeService: PositionAttributeStoreService) {
   }

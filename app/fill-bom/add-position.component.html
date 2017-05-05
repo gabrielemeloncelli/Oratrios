@@ -132,7 +132,7 @@
                   <input type="text" [(ngModel)]="addedPosition.bomPosition.tag" maxlength="60" (keyup)="tagChanged(aIndex)" [ngClass]="{'form-control': true, 'control-error': addedPosition.tagError}" name="{{'tag_' + aIndex}}" autocomplete="off" /></td>
                 <td><a *ngIf="aIndex > 0" (click)="propagateAttrValues(aIndex)" class="btn btn-xs btn-success"><span type="button" class="glyphicon glyphicon-paste"></span></a></td>  
                 <td *ngFor="let attribute of attributes">
-                  <input *ngIf="allowedValues[attribute.spmatId].length == 0" type="text" [(ngModel)]="addedPosition.attributes[attribute.id]" maxlength="{{attribute.maxlength}}" name="{{'attr_' + aIndex + '_' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null" autocomplete="off"/>
+                  <input *ngIf="allowedValues[attribute.spmatId].length == 0" type="text" [(ngModel)]="addedPosition.attributes[attribute.id]" maxlength="{{attribute.maxlength}}" name="{{'attr_' + aIndex + '_' + attribute.id}}" class="form-control" [required]="(attribute.mandatory || attribute.forcedMandatory) ? 'true' : null" autocomplete="off"/>
                   <ng-select *ngIf="allowedValues[attribute.spmatId].length > 0"
                     [allowClear]="true"
                     [options]="allowedValues[attribute.spmatId]"
@@ -164,7 +164,7 @@
         <div *ngIf="_isEdit || (_isTag  && _tagStep2)">
           <div *ngFor="let attribute of attributes" class="pull-left">
             <label>{{attribute.code}}</label>
-            <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="attribute.mandatory ? 'true' : null" autocomplete="off"/>
+            <input type="text" [(ngModel)]="attributeValues[attribute.id]" name="{{'attr' + attribute.id}}" class="form-control" [required]="(attribute.mandatory || attribute.forcedMandatory) ? 'true' : null" autocomplete="off"/>
           </div>
           <div style="clear: both"></div>
         </div>
