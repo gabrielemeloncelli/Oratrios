@@ -23,7 +23,7 @@ export class DisciplineSelectComponent
     ngOnInit()
     {
         this.projectDisciplines = this.uiStatusService.projectDisciplines;
-        
+        console.log("discipline-select-component -- ngOnInit -- !!this.uiStatusService.projectDisciplines: " + !!this.uiStatusService.projectDisciplines)
         this.projectDisciplineService.discipline.subscribe(
             projectDiscipline => this.projectDisciplineRetrieved(projectDiscipline)
     );
