@@ -175,7 +175,7 @@
     </modal-body>
     <modal-footer>
      <button type="button" class="btn btn-default pull-left" (click)="resetPosition()">Reset</button>
-     <button type="submit" [ngClass]="{'btn': true, 'btn-default': addPositionForm.form.valid, 'btn-error': !addPositionForm.form.valid}" (click)="savePosition()" [disabled]="!_tagAndQuantityVisible  || !_tagStep2 || !addPositionForm.form.valid">{{savePositionLabel()}}</button>
+     <button type="submit" [ngClass]="{'btn': true, 'btn-default': addPositionForm.form.valid, 'btn-error': !addPositionForm.form.valid}" (click)="savePosition()" [disabled]="!_tagAndQuantityVisible  || (_isTag && !_tagStep2) || !addPositionForm.form.valid">{{savePositionLabel()}}</button>
      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="dismissModal()">{{cancelLabel()}}</button>
     </modal-footer>
   </form>

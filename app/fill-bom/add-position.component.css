@@ -39,7 +39,9 @@ table > thead > th
 
 div.filteredMaterials
 {
-  padding:5px;  
+  padding:5px;
+  max-height: 100px;
+  overflow-y: scroll; 
 }
 
 div.filteredMaterialsLoading
