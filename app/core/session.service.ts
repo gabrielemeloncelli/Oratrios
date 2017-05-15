@@ -1,49 +1,43 @@
-import { Injectable, Optional } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable,
+          Optional }  from '@angular/core';
+import { Response,
+          Http }      from '@angular/http';
+import { Observable } from 'rxjs/observable';
+import { Subject }    from 'rxjs/subject';
+
+import { UserDTO }    from './user-DTO';
 
 
-@Injectable()
-export class SessionServiceConfig
-{
-  userLogin = 'donald';
-  userIsAdministrator = false;
-}
 
-export class SessionUser
-{
-    login: string;
-    isAdministrator: boolean;
-}
+
+
 
 @Injectable()
 export class SessionService {
   private _userLogin = 'donald';
   private _userIsAdministrator = false;
+  private _userSubject: Subject<UserDTO>;
+  private USERDATA_BASE_URL = 'api/Account/UserData';
 
-  constructor(@Optional() config: SessionServiceConfig) {
-    if (config)
-    {
-      this._userLogin = config.userLogin;
-      this._userIsAdministrator = config.userIsAdministrator;
-    }
+  constructor(private _http: Http) {
+    this._userSubject = new Subject<UserDTO>();
   }
 
-  get userLogin(): string {
-    return this._userLogin;
+  get user(): Observable<UserDTO> {
+    return this._userSubject.asObservable();
   }
 
-  get userIsAdministrator(): boolean {
-    return this._userIsAdministrator;
-  }
+  retrieveUserData(): void {
+
+    this._http
+        .get(this.USERDATA_BASE_URL)
+        .map((res:Response) => res.json())
+        .subscribe((res: UserDTO) => {
+          this._userSubject.next(res);
+
+        });
 
 
-  get user(): Observable<SessionUser> {
-
-    var innerUser: SessionUser = new SessionUser();
-    innerUser.login = this._userLogin;
-    innerUser.isAdministrator = this._userIsAdministrator;
-
-    return Observable.from([innerUser]);
   }
 
 }

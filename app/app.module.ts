@@ -21,13 +21,7 @@ import { DisciplineSelectModule } from './discipline-select/discipline-select.mo
 @NgModule({
   imports: [
     BrowserModule,
-
-/*
     CoreModule,
-*/
-    //CoreModule.forRoot({"user": {login: "pippo", isAdministrator: false}}),
-    //routing,
-    CoreModule.forRoot({userLogin: 'pluto', userIsAdministrator: true}),
     FillBomModule,
     TreeViewModule,
     ModalModule,

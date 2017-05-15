@@ -8,8 +8,6 @@ import { BubbleNodeMessageInterface } from '../lazy-loaded-tree-view/bubble-node
 import { TreeNode }                   from '../lazy-loaded-tree-view/tree-node';
 import { TreeNodeService }            from '../lazy-loaded-tree-view/tree-node.service';
 import { CoreEstService }             from './core-est.service';
-import { SessionService }             from '../core/session.service';
-import { SessionUser }                from '../core/session.service';
 import { UiStatusService }            from '../core/ui-status.service';
 import { CommodityGroupService }      from './commodity-group.service';
 import { CommodityPartService }       from './commodity-part.service';
@@ -35,8 +33,6 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   nodeTypes: NodeType[];
   coreService: any;
   coreEstService : CoreEstService;
-  sessionUser: SessionUser = null;
-  sessionService: SessionService = null;
   positionAdd: boolean = false;
   positionIsTag: boolean = false;
   confirmStoreNode: boolean = false;
@@ -52,14 +48,12 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   commodityParts: CommodityPart[] = new Array<CommodityPart>();
   changedNode = new TreeNode(0,"","","",0,false,"",null, null);
 
-  constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService, sessionService: SessionService,
+  constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService,
      private uiStatusService: UiStatusService, private commodityGroupService: CommodityGroupService,
      private router: Router, private commodityPartService: CommodityPartService)
   {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
-    this.sessionService = sessionService;
-
   }
 
   @ViewChild(ModalComponent)
@@ -170,11 +164,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
      this.nodeTypes = this.uiStatusService.nodeTypes;
 
 
-     this.sessionService.user
-     .subscribe((r : SessionUser) =>
-     {
-       this.sessionUser = r;
-     });
+
 
      this.uiStatusService.insertPosition.subscribe(
        details => { this.positionAdd = details.displayInsertPosition;
@@ -253,7 +243,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     newNode.nodeType = this.changedNode.type;
     newNode.name = this.changedNode.name;
     newNode.locked = this.changedNode.locked;
-    newNode.lockedBy = this.sessionUser.login;
+    newNode.lockedBy = this.uiStatusService.userCode;
     newNode.idFather = this.changedNode.idFather;
     newNode.url = 'api/Nodes/' + newNode.id;
     newNode.commodityGroup = this.changedNode.commodityGroup;

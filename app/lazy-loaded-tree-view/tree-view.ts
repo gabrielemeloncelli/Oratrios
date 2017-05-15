@@ -5,9 +5,8 @@ import { Component,
 import { TreeNode }                   from './tree-node';
 import { TreeNodeService }            from './tree-node.service';
 import { BubbleNodeMessageInterface } from './bubble-node-message.interface';
-import { SessionService,
-          SessionUser }               from '../core/session.service';
 import { NodeSelectorService }        from '../fill-bom/node-selector.service';
+import { UiStatusService }            from '../core/ui-status.service';
 
 
 @Component({
@@ -25,12 +24,12 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
   @Input() parentView: any;
   currentView: any;
   outMessage: any;
-  sessionUser: SessionUser;
 
 
-  constructor(private treeNodeService: TreeNodeService, private sessionService: SessionService, private selectorService: NodeSelectorService){
+
+  constructor(private treeNodeService: TreeNodeService, private selectorService: NodeSelectorService,
+    private uiStatusService: UiStatusService){
     this.currentView = this;
-    console.log('tree-view - constructor - this._sessionService.user: ' + !!this.sessionService.user);//TODO: remove
   }
 
   refreshCurrentNode(modifiedChildNode: boolean) : void {
@@ -73,9 +72,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
     {
       this.refreshChildNodes();
     }
-    this.sessionService.user.subscribe(
-      u => this.sessionUser = u
-    );
+
 
 
 
@@ -83,15 +80,15 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
 
   public get enabled(): boolean
   {
-    if (!this.sessionUser)
+    if (!this.uiStatusService.userCode)
     {
       return false;
     }
-    if (this.sessionUser.isAdministrator)
+    if (this.uiStatusService.userIsAdministrator)
     {
       return true;
     }
-    if (!!this.root && this.sessionUser.login === this.root.lockedBy)
+    if (!!this.root && this.uiStatusService.userCode === this.root.lockedBy)
     {
       return true;
     }

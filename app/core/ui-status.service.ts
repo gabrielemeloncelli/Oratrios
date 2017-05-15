@@ -32,6 +32,8 @@ export class UiStatusService
   public PART_CODE = "C_PART";
   public commodityPart = new CommodityPart(0, "", "", "");
   public nodePath = "";
+  public userCode: string;
+  public userIsAdministrator: boolean;
 
 
   constructor(private nodeTypeService: NodeTypeService) { }

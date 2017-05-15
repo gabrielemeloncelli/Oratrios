@@ -1,0 +1,93 @@
+/*custom generc style*/
+.requiredField {
+    color : #ff6358;
+    font-weight: bold;
+}
+
+.pageHeader {
+    font-size: 27px !important;
+    margin-bottom: 0px !important;
+    margin-top:20px;
+}
+
+.appTitleBig{
+    font-size: 30px;
+    font-weight: bold;
+    color: #ff7458;
+    vertical-align: middle;
+}
+
+.appTitleSmall{
+    font-size: 18px;
+    font-weight: bold;
+    color:#22505F;
+}
+
+.welcome{
+    color:#22505F;
+    font-size: 16px;
+}
+
+.logo{
+    width: 44px;
+    height: 51px;
+}
+
+.saipemGreen{
+    color:#22505F;
+}
+
+.saipemOrange{
+    color:#FA9E1F;
+}
+
+.changeItemButton{
+    background-image: linear-gradient(#FA9E1F,#FA9E1F);
+    color: #fff;
+    border-radius: 23px; 
+    border:none; 
+    outline: none;
+}
+
+.changeItemButton:hover{
+    color: #fff;
+}
+
+
+
+
+
+
+
+/*margin style*/
+.marginTop15 {
+    margin-top: 15px;
+}
+.marginTop20 {
+    margin-top: 20px;
+}
+.marginBottom27 {
+    margin-bottom: 10px;
+}
+
+
+
+
+
+/*padding style*/
+.paddingRight0 {
+    padding-right: 0px;
+}
+.paddingLeft0 {
+   padding-left: 0px;
+}
+
+
+
+
+
+/*font style*/
+.fontBold {
+    font-weight: bold;
+}
+

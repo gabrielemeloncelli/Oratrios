@@ -5,6 +5,7 @@ import { Project }                  from '../core/project';
 import { ProjectDisciplineService } from '../core/project-discipline.service';
 import { UiStatusService }          from '../core/ui-status.service';
 import { ProjectDiscipline }        from '../core/project-discipline';
+import { SessionService }           from '../core/session.service';
 
 
 @Component({
@@ -15,9 +16,10 @@ import { ProjectDiscipline }        from '../core/project-discipline';
 export class SelectProjectComponent{
   public projects: Project[];
   private _mockProjects = new Array<Project>();
+  private username: string;
 
   constructor(private _projectDisciplineService: ProjectDisciplineService, private _uiStatusService: UiStatusService,
-    private _router: Router ){
+    private _router: Router, private _sessionService: SessionService ){
     //this.buildMockProjects();
     //this.projects = this._mockProjects;
     this._uiStatusService.projectCode = "";
@@ -25,6 +27,12 @@ export class SelectProjectComponent{
     this._uiStatusService.disciplineId = 0;
     this._uiStatusService.disciplineCode = "";
     this._uiStatusService.projectDisciplineId = 0;
+    this._sessionService.user.subscribe(
+      u => {
+              this._uiStatusService.userCode = u.code;
+              this._uiStatusService.userIsAdministrator = u.isAdministrator;
+              this.username = u.code;
+      });
   }
 
   ngOnInit()
@@ -43,6 +51,7 @@ export class SelectProjectComponent{
 
     this._projectDisciplineService.selectUser();
 
+    this._sessionService.retrieveUserData();
 
   }
 

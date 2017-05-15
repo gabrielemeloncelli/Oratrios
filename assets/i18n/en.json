@@ -1,0 +1,382 @@
+{
+    "global": {
+        "title":                "(Elettrical System)",
+        "sigla":                "EleS",
+        "userProfile":          "User Profile",
+        "settings":             "Settings",
+        "logout":               "Logout",
+        "viewDetails":          "View Details",
+        "home":                 "Home",
+        "code":                 "code",
+        "description":          "description",
+        "password":             "password",
+        "delete":               "Do you want delete",
+        "value":                "value",
+        "filter":               "filter",
+        "project":              "project",
+        "attention":            "attention",
+        "addLibrary":           "If you want add a new standard library is neccesary choose a Item Type:",
+        "selectedProject":      "select the project to work with:",
+        "projects":             "your projects",
+        "mandatoryFileds":      "mandatory fields",
+        "projectSelected" :     "project selected",
+        "uploadSuccess":        "upload was complited with success, without errors or warnings. Click on COMPARE TO ELL button for go to next step."
+
+    },
+
+    "filter": {
+        "search":               "Search"
+    },
+
+    "commands": {
+        "edit":                    "edit",
+        "delete":                  "delete",
+        "update":                  "update",
+        "addNew":                  "add new",
+        "copy":                    "copy",
+        "save":                    "save",
+        "cancel":                  "cancel",
+        "joinUsers":               "join Users",
+        "join":                     "join",
+        "multipleEdit":            "multiple edit",
+        "multipleDelete":          "multiple delete",
+        "selectAll":               "select all",
+        "deselectAllInthisPage":   "deselect all in this page",
+        "selectAllInthisPage":     "select all in this page",
+        "deselectAll":             "deselect all",
+        "fieldToEdit":             "field To Edit",
+        "export":                  "export to",
+        "overwrite":               "overwrite",
+        "select":                  "select",
+        "changeItem":              "change Item",
+        "exportToProject":         "export selected to project library",
+        "useThisProject":          "use this project",
+        "confirmSelection":        "confirm Selection",
+        "compareToCurrentEll":     "compare To Current Ell",
+        "copyToEll":               "copy To Ell",
+        "goToEletricalLoadList":   "go To Eletrical Load List"
+
+
+    },
+
+     "errors": {
+        "isRequired":               "is required"
+
+    },
+
+    "configurations": {
+        "configurations":       "Configurations",
+        "userConfiguration":    "User configuration",
+        "jobsConfiguration":    "Projects configuration",
+        "joinJobUser":          "Join Project-user"
+    },
+
+    "baseTables": {
+         "baseTables":                          "Base tables",
+         "coupling":                            "coupling",
+         "duty":                                "Duty",
+         "electricalSystemConfiguration":       "electrical system configuration",
+         "electricalLoadClassification":        "electrical load classification",
+         "wireCableConfiguration":              "wire cable configuration",
+         "SupplyType":                          "type of supply",
+         "speed":                               "speed",
+         "electricalLoadDataStatus":            "electrical load data status",
+         "electricalItemSubclass":              "electrical item subclass",
+         "cableReferenceCode":                  "cable reference code",
+         "conversionTable":                     "conversion table",
+         "measureUnit":                         "Unit of measure",
+         "hoursYear" :                          "Hours/Year",
+         "conductorSize":                       "Conductor Size",
+         "conductorMaterial":                   "Conductor Material",
+         "insulationType":                      "Insulation Type",
+         "insulationVoltageRating":             "Insulation Voltage Rating",
+         "constructionArmor":                   "Construction Armor",
+         "cableCategory":                       "Cable Category",
+         "fireProtection":                      "Fire Protection",
+
+    },
+
+    "loads": {
+        "loads":                                        "Loads",
+        "standardLibrary":                              "Standard Library",
+        "projectLibrary":                               "Project Library",
+        "substationAndSwitchboard":                     "Substation and Switchboard",
+        "manageLoads":                                  "Manage Loads",
+        "powerBalance":                                 "Power Balance",
+        "ellImportTemporaryArea":                       "Ell Import Temporary Area",
+        "eletricalLoadList":                            "Eletrical Load List",
+        "loadCharacteristicAndSwitchboardDefinition":   "Load Characteristic and Switchboard Definition",
+        "substation":                                   "Substation",
+        "switchboardDefinition":                        "Switchboard Definition",
+        "switchboardManger":                            "Switchboard Manager"
+     
+    },
+
+     "cables": {
+        "cables":                                       "Cables",
+        "cableGroup":                                   "Cable Group",
+        "manageCables":                                 "Mange Cables",
+        "cableCalculating":                             "Cable Calculating",
+        "miscellaneousControlCables":                   "Miscellaneous Control Cables",
+        "cableList":                                    "Cable List",
+        "powerAndControlCableCharacterisitic":          "Power and Control Cable Characterisitic",
+         "typicalFeaderControlCableConfiguration":      "Typical feader control cable configuration",
+         "controlCableFunction":                        "Control cable function"
+    },
+
+      "report": {
+        "report":                    "report",
+        "loadList":                  "load list",
+        "powerCalculationData":      "Power Calculation Data",
+        "powerCableList":            "Power Cable List",
+        "cableList":                 "Cable List"
+    },
+
+     "user": {
+        "name":               "name",
+        "surname":            "surname",
+        "role":               "role",
+        "locationSeat":       "location/Seat",
+        "office":              "office",
+        "username":             "username",
+        "isEnabled":            "is Enabled",
+        "eMail":                "eMail",
+        "lastAccessDate":       "last access date",
+        "isAdministrator":      "is administrator",
+        "message": {
+            "noProject":       "None project selected"
+        }
+    },
+
+     "project": {
+        "projectNumber":                    "project Number",           
+        "client":                           "client",             
+        "revision":                         "revision",               
+        "cableReferenceCode":               "cable Reference Code",       
+        "frequency":                        "frequency(Hz)",             
+        "designTemperature":                "design Temperature(C°)",       
+        "airTemperature":                   "air Temperature(C°)",        
+        "groundTemperature":                "ground Temperature(C°)",     
+        "groundThermalResistivity":         "ground Thermal Resistivity(W/m)",
+        "aboveGroundLayType":               "above GroundLay Type",     
+        "undergroundLayType":               "underground Lay Type",      
+        "powerFactor":                      "power Factor",           
+        "projectSparePerc":                 "project Spare(%)",        
+        "snakingFactorPerc":                "snaking Factor(%)",      
+        "jobState":                         "Project State"
+    },
+
+    "conversion": {
+        "fromUnitOfMeasure":        "from unit of measure",
+        "toUnitOfMeasure":          "to unit of measure",
+        "conversionFactor":         "conversion factor"
+    },
+
+    "duty": {
+        "code":         "duty code",
+        "hoursYear":                           "hours/Year"
+    },
+
+     "coupling": {
+        "code":         "type of coupling"
+    },
+
+      "eles": {
+        "code":         "system configuration"
+    },
+
+    "eleL": {
+        "code":         "item code"
+    },
+
+     "wireCable": {
+        "code":         "wire configuration"
+    },
+
+    "typeOfSupply": {
+        "code":         "type of supply"
+    },
+
+     "speed": {
+        "code":         "type of speed"
+    },
+
+     "eleLoadDataStatus": {
+        "code":         "status code"
+    },
+
+     "cableRefernceCode": {
+        "code":         "refernce code"
+    },
+
+   "eleUnitOfMeasure": {
+        "code":         "unit of measure"
+    },
+
+    "toaster":{
+        "success":{
+            "copy": "Copy success!",
+            "create": "Create success!",
+            "update": "Update success!",
+            "delete": "Delete success!",
+            "export": "Standard libraries export with success!",
+            "standardLibraryEdit": "Standard libraries edit with success!",
+            "projectLibraryEdit": "Project libraries edit with success!",
+            "associatedFhaterToSons": "Switchboards sons associated with success!"
+        },
+        "error":{
+            "copy": "Copy fail!",
+            "create": "Create fail!",
+            "update": "Update fail!",
+            "delete": "Delete fail!",
+            "genericMessage": "We are sorry, an error occured. Plase contact helpdesk!",
+            "dbError" : "Error during loading data from database. Plase contact helpdesk.",
+            "getAll" : "Get elements fail!" ,
+            "associatedUsers" : "Associated users fail!"
+        },
+        "warning": {
+            "noProject": "No project selected",
+            "noLibrary": "No library selected",
+            "standardLibraryOverwrite": "No transaction was carried out",
+            "noItem": "No item selected",
+            "noProject_cableGroup": "For add new Cable Group is neccesary to select a start project in Home page",
+            "noUserSelected": "No user selected!",
+            "noRolesSelected": "For complited success the join between project and users is neccesary to selected at role for each users",
+            "roleSelected": "No role selected"
+        }
+    },
+
+    "library": {
+       "itemType":                     "item type",
+       "tag":                           "tag",
+       "ratecPowerat40C":              "ratec Power at 40°C",
+       "designTemperature":            "design Temperature",
+       "ratecPoweratDesignTemp":       "ratec Power at Design Temp.",
+       "istIaIn":                      "ist. Ia/In",
+       "efficency44":                  "efficency 4/4",
+       "efficency34":                  "efficency 3/4",
+       "efficency24":                  "efficency 2/4",
+       "cosFi44":                      "cos-fi 4/4",
+       "cosFi34":                      "cos-fi 3/4",
+       "cosFi24":                      "cos-fi 2/4",
+       "cosFiStart":                   "cos-fi Start",
+       "dVA":                          "DVA %",
+       "dVN":                          "DVN %",
+       "projectDesignTemperature":     "project design Temperature",
+       "kvar":                         "kvar",
+       "tagAmp":                       "tag(AMP)",
+       "tagKva":                       "tag(KVA)",
+       "tagKw":                         "tag(Kw)",
+       "inA":                          "in(A)",
+       "tagKvaAmp":                    "tag(KVA-AMP)",
+       "kva":                          "kva",
+       "x":                            "x%",
+       "noLoadLossW" :                 "no Load Loss W",
+       "loadLossW" :                   "load Loss W",
+       "senFi44":                      "sen-fi 4/4",
+       "senFi34":                      "sen-fi    3/4",
+       "senFi24":                      "sen-fi 2/4",
+       "senFiNoLoad":                  "sen-fi No load",
+       "kw":                           "kw",
+       "amp":                          "amp",
+       "message": {
+           "overwrite":                "one o more libraries already exisit. For each library choose if you want overwrite o cancel it."
+        }
+    },
+
+    "cableGroup": {
+        "cableGroupTag":                "cable group tag",
+        "cableGroupGroundTyp":          "above or underground",
+        "substationPosition":           "Internal or external at substation",
+        "cableRoutingDepth":            "cable routing depth(m)",
+        "cableRoutingWidth":            "cable routing width(m)",
+        "groundOrAirTemperature":       "ground or air temperature -KT",
+        "groundThermalResistivity":     "ground thermal resistivity -KR",
+        "directBuriedDuct":             "direct buried duct -Kd",
+        "variableSpeedDrives":          "variable speed drives -Kh",
+        "ambalanceLoad":                "ambalance load -Kn",
+        "burialDepth":                  "depth of burial -KL",
+        "groupReductionFactor":         "group reduction factor -KP",
+        "deratingFactorRealCond":       "derating factor KU",
+        "deratingFactorIdealCond":      "derating factor K"
+    },
+
+    "substation" : {
+        "code":         "substation TAG",
+        "cableGroup":   "cable group TAG"
+    },
+
+    "swichboard": {
+        "code":                      "swichboard TAG",
+        "switchboardNr":             "switchboard Nr",
+        "ratedVoltage":              "rated voltage [V] ",
+        "ratedCurrent":              "rated current [A] ",
+        "shortCircuitRatedCurrent":  "short circuit rated current [kA] ",
+        "referencePowerFactor":      "reference power factor ",
+        "minimumCableSection":       "minimum cable section [mm²]",
+        "loadsCenterFather":         "loads center main",
+        "loadsCenterSon":            "loads center dependent"
+    },
+
+    "electricalLoadListTemp": {
+        "unit":		                    "unit",
+        "tag":                          "Eletrical load TAG",
+        "service":                      "service",
+        "pnmot":                        "motor Rated Power (PNmot) [kW]",
+        "pnmot40":                      "motor Rated Power AT 40° (PNmot) [kW]",
+        "pnoth":                        "el.User different from motor (PNoth) [kW]",
+        "status":                       "status of data",
+        "constructionArea":             "construction Area",
+        "purchasedBy":                  "purchased by",
+        "electricalItemSubClass":       "electrical item subClass",
+        "mainItem":                     "main item",
+        "item":                         "item",
+        "itemType":                     "item type",
+        "duty":                         "duty",
+        "supplyType":                   "supply type",
+        "positionId":                   "Pos. Id",
+        "revision":                     "rev.",
+        "powerSupplyTimeE":             "power Supply Time E [s]",
+        "powerSupplyTimeV":             "power Supply Time V [min]",
+        "pno":                          "estimated  Power at Normal Operating Conditions  of the driven machine (Pno) [kW]",
+        "pra":                          "rated Power of the driven machine (Pra) [kW]",
+        "pmec":                         "Power of the driven machine (Pmec) [kW]",
+        "rpm":                          "RPM",
+        "speedType":                    "speed",
+        "couplingType":                 "coupling",
+        "shape":                        "shape",
+        "wireCableConfig":              "Number of Phases",
+        "ratedVoltage":                 "rated voltage [kV] ",
+        "switchgearItemTag":            "Switchgear item / tag",
+        "electricalEfficiency":         "Electrical Efficiency",
+        "electricalUserAbsorbedPower":  "Electrical User Absorbed Power  (kwu) [kW]",
+        "annotation":                   "Notes"
+    },
+
+    "electricalLoadList": {
+        "smallTag":                 "load TAG",
+        "substationTag":            "Substation Tag",
+        "switchboardTag":           "Switchboard Tag",
+        "ratedPowerPnmot":          "Motor Rated Power (PNmot)) [kW]",
+        "loadCharacteristicTag" :   "load Characteristic TAG",
+        "powerConsider":            "Power consid.",
+        "eletricalItemSubclass":    "eletrical item subclass",
+        "loadType":                 "load type",
+        "workingHoursPerYear":      "working hours per year[h]",
+        "typeOfPowerSupply":        "type of power supply",
+        "estPowerAtNormOpPno":      "est.power at NOrm.Op.(Pno)",
+        "operatingScenario":        "operating scenario (Yes/No)",
+        "operatingScenario1":       "operating scenario 1",
+        "operatingScenario2":       "operating scenario 2",
+        "operatingScenario3":       "operating scenario 3",
+        "operatingScenario4":       "operating scenario 4",
+        "motorNominalSpeed":        "motor nominal speed",
+        "NrPairOfPoles":            "nr.pair of poles",
+        "eluserotherthenmotor":     "El.User other then motor(Pnoth)",
+        "powerConsidered":          "power considerared(Yes/No)",
+         "cableConsidered":          "cable considerared(Yes/No)"
+        }
+
+}
+  
+
