@@ -40,7 +40,8 @@ table > thead > th
 div.filteredMaterials
 {
   padding:5px;
-  max-height: 100px;
+  max-height: 200px;
+  width: 900px;
   overflow-y: scroll; 
 }
 
@@ -72,4 +73,10 @@ div.addingMaterials
 .commodity-label
 {
   padding: 5px 10px 0;
+}
+
+#scroll-modal-div
+{
+  min-height: 100%;
+  overflow-y: auto;
 }

@@ -72,6 +72,7 @@ export class AddPositionComponent
   private _loadingTimeoutExpired = false;
   private _tagStep2 = false;
   private _commodityPropertiesSwitch = true;
+  private _scrollPrevious: number;
 
 
   @ViewChild(SelectComponent)
@@ -513,8 +514,51 @@ export class AddPositionComponent
     newPosition.attributes = new Array<PositionAttributeValue>();
 
     this.addedPositions.push(new PositionInput(newPosition, new Array<string>()));
-    console.log("add-position.component -- selectMaterial -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
+    var body = document.body,
+    html = document.documentElement;
 
+    var height = Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+
+    console.log("add-position.component -- selectMaterial -- height(02): " + height.toString()); //TODO: Remove
+    
+    var resetButton = document.getElementById("btn-reset");
+
+    this.scrollDown(resetButton);
+
+    console.log("add-position.component -- selectMaterial -- window.scrollY.toString(): " + window.scrollY.toString());//TODO: remove
+  
+
+  }
+
+  scrollDown(element: any)
+  {
+    if (!!element.parentElement)
+    {
+      console.log("add-position.component -- scrollDown -- element.parentElement.nodeName.toUpperCase(): " + element.parentElement.nodeName.toUpperCase());//TODO: remove
+      if (element.parentElement.nodeName.toUpperCase() === "MODAL")
+      {
+        this._scrollPrevious = 0;
+        this.scrollDownAnimated(element.parentElement);
+        //element.parentElement.scrollTop += 50;
+        console.log("add-position.component -- scrollDown -- element.parentElement.scrollTop.toString(): " + element.parentElement.scrollTop.toString());//TODO: remove
+      }
+      this.scrollDown(element.parentElement);
+    }
+  }
+
+  scrollDownAnimated(element: any): void{
+    var step = Math.max(Math.round((element.scrollHeight - element.scrollTop) / 30.0), 1);
+    console.log("add-position.component -- scrollDownAnimated -- element.height.toString(): " + element.scrollHeight.toString());//TODO: remove
+    console.log("add-position.component -- scrollDownAnimated -- step.toString(): " + step.toString());//TODO: remove
+    element.scrollTop += step;
+    console.log("add-position.component -- scrollDownAnimated -- element.scrollTop.toString(): " + element.scrollTop.toString());//TODO: remove
+    console.log("add-position.component -- scrollDownAnimated -- this._scrollPrevious.toString(): " + this._scrollPrevious.toString());//TODO: remove
+    if (element.scrollTop > this._scrollPrevious)
+    {
+      this._scrollPrevious = element.scrollTop;
+      setTimeout(() => { this.scrollDownAnimated(element)}, 30);      
+    }
   }
 
   selectMaterialFromCache(materialId: number)
