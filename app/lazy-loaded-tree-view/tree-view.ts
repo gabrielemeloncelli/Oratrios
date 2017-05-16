@@ -30,6 +30,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface{
   constructor(private treeNodeService: TreeNodeService, private selectorService: NodeSelectorService,
     private uiStatusService: UiStatusService){
     this.currentView = this;
+    console.log("tree-view -- constructor -- uiStatusService.userIsAdministrator: " + uiStatusService.userIsAdministrator);//TODO: remove
   }
 
   refreshCurrentNode(modifiedChildNode: boolean) : void {

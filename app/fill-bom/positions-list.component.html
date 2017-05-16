@@ -1,8 +1,8 @@
 <h1>{{nodeName}}&nbsp;<span class="reducedFont">({{selectedNodePath}})</span></h1>
 <div *ngIf="!nodeLocked">
-  <a class="btn btn-m btn-success" (click)="refreshList()"><span class="glyphicon glyphicon-refresh"></span></a>
-  <a class="btn btn-m btn-success" (click)="addCatalogItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add catalog item</a>
-  <a class="btn btn-m btn-success" (click)="addTagItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add tag item</a>
+  <a class="btn btn-m btn-primary btn-saipem" (click)="refreshList()"><span class="glyphicon glyphicon-refresh"></span></a>
+  <a class="btn btn-m btn-primary btn-saipem" (click)="addCatalogItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add catalog item</a>
+  <a class="btn btn-m btn-primary btn-saipem" (click)="addTagItem()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add tag item</a>
 </div>
 <div [ngClass]="{'positionsLoading': loadingVisible}">
 <table class="table-bordered" style="width: 90%">
@@ -41,7 +41,7 @@
     <modal-body>
     </modal-body>
     <modal-footer>
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="confirmModal.dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" autofocus (click)="confirmDeletion()">Confirm</button>
+        <button type="button" class="btn btn-primary bth-saipem" data-dismiss="modal" (click)="confirmModal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary btn-saipem" autofocus (click)="confirmDeletion()">Confirm</button>
     </modal-footer>
 </modal>

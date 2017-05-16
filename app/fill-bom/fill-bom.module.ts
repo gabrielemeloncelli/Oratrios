@@ -27,10 +27,11 @@ import { TreeViewModule }                   from '../lazy-loaded-tree-view/tree-
 import { ModalModule }                      from '../ng2-bs3-modal/ng2-bs3-modal.module';
 import { AllowedValueService }              from './allowed-value.service';
 import { CoreModule }                       from '../core/core.module';
+import { SharedModule }                     from '../shared/shared.module';
 import { CoreEstService }                   from './core-est.service';
 
 @NgModule({
-  imports:      [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule, ToasterModule ],
+  imports:      [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule, ToasterModule, SharedModule ],
   declarations: [ PositionsListComponent, AddPositionComponent, FillBomComponent ],
   exports:      [ PositionsListComponent, AddPositionComponent ],
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,

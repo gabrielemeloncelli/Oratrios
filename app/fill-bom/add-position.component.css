@@ -80,3 +80,14 @@ div.addingMaterials
   min-height: 100%;
   overflow-y: auto;
 }
+
+ul.nav.nav-pills > li > a
+{
+  color:#22505F;
+}
+
+.nav.nav-pills > li.active > a
+{
+  color:#FFF;
+  background-color: #22505F;
+}

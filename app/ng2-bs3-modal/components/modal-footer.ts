@@ -6,8 +6,8 @@ import { ModalComponent } from './modal';
     template: `
         <div class="modal-footer">
             <ng-content></ng-content>
-            <button *ngIf="showDefaultButtons" type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Close</button>
-            <button *ngIf="showDefaultButtons" type="button" class="btn btn-primary" (click)="modal.close()">Save</button>
+            <button *ngIf="showDefaultButtons" type="button" class="btn btn-primary btn-saipem" data-dismiss="modal" (click)="modal.dismiss()">Close</button>
+            <button *ngIf="showDefaultButtons" type="button" class="btn btn-primary bth-saipem" (click)="modal.close()">Save</button>
         </div>
     `
 })

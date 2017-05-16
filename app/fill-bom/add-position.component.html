@@ -42,7 +42,7 @@
           </div>
           <div style="clear: both; height: 10px; width: 10px">
           </div>
-          <button class="btn btn-default pull-right" (click)="findMaterial()">Find</button>
+          <button class="btn btn-primary btn-saipem pull-right" (click)="findMaterial()">Find</button>
           <div style="clear: both"></div>
         </div>
       </div>
@@ -51,7 +51,7 @@
         <br/>
         <input class="form-control commodity-input pull-left" maxlength="25" [(ngModel)]="commodityCodeToBeFound" name="commodity-code"
         />
-        <button class="btn btn-default" (click)="findCommodityCode()">Find</button>
+        <button class="btn btn-primary btn-saipem" (click)="findCommodityCode()">Find</button>
         <br class="clearfix" />
         <br/>
       </div>
@@ -92,7 +92,7 @@
           <label>Tag</label>
           <input type="text" [(ngModel)]="position.tag" name="tag" [ngClass]="{'form-control': true, 'control-error': tagError}" [required]="_isTag ? 'true' : null"
             maxlength="20" autocomplete="off" #tagInput/>
-          <button *ngIf="!_tagStep2" class="btn btn-default" (click)="confirmTag()">Confirm</button>
+          <button *ngIf="!_tagStep2" class="btn btn-primary btn-saipem" (click)="confirmTag()">Confirm</button>
         </div>
         <div *ngIf="_isTag && _tagStep2" class="pull-left">
           <label>Description 1</label>
@@ -171,10 +171,10 @@
       </div>
     </modal-body>
     <modal-footer>
-      <button type="button" [id]="'btn-reset'" class="btn btn-default pull-left" (click)="resetPosition()">Reset</button>
-      <button type="submit" [ngClass]="{'btn': true, 'btn-default': addPositionForm.form.valid, 'btn-error': !addPositionForm.form.valid}"
+      <button type="button" [id]="'btn-reset'" class="btn btn-primary btn-saipem pull-left" (click)="resetPosition()">Reset</button>
+      <button type="submit" [ngClass]="{'btn': true, 'btn-primary btn-saipem': addPositionForm.form.valid, 'btn-error': !addPositionForm.form.valid}"
         (click)="savePosition()" [disabled]="!_tagAndQuantityVisible  || (_isTag && !_tagStep2) || !addPositionForm.form.valid">{{savePositionLabel()}}</button>
-      <button type="button" class="btn btn-default" data-dismiss="modal" (click)="dismissModal()">{{cancelLabel()}}</button>
+      <button type="button" class="btn btn-primary btn-saipem" data-dismiss="modal" (click)="dismissModal()">{{cancelLabel()}}</button>
     </modal-footer>
   </form>
 
