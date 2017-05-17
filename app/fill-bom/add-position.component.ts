@@ -369,6 +369,7 @@ export class AddPositionComponent
     this._isEdit = false;
     this.resetAddedPositions();
     this.resetGroupAndPart();
+    this.commodityPartService.getAll(-1);
   }
 
   resetAddedPositions()
@@ -389,6 +390,7 @@ export class AddPositionComponent
     }
     this.uiStatusService.tablesAndSizesVisible = false;
     this._tableFilters = new Array<TableFilter>();
+    console.log("add-position.component -- resetGroupAndPart -- !this.uiStatusService.commodityPart.id" + !this.uiStatusService.commodityPart.id); //TODO: remove
     if (!this.uiStatusService.commodityPart.id)
     {
       this.resetPart();
@@ -409,7 +411,7 @@ export class AddPositionComponent
   resetPart()
   {
     this.changeGroup();
-    this.commodityPartService.getAll(-1);
+    this.parts = new Array<Option>();
   }
 
   changeGroup()

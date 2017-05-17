@@ -55,7 +55,11 @@ export class UiStatusService
    selectProject(projectId: number)
    {
      this.nodeTypes = new Array<NodeType>();
+     console.log("ui-status.service -- selectProject"); //TODO: remove
      this.nodeTypeService.getNodeTypes(projectId)
-     .subscribe(nodes => this.nodeTypes = nodes);
+     .subscribe(nodes => {
+      this.nodeTypes = nodes;
+      console.log("ui-status.service -- selectProject - node types retrieved"); //TODO: remove
+     });
    }
  }

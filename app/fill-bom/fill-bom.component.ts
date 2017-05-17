@@ -161,7 +161,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
    ngOnInit(){    
      this.commodityGroupService.getAll(this.uiStatusService.disciplineId);
-     this.nodeTypes = this.uiStatusService.nodeTypes;
+     
 
 
 
@@ -182,7 +182,11 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
        }
          }
       );
-      this.nodeTypeOptions = this.createNodeTypeOptions();
+      setTimeout(() => {
+        this.nodeTypes = this.uiStatusService.nodeTypes;
+        this.nodeTypeOptions = this.createNodeTypeOptions();}
+        , 1000);
+      
       this.nodeSelectorPlaceholder = "Select / Change node type";
       this.commodityGroupService.groups.subscribe(g => this.commodityGroups = g);
       this.commodityPartService.parts.subscribe(p => this.nodeNameOptions = this.createPartNameOptions(p));
