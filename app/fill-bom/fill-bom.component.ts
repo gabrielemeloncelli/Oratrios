@@ -19,6 +19,7 @@ import { CommodityPart }              from './commodity-part';
 
 @Component({
   templateUrl: 'app/fill-bom/fill-bom.component.html',
+  styleUrls: [ 'app/fill-bom/fill-bom.component.css' ],
   selector: 'main-view'
 })
 export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {

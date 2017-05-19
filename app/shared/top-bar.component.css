@@ -1,0 +1,9 @@
+.navbar.navbarNoMargin{
+    margin-bottom: 0;
+}
+
+.pull-right.textBar,
+.pull-left.textBar
+{
+    padding: 14px 10px 0 20px;
+}

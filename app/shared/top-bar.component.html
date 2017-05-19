@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 7px; padding-right: 20px">
+<nav class="navbar navbar-default navbar-static-top navbarNoMargin" role="navigation">
 
     <!--bottone del menu quando collassa-->
     <div class="navbar-header">
@@ -10,21 +10,24 @@
         </button>
         <a class="navbar-brand" href="index.html" style="padding: 0px;">
             <div class="row">
-            <div class="col-xs-12">
-                <img src="assets/logoSaipem.jpg" class ="logo" alt="BoM-ELE">
-                <label class="appTitleBig saipemOrange">
+                <div class="col-xs-12">
+                    <img src="assets/logoSaipem.jpg" class="logo" alt="BoM-ELE">
+                    <label class="appTitleBig saipemOrange">
                     BoM-ELE
                 </label>
-                <label class="appTitleSmall saipemGreen">
+                    <label class="appTitleSmall saipemGreen">
                     Manual BoM Electrical
                 </label>
-            </div> 
-            </div> 
+                </div>
+            </div>
         </a>
     </div>
-
+    <div class="pull-left textBar">
+        <label class="welcome saipemGreen" *ngIf="!!uiStatusService.projectCodeAndDescription">&nbsp;Project:&nbsp;{{uiStatusService.projectCodeAndDescription}}</label>
+        <label class="welcome saipemGreen" *ngIf="!!uiStatusService.disciplineCode">&nbsp;Discipline:&nbsp;{{uiStatusService.disciplineCode}}</label>        
+    </div>
     <!--menu top pagina lato destro-->
-    <ul class="nav navbar-top-links navbar-right">
-    <label class="welcome saipemGreen" *ngIf="projectIdMain == null">Welcome {{uiStatusService.userCode}}</label>
-    </ul>
+    <div class="pull-right textBar">
+        <label class="welcome saipemGreen">Welcome {{uiStatusService.userCode}}</label>
+    </div>
 </nav>

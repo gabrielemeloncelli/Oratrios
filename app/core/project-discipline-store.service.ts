@@ -49,13 +49,13 @@ export class ProjectDisciplineStoreService{
 
 
   mapProjectDiscipline(res: any): ProjectDiscipline{
-    var resultProject = new Project(res.project.id, res.project.code);
+    var resultProject = new Project(res.project.id, res.project.code, res.project.description);
     var resultDiscipline = new Discipline(res.discipline.id, res.discipline.code);
     return new ProjectDiscipline(res.id, resultProject, resultDiscipline);
   }
 
   mapProject(res: any): Project{
-    return new Project(0, res.code);
+    return new Project(0, res.code, res.description);
   }
 
 }

@@ -34,6 +34,7 @@ export class UiStatusService
   public nodePath = "";
   public userCode: string;
   public userIsAdministrator: boolean;
+  public projectCodeAndDescription: string;
 
 
   constructor(private nodeTypeService: NodeTypeService) { }

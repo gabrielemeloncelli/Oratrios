@@ -10,6 +10,7 @@ import { UiStatusService }  from '../core/ui-status.service';
 @Component({
   selector: 'top-bar',
   templateUrl: 'app/shared/top-bar.component.html',
+  styleUrls: [ 'app/shared/top-bar.component.css' ]
 
 
 })

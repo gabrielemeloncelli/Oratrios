@@ -61,23 +61,7 @@ export class SelectProjectComponent{
 
   }
 
-  buildMockProjects()
-  {
-    var newProject: Project;
-    newProject = new Project(0, "A00001");
-    this._mockProjects.push(newProject);
-    newProject = new Project(0, "A00002");
-    this._mockProjects.push(newProject);
-    newProject = new Project(0, "A00003");
-    this._mockProjects.push(newProject);
-    newProject = new Project(0, "B00001");
-    this._mockProjects.push(newProject);
-    newProject = new Project(0, "B00002");
-    this._mockProjects.push(newProject);
-    newProject = new Project(0, "AKEPC234");
-    this._mockProjects.push(newProject);
-  }
-
+  
   projectDisciplinesRetrieved(projectDisciplines: ProjectDiscipline[])
   {
     if (projectDisciplines != null && projectDisciplines.length > 0)
@@ -85,6 +69,7 @@ export class SelectProjectComponent{
       console.log("select-project.component -- projectDisciplinesRetrieved -- projectDisciplines.length: " + projectDisciplines.length); //TODO:remove
       var selectedDiscipline = projectDisciplines[0];
       this._uiStatusService.projectCode = selectedDiscipline.project.code;
+      this._uiStatusService.projectCodeAndDescription = this._uiStatusService.projectCode + (!selectedDiscipline.project.description ? "" : " - " + selectedDiscipline.project.description);
       this._uiStatusService.projectId = selectedDiscipline.project.id;
       this._uiStatusService.selectProject(selectedDiscipline.project.id);
       if (projectDisciplines.length === 1)
