@@ -42,7 +42,7 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: 'index.html'
     }),
     new webpack.ProvidePlugin({
             $: "jquery",

@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   usernameLabel: string = "Username";
   password: string = "Password";
   rememberMe: string = "Remember Me";
-  login: string = "BoM ELE - Electrical Manual BoM Builder";
+  login: string = "BoM ELE - Manual BoM Electrical";
   signIn: string = "Sign-in";
 
   // username e password dell'utente se queste sono memorizzate nello storage
