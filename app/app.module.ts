@@ -16,6 +16,7 @@ import { SelectProjectModule }    from './select-project/select-project.module';
 import { ExportModule }           from './export/export.module';
 import { AppRoutingModule }       from './app-routing.module';
 import { DisciplineSelectModule } from './discipline-select/discipline-select.module';
+import { LoginModule }            from './login/login.module';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { DisciplineSelectModule } from './discipline-select/discipline-select.mo
     AppRoutingModule,
     SelectProjectModule,
     ExportModule,
-    DisciplineSelectModule
+    DisciplineSelectModule,
+    LoginModule
   ],
   declarations: [ AppComponent ],
   bootstrap:    [ AppComponent ],
