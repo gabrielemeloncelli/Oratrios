@@ -14,6 +14,8 @@ import { PlatformUserService }  from './platform-user.service';
   styleUrls: ['app/login/login.component.css']
 })
 export class LoginComponent implements OnInit {
+  public loaded = false;
+  public useOtherUser = false;
 
   constructor(private router: Router,
               public uiStatuService: UiStatusService,
@@ -48,7 +50,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.loading = false;
     // Get the username of the user autehenticated by the platform
-    this.platformUserService.platformUser.subscribe(user => this.uiStatuService.platformAuthenticatedUserName = user.code);
+    this.platformUserService.platformUser.subscribe(user => {
+      this.uiStatuService.platformAuthenticatedUserName = user.code;
+      this.useOtherUser = !user.code;
+      this.loaded = true;
+    });
     this.platformUserService.getUser();
     //this.username = (this.userInfo != null) ? this.userInfo.username : "";
     //this.userPassword = (this.userInfo != null) ? this.userInfo.password : "";
