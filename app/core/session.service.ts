@@ -27,10 +27,10 @@ export class SessionService {
     return this._userSubject.asObservable();
   }
 
-  retrieveUserData(): void {
+  retrieveUserData(platformAuthenticatedUserName: string): void {
 
     this._http
-        .get(this.USERDATA_BASE_URL)
+        .get(this.USERDATA_BASE_URL + '?platformAuthenticatedUserName=' + encodeURIComponent(platformAuthenticatedUserName))
         .map((res:Response) => res.json())
         .subscribe((res: UserDTO) => {
           this._userSubject.next(res);

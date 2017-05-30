@@ -35,6 +35,8 @@ export class UiStatusService
   public userCode: string;
   public userIsAdministrator: boolean;
   public projectCodeAndDescription: string;
+  public platformAuthenticatedUserName: string;
+  public authToken: string;
 
 
   constructor(private nodeTypeService: NodeTypeService) { }

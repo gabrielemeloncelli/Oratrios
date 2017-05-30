@@ -51,7 +51,7 @@ export class SelectProjectComponent{
 
     this._projectDisciplineService.selectUser();
 
-    this._sessionService.retrieveUserData();
+    this._sessionService.retrieveUserData(this._uiStatusService.platformAuthenticatedUserName);
 
   }
 

@@ -9,6 +9,9 @@
             <div class="panel-body" style="padding: 55px; padding-top: 45px;">
                 <form role="form">
                     <fieldset>
+                        <button *ngIf="!!uiStatuService.platformAuthenticatedUserName" class="btn btn-info btn-saipem">Login as {{uiStatuService.platformAuthenticatedUserName}}</button>
+                        <br/>
+                        <button *ngIf="!!uiStatuService.platformAuthenticatedUserName" class="btn btn-info btn-saipem">Other user</button>
                         <div class="form-group" style="margin-bottom: 30px;">
                             <input class="form-control" placeholder={{usernameLabel}} name="email" type="email" autofocus [(ngModel)]="username" [disabled]="loading">
                         </div>

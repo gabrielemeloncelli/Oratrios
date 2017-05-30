@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 //import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-
-
-
-
 import { UiStatusService } from '../core/ui-status.service';
+
+import { PlatformUserService }  from './platform-user.service';
 
 
 
@@ -17,7 +15,9 @@ import { UiStatusService } from '../core/ui-status.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              public uiStatuService: UiStatusService,
+              private platformUserService: PlatformUserService) { }
 
   //campi del form del login
 
@@ -47,6 +47,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loading = false;
+    // Get the username of the user autehenticated by the platform
+    this.platformUserService.platformUser.subscribe(user => this.uiStatuService.platformAuthenticatedUserName = user.code);
+    this.platformUserService.getUser();
     //this.username = (this.userInfo != null) ? this.userInfo.username : "";
     //this.userPassword = (this.userInfo != null) ? this.userInfo.password : "";
     //this.userRememberMe = (this.userInfo != null) ? this.userInfo.rememberMe : false;
