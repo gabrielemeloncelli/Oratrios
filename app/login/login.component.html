@@ -16,28 +16,35 @@
                             <div class="tab-content">
                                 <div id="platform" class="tab-pane fade in active">
                                     <div class="form-group" style="margin-bottom: 30px;">
-                                        <input class="form-control" disabled="disabled" [value]="uiStatuService.platformAuthenticatedUserName"
-                                        />
+                                        <input class="form-control" disabled="disabled" [value]="uiStatuService.platformAuthenticatedUserName" />
                                     </div>
+                                    <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
+                                        <div class="col-xs-6 col-xs-offset-3 col-centered">
+                                            <button (click)="SignInPlatform()" type="button" class="btn btn-info btn-saipem btn-padded" [disabled]="loading">
+                                                {{signIn}}</button>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div id="other" class="tab-pane fade">
                                     <div class="form-group" style="margin-bottom: 30px;">
-                                        <input class="form-control" placeholder={{usernameLabel}} name="email" autofocus [(ngModel)]="username"
-                                            [disabled]="loading">
+                                        <input class="form-control" placeholder={{usernameLabel}} name="email" autofocus [(ngModel)]="username" [disabled]="loading">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 30px;">
                                         <input class="form-control" placeholder={{password}} name="password" type="password" [(ngModel)]="userPassword" value=""
                                             [disabled]="loading">
                                     </div>
+                                    <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
+                                        <div class="col-xs-6 col-xs-offset-3 col-centered">
+                                            <button (click)="SignIn()" type="button" class="btn btn-info btn-saipem btn-padded" [disabled]="loading">
+                                                {{signIn}}</button>
+                                        </div>
+                                    </div>
+
                                 </div>
+                                <label class="err-label-base">{{errorMessage}}</label>
                             </div>
-                            <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
-                                <div class="col-xs-6 col-xs-offset-3 col-centered">
-                                    <button (click)="SignIn()" type="button" class="btn btn-info btn-saipem btn-padded" [disabled]="loading">
-                                    {{signIn}}
-                                </button>
-                                </div>
-                            </div>
+
                         </fieldset>
                     </form>
                 </div>

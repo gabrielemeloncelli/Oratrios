@@ -122,3 +122,12 @@
 .horizontal-center {
     text-align: center;
 }
+
+.err-label-base {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #f00;
+    background-color: #fff;
+    background-image: none;
+}

@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { LoginComponent }       from './login.component';
 import { LoginRoutingModule }   from './login-routing.module';
 import { PlatformUserService }  from './platform-user.service';
+import { TokenService }         from './token.service';
 
 
 
@@ -18,6 +19,7 @@ import { PlatformUserService }  from './platform-user.service';
                 CommonModule,
                 SharedModule ],
     declarations: [ LoginComponent ],
-    providers: [ PlatformUserService ]
+    providers: [ PlatformUserService,
+                    TokenService ]
 })
 export class LoginModule{}
