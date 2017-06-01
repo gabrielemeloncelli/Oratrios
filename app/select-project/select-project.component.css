@@ -10,5 +10,6 @@ ul {
 }
 
 .project-label {
-  min-width: 100px
+  min-width: 100px;
+  padding-left: 3px;
 }

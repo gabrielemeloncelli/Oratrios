@@ -191,6 +191,9 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
       this.nodeSelectorPlaceholder = "Select / Change node type";
       this.commodityGroupService.groups.subscribe(g => this.commodityGroups = g);
       this.commodityPartService.parts.subscribe(p => this.nodeNameOptions = this.createPartNameOptions(p));
+
+      this.windowResized();
+      this.trimSize();
       
    }
 
@@ -394,6 +397,23 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     }
 
     return entityCode;
+  }
+
+  trimSize() {
+    window.addEventListener("resize", this.windowResized)
+  }
+
+  windowResized() {
+    var column = document.getElementById("main-fill-bom-col-1");
+    if (!!column)
+    {
+      column.style.maxHeight = (window.innerHeight - 200).toString() + "px";
+    }
+    column = document.getElementById("main-fill-bom-col-2");
+    if (!!column)
+    {
+      column.style.maxHeight = (window.innerHeight - 200).toString() + "px";
+    }
   }
 
 }
