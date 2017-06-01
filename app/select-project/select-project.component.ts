@@ -60,8 +60,8 @@ export class SelectProjectComponent{
   }
 
 
-  selectProject(code: string){
-    this._projectDisciplineService.selectProject(code);
+  selectProject(code: string, name: string){
+    this._projectDisciplineService.selectProject(code, this._uiStatusService.userCode);
 
   }
 

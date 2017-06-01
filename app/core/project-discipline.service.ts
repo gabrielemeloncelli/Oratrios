@@ -26,9 +26,9 @@ export class ProjectDisciplineService{
     );
   }
 
-  selectProject(projectCode: string)
+  selectProject(projectCode: string, databaseUserName: string)
   {
-    this._storeService.selectProject(projectCode).subscribe(
+    this._storeService.selectProject(projectCode, databaseUserName).subscribe(
       projectDisciplines => this._projectDisciplines.next(projectDisciplines)
     );
   }

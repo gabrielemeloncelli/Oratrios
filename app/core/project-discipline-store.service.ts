@@ -26,12 +26,13 @@ export class ProjectDisciplineStoreService{
 
   }
 
-  selectProject(projectCode: string): Observable<ProjectDiscipline[]>{
+  selectProject(projectCode: string, databaseUserName: string): Observable<ProjectDiscipline[]>{
 
     var _resultArray = new Array<ProjectDiscipline[]>();
     var result = new Subject<Array<ProjectDiscipline>>();
     this._http
-        .get(this.BASE_URL + "/project/" + projectCode)
+        .get(this.BASE_URL + "/project?projectCode=" + encodeURIComponent(projectCode) +
+        '&databaseUserName=' + databaseUserName)
         .map((res:Response) => res.json())
         .subscribe(res => {
           result.next(res.map((pos: any) => this.mapProjectDiscipline(pos)));

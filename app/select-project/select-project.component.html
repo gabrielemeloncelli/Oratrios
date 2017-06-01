@@ -6,7 +6,7 @@
     <ul>
       <li *ngFor="let project of projects" class>
         <div class="project-node">
-          <div class="pull-left project-label">{{project.code}}&nbsp;</div><a class="btn btn-xs btn-success" (click)="selectProject(project.code)"><span class="glyphicon glyphicon-check"></span> </a>
+          <div class="pull-left project-label">{{project.code}}&nbsp;</div><a class="btn btn-xs btn-success" (click)="selectProject(project.code, project.description)"><span class="glyphicon glyphicon-check"></span></a><span class="project-label">{{project.description}}&nbsp;</span> 
         </div>
       </li>
     </ul>
