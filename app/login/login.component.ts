@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 
 import { UiStatusService } from '../core/ui-status.service';
 
-import { PlatformUserService }  from './platform-user.service';
+import { PlatformUserService } from './platform-user.service';
+import { TokenService } from './token.service';
 
 
 
@@ -16,10 +17,12 @@ import { PlatformUserService }  from './platform-user.service';
 export class LoginComponent implements OnInit {
   public loaded = false;
   public useOtherUser = false;
+  public errorMessage = "";
 
   constructor(private router: Router,
-              public uiStatuService: UiStatusService,
-              private platformUserService: PlatformUserService) { }
+    public uiStatuService: UiStatusService,
+    private platformUserService: PlatformUserService,
+    private tokenService: TokenService) { }
 
   //campi del form del login
 
@@ -49,11 +52,26 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loading = false;
+    this.tokenService.tokenValue.subscribe(
+      token => {
+        this.errorMessage = "";
+        this.uiStatuService.authToken = token.access_token;
+        this.uiStatuService.platformAuthenticatedUserName = token.userName;
+        this.router.navigate(['select-project']);
+      }
+    );
+    this.tokenService.error.subscribe(
+      error => {
+        this.errorMessage = error;
+        this.loading = false;
+      }
+    );
     // Get the username of the user autehenticated by the platform
     this.platformUserService.platformUser.subscribe(user => {
       this.uiStatuService.platformAuthenticatedUserName = user.code;
       this.useOtherUser = !user.code;
       this.loaded = true;
+
     });
     this.platformUserService.getUser();
     //this.username = (this.userInfo != null) ? this.userInfo.username : "";
@@ -62,45 +80,27 @@ export class LoginComponent implements OnInit {
 
   }
 
-  public SignIn() {
-/*
+  private singnInPvt(usePlatform: boolean)
+  {
+    this.errorMessage = "Authenticating ...";
     this.loading = true;
-    var elesStorageCredentials = this.localSt.retrieve("ElesStorageCredentials");
-    if (elesStorageCredentials != null) {
-      elesStorageCredentials.rememberMe = this.userRememberMe;
-      this.localSt.store("ElesStorageCredentials", elesStorageCredentials)
+    if (usePlatform)
+    {
+      this.tokenService.signIn(this.uiStatuService.platformAuthenticatedUserName, "");
     }
+    else
+    {
+      this.tokenService.signIn(this.username, this.password);
+    }
+  }
 
-    this.echoAuthenticationService.authorizeWithEcho(this.username, this.userPassword, this.userRememberMe)
-      .subscribe(
-      res => {// se la validazione è andata a buon fine viene restituito il token
-        let authenticatedUser = res;
-        // se l'autorizzazione è andata a buon fine imposto a true la variabile per entrare nell'applicativo
-        if (authenticatedUser != null) {
-          this.isUserAuthorizated = true;
-          this.router.navigateByUrl('/');
-          this.loading = false;
+  public SignInPlatform() {
+    this.singnInPvt(true);
+  }
 
-          var loginResult: any = {
-            username: this.username,
-            isUserAuthorizated: this.isUserAuthorizated
-          }
-          this.isAuthorizated.emit(loginResult);
-
-        }
-      },
-      error => {
-        this.toasterService.pop("error", "Anauthorizated user or crediantial wrong");
-        var loginResult: any = {
-          username: this.username,
-          isUserAuthorizated: this.isUserAuthorizated
-        }
-        this.isAuthorizated.emit(loginResult);
-        this.loading = false;
-
-      }
-      );
-*/
+  public SignIn() {
+    this.singnInPvt(false);
+ 
   }
 
 
