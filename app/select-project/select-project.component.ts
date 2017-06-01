@@ -27,12 +27,7 @@ export class SelectProjectComponent{
     this._uiStatusService.disciplineId = 0;
     this._uiStatusService.disciplineCode = "";
     this._uiStatusService.projectDisciplineId = 0;
-    this._sessionService.user.subscribe(
-      u => {
-              this._uiStatusService.userCode = u.code;
-              this._uiStatusService.userIsAdministrator = u.isAdministrator;
-              this.username = u.code;
-      });
+    
   }
 
   ngOnInit()
@@ -49,9 +44,18 @@ export class SelectProjectComponent{
       projectDiscipline => this.projectDisciplineRetrieved(projectDiscipline)
     );
 
-    this._projectDisciplineService.selectUser();
+    this._sessionService.user.subscribe(
+      u => {
+              this._uiStatusService.userCode = u.code;
+              this._uiStatusService.userIsAdministrator = u.isAdministrator;
+              this.username = u.code;
+              this._projectDisciplineService.selectUser(this._uiStatusService.userCode);
+      });
 
-    this._sessionService.retrieveUserData(this._uiStatusService.platformAuthenticatedUserName);
+      this._sessionService.retrieveUserData(this._uiStatusService.platformAuthenticatedUserName);
+    
+
+    
 
   }
 

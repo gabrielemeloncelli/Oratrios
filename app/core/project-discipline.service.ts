@@ -20,8 +20,8 @@ export class ProjectDisciplineService{
 
   constructor(private _storeService: ProjectDisciplineStoreService){}
 
-  selectUser(){
-    this._storeService.selectUser().subscribe(
+  selectUser(databaseUserName: string){
+    this._storeService.selectUser(databaseUserName).subscribe(
       projects => this._projects.next(projects)
     );
   }

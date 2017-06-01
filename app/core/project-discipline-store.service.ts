@@ -13,11 +13,11 @@ export class ProjectDisciplineStoreService{
   private PRJ_BASE_URL = 'api/projects';
   constructor(private _http: Http){}
 
-  selectUser(): Observable<Project[]>{
+  selectUser(databaseUserName: string): Observable<Project[]>{
     var _resultArray = new Array<Project[]>();
     var result = new Subject<Array<Project>>();
     this._http
-        .get(this.PRJ_BASE_URL)
+        .get(this.PRJ_BASE_URL + '?databaseUserName=' + encodeURIComponent(databaseUserName))
         .map((res:Response) => res.json())
         .subscribe(res => {
           result.next(res.map((pos: any) => this.mapProject(pos)));
