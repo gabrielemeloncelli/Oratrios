@@ -86,11 +86,11 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     if (usePlatform)
     {
-      this.tokenService.signIn(this.uiStatuService.platformAuthenticatedUserName, "");
+      this.tokenService.signIn(this.uiStatuService.platformAuthenticatedUserName, "", this.uiStatuService.platformAuthenticatedUserName);
     }
     else
     {
-      this.tokenService.signIn(this.username, this.password);
+      this.tokenService.signIn(this.username, this.userPassword, "");
     }
   }
 

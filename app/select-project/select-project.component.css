@@ -13,3 +13,8 @@ ul {
   min-width: 100px;
   padding-left: 3px;
 }
+
+div.project-selector-list {
+  max-height: 200px;
+  overflow-y: scroll;
+}

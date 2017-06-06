@@ -1,6 +1,7 @@
 import { Injectable }   from '@angular/core';
 import { Http,
-            Response }  from '@angular/http';
+            Response,
+            Headers }  from '@angular/http';
 //import { Observable }   from 'rxjs/observable';
 import { Subject }      from 'rxjs/subject';
 
@@ -19,9 +20,11 @@ export class TokenService {
 
     constructor(private http: Http) {}
 
-    public signIn(username: string, password: string) {
+    public signIn(username: string, password: string, platformUserName: string) {
         var payload = 'grant_type=password&username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
-        this.http.post(this.TOKEN_URL, payload)
+        var headers = new Headers();
+        headers.append("oratrios-plt", platformUserName);
+        this.http.post(this.TOKEN_URL, payload, { headers: headers })
         .map((res: Response) => res.json())
         .subscribe(res => this.processResponse(res),
          err => {
