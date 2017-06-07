@@ -1,14 +1,14 @@
 <top-bar></top-bar>
 <div class="container">
   <h1>Select Discipline</h1>
-  <div class="btn-group" dropdown>
-    <button id="split-button" type="button" class="btn btn-primary btn-saipem">Discipline</button>
-    <button type="button" class="btn btn-primary btn-saipem dropdown-toggle-split" dropdownToggle>
-      <span class="caret"></span>
-      <span class="sr-only">Split button!</span>
-    </button>
-    <ul class="dropdown-menu" *dropdownMenu role="menu" aria-labelledby="split-button">
-      <li *ngFor="let projectDiscipline of projectDisciplines" role="menuitem"><a class="dropdown-item" (click)="selectProjectDiscipline(projectDiscipline)">{{projectDiscipline.discipline.code}}</a></li>
-   </ul>
- </div>
+  <div class="discipline-selector-list">
+    <ul>
+      <li *ngFor="let projectDiscipline of projectDisciplines">
+        <div class="discipline-node">
+          <div class="pull-left discipline-label">{{projectDiscipline.discipline.code}}&nbsp;</div><a class="btn btn-xs btn-success" (click)="selectProjectDiscipline(projectDiscipline)"><span class="glyphicon glyphicon-check"></span></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
 </div>

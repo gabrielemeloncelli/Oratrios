@@ -9,7 +9,8 @@ import { Discipline }               from '../core/discipline';
 @Component(
     {
         selector: "discipline-select",
-        templateUrl: "app/discipline-select/discipline-select.component.html"
+        templateUrl: "app/discipline-select/discipline-select.component.html",
+        styleUrls: [ 'app/discipline-select/discipline-select.component.css']
     }
 )
 export class DisciplineSelectComponent
