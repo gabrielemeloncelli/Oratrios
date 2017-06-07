@@ -61,6 +61,7 @@ export class SelectProjectComponent{
 
 
   selectProject(code: string, name: string){
+    this._uiStatusService.projectDescription = name;
     this._projectDisciplineService.selectProject(code, this._uiStatusService.userCode);
 
   }
@@ -73,7 +74,6 @@ export class SelectProjectComponent{
       console.log("select-project.component -- projectDisciplinesRetrieved -- projectDisciplines.length: " + projectDisciplines.length); //TODO:remove
       var selectedDiscipline = projectDisciplines[0];
       this._uiStatusService.projectCode = selectedDiscipline.project.code;
-      this._uiStatusService.projectCodeAndDescription = this._uiStatusService.projectCode + (!selectedDiscipline.project.description ? "" : " - " + selectedDiscipline.project.description);
       this._uiStatusService.projectId = selectedDiscipline.project.id;
       this._uiStatusService.selectProject(selectedDiscipline.project.id);
       if (projectDisciplines.length === 1)

@@ -22,9 +22,14 @@
             </div>
         </a>
     </div>
-    <div class="pull-left textBar">
-        <label class="welcome saipemGreen" *ngIf="!!uiStatusService.projectCodeAndDescription">&nbsp;Project:&nbsp;{{uiStatusService.projectCodeAndDescription}}</label>
-        <label class="welcome saipemGreen" *ngIf="!!uiStatusService.disciplineCode">&nbsp;Discipline:&nbsp;{{uiStatusService.disciplineCode}}</label>        
+    <div class="pull-left centerTextBar">
+        <div>
+            <label class="welcome saipemGreen" *ngIf="!!uiStatusService.projectCode">Project:&nbsp;{{uiStatusService.projectCode}}</label>
+            <label class="welcome saipemGreen" *ngIf="!!uiStatusService.disciplineCode">&nbsp;Discipline:&nbsp;{{uiStatusService.disciplineCode}}</label>
+        </div>
+        <div class="smaller">
+            <label class="welcome saipemGreen smaller" *ngIf="!!uiStatusService.projectDescription">{{uiStatusService.projectDescription}}</label>
+        </div>       
     </div>
     <!--menu top pagina lato destro-->
     <div class="pull-right textBar">

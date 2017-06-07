@@ -34,7 +34,7 @@ export class UiStatusService
   public nodePath = "";
   public userCode: string;
   public userIsAdministrator: boolean;
-  public projectCodeAndDescription: string;
+  public projectDescription: string;
   public platformAuthenticatedUserName: string;
   public authToken: string;
 
