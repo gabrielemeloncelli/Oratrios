@@ -2,8 +2,10 @@
   <a class="btn btn-success btn-xs" (click)="expand()">
     <span class="{{root.cssClass}}"></span>
   </a>
-  <a *ngIf="root.id > 0 && (!root.commodityGroup || !!root.commodityPart)" (click)="selectRoot()">{{ root.name }}</a>
-  <span *ngIf="root.id == 0 || (!!root.commodityGroup && !root.commodityPart)">{{ root.name }}</span>
+  <a *ngIf="root.id > 0 && (!root.commodityGroup || !!root.commodityPart)" (click)="selectRoot()" data-toggle="tooltip" 
+    title="{{!!root.commodityPart ? root.commodityPart.description : !!root.commodityGroup ? root.commodityGroup.description : ''}}">{{ root.name }}</a>
+  <span *ngIf="root.id == 0 || (!!root.commodityGroup && !root.commodityPart)" data-toggle="tooltip" 
+    title="{{!!root.commodityPart ? root.commodityPart.description : !!root.commodityGroup ? root.commodityGroup.description : ''}}">{{ root.name }}</span>
   <div class="pull-right">
     <div *ngIf="uiStatusService.userIsAdministrator" class="pull-right" style="width: 80px; padding-left: 5px">
       <div style="width: 25px; height: 25px; border: 1px black; float: left">
