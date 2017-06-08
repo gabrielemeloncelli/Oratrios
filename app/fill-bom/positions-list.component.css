@@ -5,7 +5,18 @@ div.positionsLoading
   background-position: center;
   min-height: 80px;
 }
+
 span.reducedFont
 {
-  font-size: 0.5em;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.vert-scroll {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+p.reduced-margin {
+  margin: 0;
 }

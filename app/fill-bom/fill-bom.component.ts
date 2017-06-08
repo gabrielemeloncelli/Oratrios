@@ -16,6 +16,7 @@ import { NodeDTO }                    from '../lazy-loaded-tree-view/nodeDTO';
 import { NodeType }                   from '../core/node-type';
 import { CommodityGroup }             from './commodity-group';
 import { CommodityPart }              from './commodity-part';
+import { NodeSelectorService }        from './node-selector.service';
 
 @Component({
   templateUrl: 'app/fill-bom/fill-bom.component.html',
@@ -51,7 +52,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService,
      private uiStatusService: UiStatusService, private commodityGroupService: CommodityGroupService,
-     private router: Router, private commodityPartService: CommodityPartService)
+     private router: Router, private commodityPartService: CommodityPartService,
+     private selectorService: NodeSelectorService)
   {
     this.treeNodeService = treeNodeService;
     this.coreEstService = coreEstService;
@@ -191,6 +193,10 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
       this.nodeSelectorPlaceholder = "Select / Change node type";
       this.commodityGroupService.groups.subscribe(g => this.commodityGroups = g);
       this.commodityPartService.parts.subscribe(p => this.nodeNameOptions = this.createPartNameOptions(p));
+
+      this.selectorService.selectedNodePath.subscribe(
+      (path: string) => this.windowResized()
+    )
 
       this.windowResized();
       this.trimSize();
@@ -407,12 +413,12 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     var column = document.getElementById("main-fill-bom-col-1");
     if (!!column)
     {
-      column.style.maxHeight = (window.innerHeight - 200).toString() + "px";
+      column.style.maxHeight = (window.innerHeight - 180).toString() + "px";
     }
     column = document.getElementById("main-fill-bom-col-2");
     if (!!column)
     {
-      column.style.maxHeight = (window.innerHeight - 200).toString() + "px";
+      column.style.maxHeight = (window.innerHeight - 240).toString() + "px";
     }
   }
 
