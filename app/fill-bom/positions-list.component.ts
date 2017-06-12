@@ -106,4 +106,8 @@ export class PositionsListComponent {
     this.updateSelection(this._node);
   }
 
+  copyNodeContents() {
+    this.uiStatusService.nodeToBeCopied = this._node;
+  }
+
 }

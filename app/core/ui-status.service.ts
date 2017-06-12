@@ -37,6 +37,7 @@ export class UiStatusService
   public projectDescription: string;
   public platformAuthenticatedUserName: string;
   public authToken: string;
+  public nodeToBeCopied: TreeNode;
 
 
   constructor(private nodeTypeService: NodeTypeService) { }
