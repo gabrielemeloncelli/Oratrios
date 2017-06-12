@@ -35,6 +35,7 @@ export class PositionsListComponent {
   private DELETION_NODE_QUANTITIES = "DELETION_NODE_QUANTITIES";
   private DELETION_POSITION = "DELETION_POSITION";
 
+
   constructor(private selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService) {
   }
 
@@ -108,6 +109,25 @@ export class PositionsListComponent {
 
   copyNodeContents() {
     this.uiStatusService.nodeToBeCopied = this._node;
+  }
+
+  canPaste(): boolean {
+    if (!this.uiStatusService.nodeToBeCopied) {
+      return false;
+    }
+    if (!this._node.commodityPart || !this._node.commodityPart.id)
+    {
+      return true;
+    }
+    if(!this.uiStatusService.nodeToBeCopied.commodityPart) {
+      return false;
+    }
+    return this.uiStatusService.nodeToBeCopied.commodityPart.id === this._node.commodityPart.id;
+  }
+
+  copyPastedContents() {
+    this.positionsService.pasteNode(this.uiStatusService.nodeToBeCopied.id, this._node.id)
+    .subscribe(() => { this.updateSelection(this._node) });
   }
 
 }

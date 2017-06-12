@@ -133,6 +133,18 @@ export class PositionStoreService {
     return result.asObservable();
   }
 
+  pasteNode(sourceNodeId: number, targetNodeId: number): Observable<null> {
+    var result = new Subject();
+    this._http
+      .post(this.BASE_URL + "/node/" + sourceNodeId + "/paste-to-node/" +targetNodeId, "")
+      .map((res: Response) => res.json())
+      .subscribe(res => {
+        result.next();
+      }
+      );
+    return result.asObservable();
+  }
+
   mapPosition(res: any): BomPosition {
     var resultPosition = new BomPosition();
     resultPosition.id = res.id;

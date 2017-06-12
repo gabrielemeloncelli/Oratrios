@@ -6,6 +6,7 @@
   <a class="btn btn-m btn-primary btn-saipem" (click)="addTagItem()" data-toogle="tooltip" title="Add tag item"><span class="glyphicon glyphicon-tag"></span></a>
   <a class="btn btn-m btn-primary btn-saipem" (click)="clearNode()" data-toogle="tooltip" title="Reset node quantities"><span class="glyphicon glyphicon-erase"></span></a>
   <a class="btn btn-m btn-primary btn-saipem" (click)="copyNodeContents()" data-toogle="tooltip" title="Copy node content"><span class="glyphicon glyphicon glyphicon-copy"></span></a>
+  <button class="btn btn-m btn-primary btn-saipem" (click)="copyPastedContents()" data-toogle="tooltip" title="Paste node content" [disabled]="!canPaste()"><span class="glyphicon glyphicon glyphicon-paste"></span></button>
 </div>
 <div *ngIf="!!nodeName && nodeName !== '-'" [ngClass]="{'vert-scroll': true, 'positionsLoading': loadingVisible}" id="main-fill-bom-col-2">
 <table class="table-bordered" style="width: 98%">
