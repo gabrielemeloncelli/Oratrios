@@ -1,19 +1,19 @@
-import { Component,
-          ViewChild }       from '@angular/core';
-import { Observable }       from 'rxjs/Observable';
-import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
-import { ToasterModule,
-          ToasterService,
-          Toast}            from 'angular2-toaster';
+import {
+  Component,
+  ViewChild
+} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { BomPosition }          from './bom-position';
-import { NodeSelectorService }  from './node-selector.service';
-import { TreeNode }             from '../lazy-loaded-tree-view/tree-node';
-import { PositionService }      from './position.service';
-import { UiStatusService }      from '../core/ui-status.service';
-import { CommodityGroup }       from './commodity-group';
-import { CommodityPart }        from './commodity-part';
-import { ModalComponent }       from '../ng2-bs3-modal/components/modal';
+
+import { BomPosition } from './bom-position';
+import { NodeSelectorService } from './node-selector.service';
+import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
+import { PositionService } from './position.service';
+import { UiStatusService } from '../core/ui-status.service';
+import { CommodityGroup } from './commodity-group';
+import { CommodityPart } from './commodity-part';
+import { ModalComponent } from '../ng2-bs3-modal/components/modal';
 
 
 
@@ -22,8 +22,7 @@ import { ModalComponent }       from '../ng2-bs3-modal/components/modal';
   templateUrl: "app/fill-bom/positions-list.component.html",
   styleUrls: ["app/fill-bom/positions-list.component.css"]
 })
-export class PositionsListComponent
-{
+export class PositionsListComponent {
   public nodeName: string;
   public nodeLocked: boolean;
   private _node: TreeNode;
@@ -32,13 +31,14 @@ export class PositionsListComponent
   private _positionToBeDeleted: BomPosition;
   public loadingVisible = false;
   public selectedNodePath: string;
+  private deletionAction: string;
+  private DELETION_NODE_QUANTITIES = "DELETION_NODE_QUANTITIES";
+  private DELETION_POSITION = "DELETION_POSITION";
 
-  constructor(private selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService,
-    private toasterService: ToasterService)
-  {
+  constructor(private selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.nodeName = '-';
     this.nodeLocked = true;
     this.selectorService.selectedNode.subscribe(
@@ -53,14 +53,13 @@ export class PositionsListComponent
     this.positionsService.positions.subscribe(() => this.loadingVisible = false);
   }
 
-  editPosition(position: BomPosition)
-  {
+  editPosition(position: BomPosition) {
     this.uiStatusService.editPosition(position);
   }
 
-  deletePosition(position: BomPosition)
-  {
+  deletePosition(position: BomPosition) {
     this._positionToBeDeleted = position;
+    this.deletionAction = this.DELETION_POSITION;
     this.askForConfirmationDeletion();
   }
 
@@ -74,28 +73,36 @@ export class PositionsListComponent
     this.positionsService.selectNode(selectedNode.id);
     this.loadingVisible = true;
   }
-  addCatalogItem()
-  {
+  addCatalogItem() {
     this.uiStatusService.setInsertPosition(true, false);
   }
 
-  addTagItem()
-  {
+  addTagItem() {
     this.uiStatusService.setInsertPosition(true, true);
   }
 
-  askForConfirmationDeletion()
-  {
+  askForConfirmationDeletion() {
     this.confirmModal.open('sm');
   }
 
-  confirmDeletion()
-  {
-    this.confirmModal.dismiss();
-    this.positionsService.deletePosition(this._positionToBeDeleted).subscribe(p => {this.updateSelection(this._node)});
+  clearNode() {
+    this.deletionAction = this.DELETION_NODE_QUANTITIES;
+    this.askForConfirmationDeletion();
   }
-  refreshList()
-  {
+
+  confirmDeletion() {
+    this.confirmModal.dismiss();
+    console.log("positions-list.component -- confirmDeletion -- this.deletionAction: " + this.deletionAction); //TODO: remove
+    if (this.deletionAction === this.DELETION_POSITION) {
+      console.log("positions-list.component -- confirmDeletion -- deletePosition -- !!this._positionToBeDeleted: " + !!this._positionToBeDeleted); //TODO: remove
+      this.positionsService.deletePosition(this._positionToBeDeleted).subscribe(p => { this.updateSelection(this._node) });
+    }
+    if (this.deletionAction === this.DELETION_NODE_QUANTITIES) {
+      console.log("positions-list.component -- confirmDeletion -- clearNode -- this._node.id: " + this._node.id); //TODO: remove
+      this.positionsService.clearNode(this._node.id).subscribe(() => { this.updateSelection(this._node) });
+    }
+  }
+  refreshList() {
     this.updateSelection(this._node);
   }
 

@@ -1,70 +1,63 @@
-import { Injectable }                               from '@angular/core';
-import { Http, Response, Headers, RequestOptions }  from '@angular/http';
-import { Observable }                               from 'rxjs/Observable';
-import { Subject }                                  from 'rxjs/Subject';
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
-import { BomPosition }            from './bom-position';
+import { BomPosition } from './bom-position';
 import { PositionAttributeValue } from './position-attribute-value';
-import { PositionErrorList }      from './position-error-list';
-import { PositionError }          from './position-error';
+import { PositionErrorList } from './position-error-list';
+import { PositionError } from './position-error';
 
 @Injectable()
-export class PositionStoreService{
+export class PositionStoreService {
   private BASE_URL = 'api/positions';
-  constructor(private _http: Http){}
-  addPosition(newPosition: BomPosition): Observable<BomPosition>
-  {
+  constructor(private _http: Http) { }
+  addPosition(newPosition: BomPosition): Observable<BomPosition> {
     var headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     var result = new Subject<BomPosition>();
     console.log('PositionStoreService -- addPosition -- JSON.stringify(newPosition): ' + JSON.stringify(newPosition));//TODO remove
     this._http.put(this.BASE_URL, JSON.stringify(newPosition), options)
-    .map((res:Response) => res.json())
-    .subscribe(pos => {
-          result.next(this.mapPosition(pos));
-        },
-        err =>
-        {
-          if (err["status"] === 500)
-          {
-            result.error({message: JSON.parse(err["_body"])["ExceptionMessage"]});
-          }
-          else
-          {
-            result.error(err);
-          }
+      .map((res: Response) => res.json())
+      .subscribe(pos => {
+        result.next(this.mapPosition(pos));
+      },
+      err => {
+        if (err["status"] === 500) {
+          result.error({ message: JSON.parse(err["_body"])["ExceptionMessage"] });
         }
+        else {
+          result.error(err);
+        }
+      }
       );
-      return result.asObservable();
+    return result.asObservable();
   }
 
-  addPositionList(newPositions: BomPosition[]): Observable<PositionErrorList>
-  {
+  addPositionList(newPositions: BomPosition[]): Observable<PositionErrorList> {
     var headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     var result = new Subject<PositionErrorList>();
     return this._http.put(this.BASE_URL + "/multiple", JSON.stringify(newPositions), options)
-    .map(() => this.emptyError())
-    .catch((res:Response) => this.mapError(res))
+      .map(() => this.emptyError())
+      .catch((res: Response) => this.mapError(res))
 
   }
 
-  editPosition(modifiedPosition: BomPosition): Observable<BomPosition>
-  {
+  editPosition(modifiedPosition: BomPosition): Observable<BomPosition> {
     var headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     var result = new Subject<BomPosition>();
     this._http.post(this.BASE_URL, JSON.stringify(modifiedPosition), options)
-    .map((res:Response) => res.json())
-    .subscribe(res => {
-          result.next(this.mapPosition(res));
-        }
+      .map((res: Response) => res.json())
+      .subscribe(res => {
+        result.next(this.mapPosition(res));
+      }
       );
-      return result.asObservable();
+    return result.asObservable();
   }
 
-  mapError(errorResponse: any): Observable<PositionErrorList>
-  {
+  mapError(errorResponse: any): Observable<PositionErrorList> {
     var list: PositionErrorList = new PositionErrorList();
     console.log("position-store.service -- mapError -- errorResponse: " + errorResponse); //TODO: remove
     console.log("position-store.service -- mapError -- errorResponse.json(): " + errorResponse.json()); //TODO: remove
@@ -77,24 +70,21 @@ export class PositionStoreService{
     return Observable.throw(list);
   }
 
-  emptyError(): Observable<PositionErrorList>
-  {
+  emptyError(): Observable<PositionErrorList> {
     var list: PositionErrorList = new PositionErrorList();
     list.message = "";
-    list.errorObject =  new Array<PositionError>();
+    list.errorObject = new Array<PositionError>();
     var result = new Subject<PositionErrorList>();
     result.next(list);
     return result.asObservable();
   }
 
 
-  mapPositionErrors(parsedPositionErrors: any[]): PositionError[]
-  {
+  mapPositionErrors(parsedPositionErrors: any[]): PositionError[] {
     var result = new Array<PositionError>();
     var index: number;
     var currentError: PositionError;
-    for(index = 0; index < parsedPositionErrors.length; index += 1)
-    {
+    for (index = 0; index < parsedPositionErrors.length; index += 1) {
       currentError = new PositionError();
       console.log("position-store.service -- mapPositionErrors -- parsedPositionErrors[index].Index: " + parsedPositionErrors[index].Index);//TODO: remove
       currentError.index = parsedPositionErrors[index].Index;
@@ -105,33 +95,45 @@ export class PositionStoreService{
     return result;
   }
 
-  selectNode(nodeId: number): Observable<BomPosition[]>{
+  selectNode(nodeId: number): Observable<BomPosition[]> {
 
     var _resultArray = new Array<BomPosition[]>();
     var result = new Subject<Array<BomPosition>>();
     this._http
-        .get(this.BASE_URL + "/node/" + nodeId)
-        .map((res:Response) => res.json())
-        .subscribe(res => {
-          result.next(res.map((pos: any) => this.mapPosition(pos)));
-        });
-    return result.asObservable();
-}
-
-
-  deletePosition(deletedPosition: BomPosition): Observable<BomPosition>{
-    var result = new Subject<BomPosition>();
-    this._http
-        .delete(this.BASE_URL + "/" + deletedPosition.id)
-        .map((res:Response) => res.json())
-        .subscribe(res => {
-              result.next(this.mapPosition(res));
-            }
-          );
+      .get(this.BASE_URL + "/node/" + nodeId)
+      .map((res: Response) => res.json())
+      .subscribe(res => {
+        result.next(res.map((pos: any) => this.mapPosition(pos)));
+      });
     return result.asObservable();
   }
 
-  mapPosition(res: any): BomPosition{
+
+  deletePosition(deletedPosition: BomPosition): Observable<BomPosition> {
+    var result = new Subject<BomPosition>();
+    this._http
+      .delete(this.BASE_URL + "/" + deletedPosition.id)
+      .map((res: Response) => res.json())
+      .subscribe(res => {
+        result.next(this.mapPosition(res));
+      }
+      );
+    return result.asObservable();
+  }
+
+  clearNode(nodeId: number): Observable<null> {
+    var result = new Subject();
+    this._http
+      .delete(this.BASE_URL + "/node/" + nodeId)
+      .map((res: Response) => res.json())
+      .subscribe(res => {
+        result.next();
+      }
+      );
+    return result.asObservable();
+  }
+
+  mapPosition(res: any): BomPosition {
     var resultPosition = new BomPosition();
     resultPosition.id = res.id;
     resultPosition.nodeId = res.nodeId;
@@ -151,41 +153,37 @@ export class PositionStoreService{
     return resultPosition;
   }
 
-  mapPositions(res: any): BomPosition[]
-  {
+  mapPositions(res: any): BomPosition[] {
     var resultArray = new Array<BomPosition>();
     var i: number;
-    for (i = 0; i < res.length; i += 1)
-    {
+    for (i = 0; i < res.length; i += 1) {
       resultArray.push(this.mapPosition(res[i]));
     }
     return resultArray;
 
   }
 
-  mapAttributes(attrs: any): PositionAttributeValue[]{
+  mapAttributes(attrs: any): PositionAttributeValue[] {
     var result = new Array<PositionAttributeValue>();
-    if (attrs)
-     {
-       result = attrs.map((attr: any) => this.mapSingleAttribute(attr));
-     }
-      return result;
+    if (attrs) {
+      result = attrs.map((attr: any) => this.mapSingleAttribute(attr));
+    }
+    return result;
   }
 
-  mapSingleAttribute(attr: any){
+  mapSingleAttribute(attr: any) {
     return new PositionAttributeValue(attr.attribute, attr.value);
   }
 
-  getTag(tag: string, projectDisciplineId: number): Observable<BomPosition[]>
-  {
+  getTag(tag: string, projectDisciplineId: number): Observable<BomPosition[]> {
     var _resultArray = new Array<BomPosition[]>();
     var result = new Subject<Array<BomPosition>>();
     this._http
-        .get(this.BASE_URL + "/projectDiscipline/" + projectDisciplineId.toString() + "/tag/?tag=" + encodeURIComponent(tag))
-        .map((res:Response) => res.json())
-        .subscribe(res => {
-          result.next(res.map((pos: any) => this.mapPosition(pos)));
-        });
+      .get(this.BASE_URL + "/projectDiscipline/" + projectDisciplineId.toString() + "/tag/?tag=" + encodeURIComponent(tag))
+      .map((res: Response) => res.json())
+      .subscribe(res => {
+        result.next(res.map((pos: any) => this.mapPosition(pos)));
+      });
     return result.asObservable();
   }
 

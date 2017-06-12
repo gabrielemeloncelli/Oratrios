@@ -52,7 +52,16 @@ export class PositionService{
       }
     );
     return result.asObservable();
+  }
 
-
+  clearNode(nodeId: number): Observable<null>
+  {
+    var result = new Subject();
+    this._storeService.clearNode(nodeId).subscribe(
+      () => {
+        result.next();
+      }
+    );
+    return result.asObservable();
   }
 }
