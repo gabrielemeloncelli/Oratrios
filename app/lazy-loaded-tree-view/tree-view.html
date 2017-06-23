@@ -12,7 +12,7 @@
         <a *ngIf="root.id !== 0 && uiStatusService.userIsAdministrator && root.canDelete()" class="btn btn-xs btn-danger" (click)="deleteNode()"><span class="glyphicon glyphicon-remove-sign"></span></a>
       </div>
       <div style="width: 25px; height: 25px; border: 1px black; float: left">
-        <a *ngIf="root.id !== 0 && uiStatusService.userIsAdministrator" class="btn btn-xs btn-warning" (click)="editNode()"><span class="glyphicon glyphicon-edit"></span></a>
+        <a *ngIf="canEdit()" class="btn btn-xs btn-warning" (click)="editNode()"><span class="glyphicon glyphicon-edit"></span></a>
       </div>
       <div style="width: 25px; height: 25px; border: 1px black; float: left">
         <a *ngIf="uiStatusService.userIsAdministrator && !root.commodityPart" class="btn btn-xs btn-success" (click)="addNode()"><span class="glyphicon glyphicon-plus"></span></a>

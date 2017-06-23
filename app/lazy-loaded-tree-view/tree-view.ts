@@ -158,4 +158,17 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface {
     }
   }
 
+  canEdit(): boolean {
+    if (!(this.root.id !== 0 && this.uiStatusService.userIsAdministrator)) {
+      return false;
+    }
+    if (!!this.root.commodityPart) { // && this.root.hasPositions) {
+      return false;
+    }
+    if (!!this.root.commodityGroup && !this.root.commodityPart) { // && !!this.root.url) {
+      return false;
+    }
+    return true;
+  }
+
 }

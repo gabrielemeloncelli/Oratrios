@@ -110,6 +110,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     this.actionType = 'edit';
     this.changedNode = this.eventNode;
     this.handleNode();
+    this.nodeTypeChangeDisabled = !!this.changedNode.commodityGroup || !!this.changedNode.commodityPart;
     this.confirmButtonText = 'Edit';
     this.modalComponent.open();
   }
