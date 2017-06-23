@@ -4,7 +4,6 @@ import {
 
 import { CommonModule }      from '@angular/common';
 import { ElectricalProjectRoot } from './electrical-project-root';
-import { TreeNodeService } from './tree-node.service';
 import { TreeView } from './tree-view';
 import { TreeNode } from './tree-node';
 import { HttpModule, Http } from '@angular/http';
@@ -15,7 +14,7 @@ import { FormsModule } from '@angular/forms';
   imports:      [ CommonModule, HttpModule, FormsModule ],
   declarations: [ TreeView, ElectricalProjectRoot ],
   exports:      [ TreeView, ElectricalProjectRoot ],
-  providers:    [ HttpModule, TreeNodeService, FormsModule ]
+  providers:    [ HttpModule, FormsModule ]
 })
 
 export class TreeViewModule {

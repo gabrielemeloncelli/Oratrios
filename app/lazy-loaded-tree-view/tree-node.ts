@@ -15,6 +15,7 @@ export class TreeNode{
    public idFather: number,
    public locked: boolean,
    public lockedBy: string,
+   public hasPositions: boolean,
    public commodityGroup: CommodityGroup,
    public commodityPart: CommodityPart)
   {
@@ -29,6 +30,14 @@ export class TreeNode{
       this.expanded = !this.expanded;
       this.cssClass = this.getCssClass();
     }
+  }
+
+  canDelete(): boolean {
+    if(!!this.url)
+    {
+      return false;
+    }
+    return !this.hasPositions;
   }
 
 

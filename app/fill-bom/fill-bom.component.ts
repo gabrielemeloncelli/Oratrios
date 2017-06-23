@@ -6,7 +6,7 @@ import { SelectComponent }                      from 'angular2-select/dist/selec
 
 import { BubbleNodeMessageInterface } from '../lazy-loaded-tree-view/bubble-node-message.interface';
 import { TreeNode }                   from '../lazy-loaded-tree-view/tree-node';
-import { TreeNodeService }            from '../lazy-loaded-tree-view/tree-node.service';
+import { TreeNodeService }            from '../core/tree-node.service';
 import { CoreEstService }             from './core-est.service';
 import { UiStatusService }            from '../core/ui-status.service';
 import { CommodityGroupService }      from './commodity-group.service';
@@ -48,7 +48,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   nodeNameOptions: Option[];
   commodityGroups: CommodityGroup[] = new Array<CommodityGroup>();
   commodityParts: CommodityPart[] = new Array<CommodityPart>();
-  changedNode = new TreeNode(0,"","","",0,false,"",null, null);
+  changedNode = new TreeNode(0,"","","",0,false,"", false, null, null);
 
   constructor (treeNodeService : TreeNodeService, coreEstService : CoreEstService,
      private uiStatusService: UiStatusService, private commodityGroupService: CommodityGroupService,
@@ -87,7 +87,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   addChildNode(): void
   {
     this.actionType = 'add';
-    this.changedNode = new TreeNode(0, "", "", "", this.eventNode.id, false, "", null, null)
+    this.changedNode = new TreeNode(0, "", "", "", this.eventNode.id, false, "", false, null, null)
     this.handleNode();
     if (this.eventNode && !!this.eventNode.commodityGroup && !this.eventNode.commodityPart)
     {
@@ -262,6 +262,7 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
     newNode.url = 'api/Nodes/' + newNode.id;
     newNode.commodityGroup = this.changedNode.commodityGroup;
     newNode.commodityPart = this.changedNode.commodityPart;
+    newNode.projectDisciplineId = this.uiStatusService.projectDisciplineId;
     
     return newNode;
   }

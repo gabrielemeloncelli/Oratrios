@@ -7,9 +7,11 @@ import { InsertPositionDetails }  from '../fill-bom/insert-position-details';
 import { ProjectDiscipline }      from './project-discipline';
 import { NodeTypeService }        from './node-type.service';
 import { NodeType }               from './node-type';
+import { NodePositionsUpdate }    from './node-positions-update';
 import { CommodityGroup }         from '../fill-bom/commodity-group';
 import { CommodityPart }          from '../fill-bom/commodity-part';
 import { TreeNode }               from '../lazy-loaded-tree-view/tree-node';
+import { TreeNodeService }        from './tree-node.service';
 
 @Injectable()
 export class UiStatusService
@@ -39,8 +41,14 @@ export class UiStatusService
   public authToken: string;
   public nodeToBeCopied: TreeNode;
 
+  private nodePositionsUpdateSubject = new Subject<NodePositionsUpdate>();
+  public nodePositionsUpdate = this.nodePositionsUpdateSubject.asObservable();
 
-  constructor(private nodeTypeService: NodeTypeService) { }
+
+  constructor(private nodeTypeService: NodeTypeService,
+              private nodeService: TreeNodeService) {
+                this.nodeService.nodePositionsUpdate.subscribe(n => this.nodePositionsUpdateSubject.next(n));
+               }
 
   setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
   {
@@ -65,5 +73,9 @@ export class UiStatusService
       this.nodeTypes = nodes;
       console.log("ui-status.service -- selectProject - node types retrieved"); //TODO: remove
      });
+   }
+
+   updateNodePositions(id: number) {
+    this.nodeService.updateNodePositions(id);
    }
  }

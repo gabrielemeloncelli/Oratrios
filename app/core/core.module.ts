@@ -15,13 +15,29 @@ import { ModalModule }                    from '../ng2-bs3-modal/ng2-bs3-modal.m
 import { ProjectDisciplineService }       from './project-discipline.service';
 import { ProjectDisciplineStoreService }  from './project-discipline-store.service';
 import { NodeTypeService }                from './node-type.service';
+import { TreeNodeService }                from './tree-node.service';
+import { UiStatusService }                from './ui-status.service';
 
 
 @NgModule({
-  imports:      [ CommonModule, FormsModule, SelectModule, ModalModule,
-    BsDropdownModule.forRoot(), TooltipModule.forRoot() ],
-  exports:      [ CommonModule, FormsModule, SelectModule, ModalModule, BsDropdownModule, TooltipModule ],
-  providers:    [ ProjectDisciplineService, ProjectDisciplineStoreService, NodeTypeService, SessionService ]
+  imports:      [ CommonModule,
+                  FormsModule,
+                  SelectModule,
+                  ModalModule,
+                  BsDropdownModule.forRoot(),
+                  TooltipModule.forRoot() ],
+  exports:      [ CommonModule,
+                  FormsModule,
+                  SelectModule,
+                  ModalModule,
+                  BsDropdownModule,
+                  TooltipModule ],
+  providers:    [ NodeTypeService,
+                  TreeNodeService,
+                  UiStatusService,
+                  ProjectDisciplineService,
+                  ProjectDisciplineStoreService,
+                  SessionService ]
 })
 export class CoreModule {
 

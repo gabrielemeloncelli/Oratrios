@@ -1,14 +1,14 @@
 import {
   Component,
   Input,
-  OnInit
-} from '@angular/core';
+  OnInit }  from '@angular/core';
 
-import { TreeNode } from './tree-node';
-import { TreeNodeService } from './tree-node.service';
+import { TreeNode }                   from './tree-node';
+import { TreeNodeService }            from '../core/tree-node.service';
 import { BubbleNodeMessageInterface } from './bubble-node-message.interface';
-import { NodeSelectorService } from '../fill-bom/node-selector.service';
-import { UiStatusService } from '../core/ui-status.service';
+import { NodeSelectorService }        from '../fill-bom/node-selector.service';
+import { UiStatusService }            from '../core/ui-status.service';
+import { NodePositionsUpdate }        from '../core/node-positions-update';
 
 
 @Component({
@@ -59,7 +59,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface {
 
   refreshChildNodes(): void {
     if (this.root.url) {
-      this.treeNodeService.fetchTreeNodes(this.root.id)
+      this.treeNodeService.fetchTreeNodes(this.root.id, this.uiStatusService.projectDisciplineId)
         .subscribe((r: any) => { this.items = r; });
     }
   }
@@ -73,6 +73,14 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface {
     if (this.root.expanded) {
       this.refreshChildNodes();
     }
+
+    this.uiStatusService.nodePositionsUpdate.subscribe(
+      (upd: NodePositionsUpdate) => {
+        if (upd.id === this.root.id) {
+          this.root.hasPositions = upd.hasPositions;
+        }
+      }
+    )
 
 
 

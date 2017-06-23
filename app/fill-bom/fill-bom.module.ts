@@ -29,6 +29,7 @@ import { AllowedValueService }              from './allowed-value.service';
 import { CoreModule }                       from '../core/core.module';
 import { SharedModule }                     from '../shared/shared.module';
 import { CoreEstService }                   from './core-est.service';
+import { NodeSelectorService }              from './node-selector.service';
 
 @NgModule({
   imports:      [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule, ToasterModule, SharedModule ],
@@ -37,7 +38,7 @@ import { CoreEstService }                   from './core-est.service';
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,
                   MaterialStoreService, MaterialService, PositionService, PositionStoreService, CommodityTableService, CommodityTableStoreService,
                   CommodityTableValueService, CommodityTableValueStoreService, AttributeStoreService, AttributeService, AllowedValueService,
-                  ToasterService ]
+                  ToasterService, NodeSelectorService ]
 })
 export class FillBomModule {
 

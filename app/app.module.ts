@@ -8,9 +8,7 @@ import { AppComponent }   from './app.component';
 import { CoreModule }             from './core/core.module';
 import { TreeViewModule }         from './lazy-loaded-tree-view/tree-view.module';
 import { ModalModule }            from './ng2-bs3-modal/ng2-bs3-modal.module';
-import { NodeSelectorService }    from './fill-bom/node-selector.service';
 import { CoreEstService }         from './fill-bom/core-est.service';//TODO : remove
-import { UiStatusService }        from './core/ui-status.service';
 import { FillBomModule }          from './fill-bom/fill-bom.module';
 import { SelectProjectModule }    from './select-project/select-project.module';
 import { ExportModule }           from './export/export.module';
@@ -33,7 +31,6 @@ import { LoginModule }            from './login/login.module';
     LoginModule
   ],
   declarations: [ AppComponent ],
-  bootstrap:    [ AppComponent ],
-  providers: [ NodeSelectorService, UiStatusService ]
+  bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

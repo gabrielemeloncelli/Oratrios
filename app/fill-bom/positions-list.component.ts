@@ -1,19 +1,17 @@
 import {
   Component,
-  ViewChild
-} from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+  ViewChild }               from '@angular/core';
+import { Observable }       from 'rxjs/Observable';
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
 
-
-import { BomPosition } from './bom-position';
-import { NodeSelectorService } from './node-selector.service';
-import { TreeNode } from '../lazy-loaded-tree-view/tree-node';
-import { PositionService } from './position.service';
-import { UiStatusService } from '../core/ui-status.service';
-import { CommodityGroup } from './commodity-group';
-import { CommodityPart } from './commodity-part';
-import { ModalComponent } from '../ng2-bs3-modal/components/modal';
+import { BomPosition }          from './bom-position';
+import { NodeSelectorService }  from './node-selector.service';
+import { TreeNode }             from '../lazy-loaded-tree-view/tree-node';
+import { PositionService }      from './position.service';
+import { UiStatusService }      from '../core/ui-status.service';
+import { CommodityGroup }       from './commodity-group';
+import { CommodityPart }        from './commodity-part';
+import { ModalComponent }       from '../ng2-bs3-modal/components/modal';
 
 
 
@@ -72,6 +70,7 @@ export class PositionsListComponent {
     console.log("position-list.component -- updateSelection -- !selectedNode.commodityPart: " + !selectedNode.commodityPart); //TODO: remove
     this.uiStatusService.commodityPart = !selectedNode.commodityPart ? new CommodityPart(0, "", "", this.uiStatusService.commodityGroup.code) : selectedNode.commodityPart;
     this.positionsService.selectNode(selectedNode.id);
+    this.uiStatusService.updateNodePositions(selectedNode.id);
     this.loadingVisible = true;
   }
   addCatalogItem() {
