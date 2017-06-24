@@ -3,7 +3,9 @@
     <span class="{{root.cssClass}}"></span>
   </a>
   <a *ngIf="root.id > 0 && (!root.commodityGroup || !!root.commodityPart)" (click)="selectRoot()" data-toggle="tooltip" 
-    title="{{!!root.commodityPart ? root.commodityPart.description : !!root.commodityGroup ? root.commodityGroup.description : ''}}">{{ root.name }}</a>
+    title="{{!!root.commodityPart ? root.commodityPart.description : !!root.commodityGroup ? root.commodityGroup.description : ''}}"
+    [ngClass]="{'saipemGreen': true, 'saipemOrange': isSelected}">{{ root.name }}
+    </a>
   <span *ngIf="root.id == 0 || (!!root.commodityGroup && !root.commodityPart)" data-toggle="tooltip" 
     title="{{!!root.commodityPart ? root.commodityPart.description : !!root.commodityGroup ? root.commodityGroup.description : ''}}">{{ root.name }}</span>
   <span *ngIf="root.hasPositions" class="glyphicon glyphicon-asterisk"></span>

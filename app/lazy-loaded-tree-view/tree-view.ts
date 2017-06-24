@@ -26,6 +26,7 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface {
   @Input() parentView: any;
   currentView: any;
   outMessage: any;
+  public isSelected = false;
 
 
 
@@ -80,7 +81,13 @@ export class TreeView implements OnInit, BubbleNodeMessageInterface {
           this.root.hasPositions = upd.hasPositions;
         }
       }
-    )
+    );
+
+    this.selectorService.selectedNode.subscribe(
+      (node: TreeNode) => {
+        this.isSelected = this.root.id === node.id;
+      }
+    );
 
 
 
