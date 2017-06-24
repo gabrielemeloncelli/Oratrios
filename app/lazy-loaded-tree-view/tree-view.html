@@ -6,6 +6,7 @@
     title="{{!!root.commodityPart ? root.commodityPart.description : !!root.commodityGroup ? root.commodityGroup.description : ''}}">{{ root.name }}</a>
   <span *ngIf="root.id == 0 || (!!root.commodityGroup && !root.commodityPart)" data-toggle="tooltip" 
     title="{{!!root.commodityPart ? root.commodityPart.description : !!root.commodityGroup ? root.commodityGroup.description : ''}}">{{ root.name }}</span>
+  <span *ngIf="root.hasPositions" class="glyphicon glyphicon-asterisk"></span>
   <div class="pull-right">
     <div *ngIf="uiStatusService.userIsAdministrator" class="pull-right" style="width: 80px; padding-left: 5px">
       <div style="width: 25px; height: 25px; border: 1px black; float: left">
