@@ -73,6 +73,7 @@ export class AddPositionComponent
   private _tagStep2 = false;
   private _commodityPropertiesSwitch = true;
   private _scrollPrevious: number;
+  public hideTag: boolean;
 
 
   @ViewChild(SelectComponent)
@@ -105,6 +106,7 @@ export class AddPositionComponent
           this._commodityPropertiesSwitch = !this._isTag;
           this.resetPosition();
           this.hideGroupAndPart = !!this.uiStatusService.commodityPart.id;
+          this.hideTag = detail.hideTag;
           this._tagAndQuantityVisible = this.hideGroupAndPart && this._isTag;
           setTimeout(() => this.modalComponent.open('fs'), 200);
         }

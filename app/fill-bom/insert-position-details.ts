@@ -1,4 +1,5 @@
 export class InsertPositionDetails{
-  public displayInsertPosition: boolean = false;
-  public positionFromTag: boolean = false;
+  public displayInsertPosition = false;
+  public positionFromTag = false;
+  public hideTag = false;
 }

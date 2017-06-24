@@ -73,12 +73,12 @@ export class PositionsListComponent {
     this.uiStatusService.updateNodePositions(selectedNode.id);
     this.loadingVisible = true;
   }
-  addCatalogItem() {
-    this.uiStatusService.setInsertPosition(true, false);
+  addCatalogItem(hideTag: boolean) {
+    this.uiStatusService.setInsertPosition(true, false, hideTag);
   }
 
   addTagItem() {
-    this.uiStatusService.setInsertPosition(true, true);
+    this.uiStatusService.setInsertPosition(true, true, false);
   }
 
   askForConfirmationDeletion() {

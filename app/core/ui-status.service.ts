@@ -50,11 +50,12 @@ export class UiStatusService
                 this.nodeService.nodePositionsUpdate.subscribe(n => this.nodePositionsUpdateSubject.next(n));
                }
 
-  setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean)
+  setInsertPosition(insertPositionVisible: boolean, insertTagPosition: boolean, hideTag: boolean)
   {
      var details: InsertPositionDetails  = new InsertPositionDetails();
      details.displayInsertPosition = insertPositionVisible;
      details.positionFromTag = insertTagPosition;
+     details.hideTag = hideTag;
      this._insertPosition.next(details);
 
    }
