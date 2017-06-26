@@ -550,6 +550,13 @@ export class AddPositionComponent
     newPosition.attributes = new Array<PositionAttributeValue>();
 
     this.addedPositions.push(new PositionInput(newPosition, new Array<string>()));
+    setTimeout(() => {
+      let elm = document.getElementById("POSQTY" + (this.addedPositions.length -1).toString());
+      if (!!elm)
+      {
+        elm.focus();
+      }
+    }, 350)
     var body = document.body,
     html = document.documentElement;
 
