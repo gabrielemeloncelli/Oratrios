@@ -442,7 +442,7 @@ export class AddPositionComponent
     this.materialLoadingError = "";
     this._isEdit = true;
     this._isTag = positionToEdit.isTwm;
-    this.position = positionToEdit;
+    this.position = this.clonePosition(positionToEdit);
     this.selectedMaterial.id = positionToEdit.materialId;
     this.selectedMaterial.groupCode = positionToEdit.groupCode;
     this.selectedMaterial.partCode = positionToEdit.partCode;
@@ -458,6 +458,37 @@ export class AddPositionComponent
     console.log("add-position.component -- editPositionByObject -- this._tagAndQuantityVisible: " + this._tagAndQuantityVisible.toString());//TODO: remove
 
   }
+
+  clonePosition(positionToEdit: BomPosition): BomPosition {
+    let clonedPosition = new BomPosition();
+    clonedPosition.attributes = this.clonePositionAttributes(positionToEdit.attributes);
+    clonedPosition.commodityCode = positionToEdit.commodityCode;
+    clonedPosition.description = positionToEdit.description;
+    clonedPosition.description2 = positionToEdit.description2;
+    clonedPosition.groupCode = positionToEdit.groupCode;
+    clonedPosition.id = positionToEdit.id;
+    clonedPosition.isTwm = positionToEdit.isTwm;
+    clonedPosition.materialId = positionToEdit.materialId;
+    clonedPosition.nodeId = positionToEdit.nodeId;
+    clonedPosition.partCode = positionToEdit.partCode;
+    clonedPosition.partId = positionToEdit.partId;
+    clonedPosition.quantity = positionToEdit.quantity;
+
+    return clonedPosition;
+  }
+
+  clonePositionAttributes(attributesToClone: PositionAttributeValue[]): PositionAttributeValue[] {
+    let clonedAttributes = new Array<PositionAttributeValue>();
+    if (!!attributesToClone) {
+      attributesToClone.forEach(a => clonedAttributes.push(this.cloneAttributeValue(a)));
+    }
+    return clonedAttributes;
+  }
+
+  cloneAttributeValue(attributeToClone: PositionAttributeValue): PositionAttributeValue {
+    return new PositionAttributeValue(attributeToClone.attribute, attributeToClone.value);
+  }
+  
 
   setAttributes(attributes: PositionAttributeValue[])
   {
