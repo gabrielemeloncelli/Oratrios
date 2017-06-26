@@ -91,3 +91,8 @@ ul.nav.nav-pills > li > a
   color:#FFF;
   background-color: #22505F;
 }
+
+tr.commodityCodeSelected
+{
+  background-color: #C0C0C0;
+}

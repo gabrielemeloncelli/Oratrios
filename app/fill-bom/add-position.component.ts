@@ -498,8 +498,9 @@ export class AddPositionComponent
     this.position.nodeId = this.selectorService.lastSelectedNode.id;
   }
 
-  selectMaterial(materialId: number)
+  selectMaterial(materialId: number, idx: number)
   {
+    this.highlightSelectedRow(idx);
     this.selectedMaterial = this.selectMaterialFromCache(materialId);
     this._selectedMaterialVisible = true;
     this._tagAndQuantityVisible = true;
@@ -532,6 +533,23 @@ export class AddPositionComponent
 
     console.log("add-position.component -- selectMaterial -- window.scrollY.toString(): " + window.scrollY.toString());//TODO: remove
   
+
+  }
+
+  highlightSelectedRow(selectedIdx: number)
+  {
+    let idx = 0;
+    let element = document.getElementById("CCROW" + idx.toString());
+    let foundRow = !!element;
+    
+    while (foundRow) {
+      element.className = "";
+      idx += 1;
+      element = document.getElementById("CCROW" + idx.toString());
+      foundRow = !!element;
+    }
+    element = document.getElementById("CCROW" + selectedIdx.toString());
+    element.className = "commodityCodeSelected";
 
   }
 
