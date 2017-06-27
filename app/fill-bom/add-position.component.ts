@@ -474,6 +474,8 @@ export class AddPositionComponent
     clonedPosition.partCode = positionToEdit.partCode;
     clonedPosition.partId = positionToEdit.partId;
     clonedPosition.quantity = positionToEdit.quantity;
+    clonedPosition.tag = positionToEdit.tag;
+    clonedPosition.unit = positionToEdit.unit;
 
     return clonedPosition;
   }
