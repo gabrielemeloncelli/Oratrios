@@ -460,6 +460,7 @@ export class AddPositionComponent
   }
 
   clonePosition(positionToEdit: BomPosition): BomPosition {
+    console.log("add-position.component -- clonePosition -- positionToEdit.id: " + positionToEdit.id.toString());//TODO: remove
     let clonedPosition = new BomPosition();
     clonedPosition.attributes = this.clonePositionAttributes(positionToEdit.attributes);
     clonedPosition.commodityCode = positionToEdit.commodityCode;
@@ -651,7 +652,10 @@ export class AddPositionComponent
   saveSinglePosition()
   {
     var newPosition: BomPosition = new BomPosition();
-    newPosition.id = 0;
+    newPosition.id = this.position.id;
+    if (!this._isEdit) {
+      newPosition.id = 0;
+    }
     newPosition.materialId = this.selectedMaterial.id;
     newPosition.groupCode = this.selectedMaterial.groupCode;
     newPosition.partCode = this.selectedMaterial.partCode;
@@ -671,6 +675,7 @@ export class AddPositionComponent
       this.positionService.editPosition(newPosition).subscribe(
         p => {
           this.selectorService.refreshNode();
+          this.modalComponent.dismiss();
         }
       );
     }
@@ -984,7 +989,7 @@ export class AddPositionComponent
 
   cancelLabel(): string
   {
-    if (this._isTag)
+    if (this._isTag && !this._isEdit)
     {
       return "Back to BoM";
     }
