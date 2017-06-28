@@ -15,4 +15,10 @@ export class BomPosition{
   public description2: string;
   public unit: string;
   public attributes: PositionAttributeValue[];
+  public calculateCommodityCode(): string {
+    if (!!this.commodityCode) {
+      return this.commodityCode;
+    }
+    return this.tag;
+  }
 }

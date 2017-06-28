@@ -25,7 +25,7 @@
     <tr *ngFor="let pos of positionsService.positions | async">
       <td>{{pos.groupCode}}</td>
       <td>{{pos.partCode}}</td>
-      <td><a data-toggle="tooltip" title="{{pos.description}}" class="no-anchor">{{pos.commodityCode}}</a></td>
+      <td><a data-toggle="tooltip" title="{{pos.description}}" class="no-anchor">{{pos.calculateCommodityCode()}}</a></td>
       <td>{{pos.tag}}</td>
       <td>{{pos.description}}</td>
       <td>{{pos.quantity}}</td>
