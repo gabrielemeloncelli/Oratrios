@@ -967,7 +967,7 @@ export class AddPositionComponent
 
   savePositionLabel(): string
   {
-    return this._isEdit ? "Edit" : "Add";
+    return this._isEdit ? "Save" : "Add";
   }
 
   tagChanged(index: number): void
