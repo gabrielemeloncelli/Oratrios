@@ -74,6 +74,7 @@ export class AddPositionComponent
   private _commodityPropertiesSwitch = true;
   private _scrollPrevious: number;
   public hideTag: boolean;
+  
 
 
   @ViewChild(SelectComponent)
@@ -108,6 +109,13 @@ export class AddPositionComponent
           this.hideGroupAndPart = !!this.uiStatusService.commodityPart.id;
           this.hideTag = detail.hideTag;
           this._tagAndQuantityVisible = this.hideGroupAndPart && this._isTag;
+          if (this.hideGroupAndPart)
+          {
+            this._parts = new Array<CommodityPart>();
+            this._parts.push(this.uiStatusService.commodityPart);
+            var partOption = new Option('' + this.uiStatusService.commodityPart.id, '' + this.uiStatusService.commodityPart.id);
+            this.partSelected(partOption);
+          }
           setTimeout(() => this.modalComponent.open('fs'), 200);
         }
       }
@@ -239,7 +247,9 @@ export class AddPositionComponent
 
   partSelected(event: Option)
   {
+    console.log("add-position.component -- partSelected -- event.value: " + event.value); //TODO: remove
     var foundPart: CommodityPart = this.findSelectedPart(+event.value);
+    console.log("add-position.component -- partSelected -- !!foundPart: " + !!foundPart); //TODO: remove
     this.partObjectSelected(foundPart, true);
   }
 
@@ -371,7 +381,10 @@ export class AddPositionComponent
     this._isEdit = false;
     this.resetAddedPositions();
     this.resetGroupAndPart();
-    this.commodityPartService.getAll(-1);
+    if (!this.uiStatusService.commodityPart.id)
+    {
+      this.commodityPartService.getAll(-1);
+    }
   }
 
   resetAddedPositions()
