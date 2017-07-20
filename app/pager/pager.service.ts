@@ -4,8 +4,11 @@ import { Injectable }   from '@angular/core';
 export class PagerService {
     getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10) {
         // calculate total pages
+        console.log('pager.service -- getPager -- totalItems: ' + totalItems); //TODO: remove
+        console.log('pager.service -- getPager -- currentPage: ' + currentPage); //TODO: remove
+        console.log('pager.service -- getPager -- pageSize: ' + pageSize); //TODO: remove
         let totalPages = Math.ceil(totalItems / pageSize);
- 
+        console.log('pager.service -- getPager -- totalPages: ' + totalPages); //TODO: remove
         let startPage: number, endPage: number;
         if (totalPages <= 10) {
             // less than 10 total pages so show all

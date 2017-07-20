@@ -30,9 +30,10 @@ import { CoreModule }                       from '../core/core.module';
 import { SharedModule }                     from '../shared/shared.module';
 import { CoreEstService }                   from './core-est.service';
 import { NodeSelectorService }              from './node-selector.service';
+import { PagerModule }                      from '../pager/pager.module';
 
 @NgModule({
-  imports:      [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule, ToasterModule, SharedModule ],
+  imports:      [ CoreModule, FillBomRoutingModule, TreeViewModule, ModalModule, ToasterModule, SharedModule, PagerModule ],
   declarations: [ PositionsListComponent, AddPositionComponent, FillBomComponent ],
   exports:      [ PositionsListComponent, AddPositionComponent ],
   providers:    [ CoreEstService, CommodityGroupService, CommodityGroupStoreService, CommodityPartService, CommodityPartStoreService,
