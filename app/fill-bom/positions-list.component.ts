@@ -132,6 +132,8 @@ export class PositionsListComponent {
   }
 
   onPageChanged(pageChanged: number) {
+    this.loadingVisible = true;
+    this.positionsService.selectPage(this._node.id, pageChanged, 10);
     console.log('position-list.component -- onPageChanged -- pageSelected :' + pageChanged); //TODO: replace
   }
 

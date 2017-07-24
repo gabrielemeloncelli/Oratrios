@@ -96,21 +96,21 @@ export class PositionStoreService {
   }
 
   
-  /*
   
-  selectNode(nodeId: number): Observable<BomPosition[]> {
+  
+  selectPage(nodeId: number, pageNumber: number, pageSize: number): Observable<BomPosition[]> {
 
     var _resultArray = new Array<BomPosition[]>();
     var result = new Subject<Array<BomPosition>>();
     this._http
-      .get(this.BASE_URL + "/node/" + nodeId)
+      .get(this.BASE_URL + "/node/" + nodeId + "/page/" + pageNumber + "/" + pageSize)
       .map((res: Response) => res.json())
       .subscribe(res => {
         result.next(res.map((pos: any) => this.mapPosition(pos)));
       });
     return result.asObservable();
   }
-  */
+
 
   selectNode(nodeId: number): Observable<number> {
 

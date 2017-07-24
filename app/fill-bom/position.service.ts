@@ -37,6 +37,11 @@ export class PositionService {
     );
   }
 
+  selectPage(nodeId: number, pageNumber: number, pageSize: number) {
+    this._storeService.selectPage(nodeId, pageNumber, pageSize)
+    .subscribe(positions => this._positions.next(positions));
+  }
+
   getTag(tag: string, projectDisciplineId: number): Observable<BomPosition[]> {
     return this._storeService.getTag(tag, projectDisciplineId);
   }
