@@ -53,7 +53,7 @@ export class PagerComponent {
     setPage(page: number) {
         console.log("pager.component -- setPage -- page: " + page); //TODO: remove
         console.log("pager.component -- setPage -- this.pager.totalPages: " + this.pager.totalPages); //TODO: remove
-        if (page < 1 || page > this.pager.totalPages) {
+        if (page < 1 || page > this.pager.totalPages || page === this.pager.page) {
             return;
         }
  

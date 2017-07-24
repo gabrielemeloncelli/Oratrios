@@ -32,6 +32,7 @@ export class PositionsListComponent {
   private deletionAction: string;
   private DELETION_NODE_QUANTITIES = "DELETION_NODE_QUANTITIES";
   private DELETION_POSITION = "DELETION_POSITION";
+  public positionsCount = 0;
 
 
   constructor(private selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService) {
@@ -50,6 +51,7 @@ export class PositionsListComponent {
       }
     )
     this.positionsService.positions.subscribe(() => this.loadingVisible = false);
+    this.positionsService.positionsCount.subscribe(positionsCount => this.positionsCount = positionsCount);
   }
 
   editPosition(position: BomPosition) {

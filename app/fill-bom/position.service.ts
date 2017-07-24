@@ -11,6 +11,9 @@ import { PositionErrorList } from './position-error-list';
 export class PositionService {
   private _positions: Subject<Array<BomPosition>> = new Subject<Array<BomPosition>>();
   public positions: Observable<Array<BomPosition>> = this._positions.asObservable();
+  private _positionsCount: Subject<number> = new Subject<number>();
+  public positionsCount = this._positionsCount.asObservable();
+
   private nodeId: number = 0;
 
   constructor(private _storeService: PositionStoreService) { }
@@ -30,7 +33,7 @@ export class PositionService {
   selectNode(nodeId: number) {
     this._positions.next(new Array<BomPosition>());
     this._storeService.selectNode(nodeId).subscribe(
-      positions => this._positions.next(positions)
+      positionsCount => this._positionsCount.next(positionsCount)
     );
   }
 
