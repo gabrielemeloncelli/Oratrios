@@ -1,17 +1,20 @@
 import { Component,
             Input,
-            OnInit }     from  '@angular/core';
+            Output,
+            EventEmitter }  from  '@angular/core';
 
-import { PagerService } from './pager.service';
+import { PagerService }     from './pager.service';
 
 @Component({
     templateUrl: 'app/pager/pager.component.html',
     selector: 'pager'
 })
 
-export class PagerComponent implements OnInit {
+export class PagerComponent {
 
     private _totalItems: number;
+    @Output() onPageChanged = new EventEmitter<number>();
+
     // The total items
     @Input() set totalItems(value: number){
         this._totalItems = value;
@@ -31,18 +34,21 @@ export class PagerComponent implements OnInit {
             currentPage = 1;
         }
         this.pager = this.pagerService.getPager(this._totalItems, currentPage);
+        if (currentPage > this.pager.totalPages)
+        {
+            currentPage = this.pager.startPage;
+        }
+        this.setPage(currentPage);
     }
 
     // pager object
     pager: any = {};
 
-    constructor(private pagerService: PagerService) {}
+    constructor(private pagerService: PagerService) {
+        this.pager = this.pagerService.getPager(0, 0);
+    }
 
-    ngOnInit() {}
-
- 
-
- 
+     
  
     setPage(page: number) {
         console.log("pager.component -- setPage -- page: " + page); //TODO: remove
@@ -53,6 +59,8 @@ export class PagerComponent implements OnInit {
  
         // get pager object from service
         this.pager = this.pagerService.getPager(this._totalItems, page);
+        this.pager.page = page;
+        this.onPageChanged.emit(page);
 
         console.log("pager.component -- setPage -- this.pager.page: " + this.pager.page); //TODO: remove
  

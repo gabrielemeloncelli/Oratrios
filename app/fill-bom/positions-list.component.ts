@@ -129,4 +129,8 @@ export class PositionsListComponent {
     .subscribe(() => { this.updateSelection(this._node) });
   }
 
+  onPageChanged(pageChanged: number) {
+    console.log('position-list.component -- onPageChanged -- pageSelected :' + pageChanged); //TODO: replace
+  }
+
 }
