@@ -33,14 +33,14 @@ export class MaterialStoreService
 
   }
 
-  getAll(partId: number, filter: TableAndSizeFilter): Observable<Array<Material>>
+  getAll(partId: number, filter: TableAndSizeFilter, pageNumber: number, pageSize: number): Observable<Array<Material>>
   {
     var _resultArray = new Array<Material[]>();
     var result = new Subject<Array<Material>>();
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     this._http
-        .post(this.BASE_URL + "/" + partId, filter.tableFilters , options)
+        .post(this.BASE_URL + "/" + partId + "/page/" + pageNumber + "/" + pageSize, filter.tableFilters , options)
         .map((res:Response) => res.json())
         .subscribe(res => {
           var resultArray = new Array<Material>();

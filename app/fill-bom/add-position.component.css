@@ -40,7 +40,7 @@ table > thead > th
 div.filteredMaterials
 {
   padding:5px;
-  max-height: 200px;
+  max-height: 350px;
   width: 900px;
   overflow-y: scroll; 
 }

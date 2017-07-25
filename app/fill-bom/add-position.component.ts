@@ -327,18 +327,21 @@ export class AddPositionComponent
   {
     this.uiStatusService.materialsVisible = true;
     this.filteredMaterialsLoading = true;
-    var tableFilters: TableFilter[] = new Array<TableFilter>();
-    for(var tableIndex = 0; tableIndex < this._tableFilters.length; tableIndex += 1)
-    {
-      tableFilters.push(new TableFilter(this._tableFilters[tableIndex].tableName, this._tableFilters[tableIndex].detail));
-    }
-    var filter: TableAndSizeFilter = new TableAndSizeFilter(tableFilters);
+    var filter = this.getFilter();
     this.materials = new Array<Material>();
     this.materialLoadingError = "";
     this._loadingTimeoutExpired = false;
     setTimeout(() => this._loadingTimeoutExpired = true, 1000);
     this.materialService.getAllCount(this.uiStatusService.commodityPart.id, filter);
-    this.materialService.getAll(this.uiStatusService.commodityPart.id, filter);
+  }
+
+  getFilter(): TableAndSizeFilter {
+    var tableFilters: TableFilter[] = new Array<TableFilter>();
+    for(var tableIndex = 0; tableIndex < this._tableFilters.length; tableIndex += 1)
+    {
+      tableFilters.push(new TableFilter(this._tableFilters[tableIndex].tableName, this._tableFilters[tableIndex].detail));
+    }
+    return new TableAndSizeFilter(tableFilters);
   }
 
   tableRemoved(tableName: string)
@@ -1074,6 +1077,19 @@ export class AddPositionComponent
       }
       this._tagStep2 = true;
     });
+  }
+
+  pageChanged(pageNumber: number)
+  {
+    this.uiStatusService.materialsVisible = true;
+    this.filteredMaterialsLoading = true;
+    var filter = this.getFilter();
+    this.materials = new Array<Material>();
+    this.materialLoadingError = "";
+    this._loadingTimeoutExpired = false;
+    setTimeout(() => this._loadingTimeoutExpired = true, (pageNumber + 10) * 1000);
+    this.materialService.getAll(this.uiStatusService.commodityPart.id, filter, pageNumber, 10);
+
   }
 
 }

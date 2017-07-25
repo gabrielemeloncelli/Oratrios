@@ -19,16 +19,16 @@ constructor(private _storeService: MaterialStoreService){}
   {
     this._storeService.getSingle(materialId, partId).subscribe( materials => this._materials.next(materials));
   }
-  getAll(partId: number, filter: TableAndSizeFilter)
+  getAll(partId: number, filter: TableAndSizeFilter, pageNumber: number, pageSize: number)
   {
-    this._storeService.getAll(partId, filter).subscribe( materials => this._materials.next(materials));
+    this._storeService.getAll(partId, filter, pageNumber, pageSize).subscribe( materials => this._materials.next(materials));
   }
 
   getAllCount(partId: number, filter: TableAndSizeFilter)
   {
     this._storeService.getAllCount(partId, filter).subscribe(totalItems => this._totalItems.next(totalItems));
   }
-  
+
   getByCommodityCode(disciplineId: number, commodityCode: string)
   {
     this._storeService.getByCommodityCode(disciplineId, commodityCode).subscribe( materials => this._materials.next(materials));

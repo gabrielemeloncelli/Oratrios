@@ -51,7 +51,13 @@ export class PositionsListComponent {
       }
     )
     this.positionsService.positions.subscribe(() => this.loadingVisible = false);
-    this.positionsService.positionsCount.subscribe(positionsCount => this.positionsCount = positionsCount);
+    this.positionsService.positionsCount.subscribe(positionsCount => {
+      this.positionsCount = positionsCount;
+      if (this.positionsCount === 0)
+      {
+        this.loadingVisible = false;
+      }
+    });
   }
 
   editPosition(position: BomPosition) {
@@ -69,7 +75,6 @@ export class PositionsListComponent {
     this.nodeName = this._node.name;
     this.nodeLocked = selectedNode.locked;
     this.uiStatusService.commodityGroup = !selectedNode.commodityGroup ? new CommodityGroup(0, "", "") : selectedNode.commodityGroup;
-    console.log("position-list.component -- updateSelection -- !selectedNode.commodityPart: " + !selectedNode.commodityPart); //TODO: remove
     this.uiStatusService.commodityPart = !selectedNode.commodityPart ? new CommodityPart(0, "", "", this.uiStatusService.commodityGroup.code) : selectedNode.commodityPart;
     this.positionsService.selectNode(selectedNode.id);
     this.uiStatusService.updateNodePositions(selectedNode.id);
