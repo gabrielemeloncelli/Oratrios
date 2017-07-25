@@ -74,6 +74,7 @@ export class AddPositionComponent
   private _commodityPropertiesSwitch = true;
   private _scrollPrevious: number;
   public hideTag: boolean;
+  public totItems = 0;
   
 
 
@@ -212,6 +213,12 @@ export class AddPositionComponent
         }
       }
     );
+
+    this.materialService.totalItems.subscribe(
+      totalItems => {
+        this.totItems = totalItems;
+      }
+    );
     
     this.modalComponent.onDismiss.subscribe(() => this.cleanupModal());
 
@@ -330,6 +337,7 @@ export class AddPositionComponent
     this.materialLoadingError = "";
     this._loadingTimeoutExpired = false;
     setTimeout(() => this._loadingTimeoutExpired = true, 1000);
+    this.materialService.getAllCount(this.uiStatusService.commodityPart.id, filter);
     this.materialService.getAll(this.uiStatusService.commodityPart.id, filter);
   }
 

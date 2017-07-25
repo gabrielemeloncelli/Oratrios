@@ -54,6 +54,20 @@ export class MaterialStoreService
     return result.asObservable();
   }
 
+  getAllCount(partId: number, filter: TableAndSizeFilter): Observable<number>
+  {
+    let result = new Subject<number>();
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    this._http
+        .post(this.BASE_URL + "/" + partId + "/count", filter.tableFilters , options)
+        .map((res:Response) => res.json())
+        .subscribe(res => 
+          result.next(res)
+        );
+    return result.asObservable();
+  }
+
   getByCommodityCode(disciplineId: number, commodityCode: string): Observable<Array<Material>>
   {
     var _resultArray = new Array<Material[]>();
