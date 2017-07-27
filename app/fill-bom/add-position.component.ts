@@ -64,7 +64,8 @@ export class AddPositionComponent
   private _toBeSavedIndex: number;
   private _allowedUnits: Option[];
   public allowedValues = new Array<Option[]>();
-  public hideGroupAndPart = false;
+  public hideGroup = false;
+  public hidePart = false;
   public filteredMaterialsLoading = false;
   public commoditySelection = false;
   public materialLoadingError = "";
@@ -107,15 +108,25 @@ export class AddPositionComponent
           this._tagStep2 = false;
           this._commodityPropertiesSwitch = !this._isTag;
           this.resetPosition();
-          this.hideGroupAndPart = !!this.uiStatusService.commodityPart.id;
+          this.hideGroup = !!this.uiStatusService.commodityGroup.id;
+          console.log("add-position.component -- ngAfterViewInit -- this.uiStatusService.commodityGroup.id: " + this.uiStatusService.commodityGroup.id);
+          this.hidePart = !!this.uiStatusService.commodityPart.id;
           this.hideTag = detail.hideTag;
-          this._tagAndQuantityVisible = this.hideGroupAndPart && this._isTag;
-          if (this.hideGroupAndPart)
+          this._tagAndQuantityVisible = this.hideGroup && this.hidePart && this._isTag;
+          if (this.hideGroup)
           {
-            this._parts = new Array<CommodityPart>();
-            this._parts.push(this.uiStatusService.commodityPart);
-            var partOption = new Option('' + this.uiStatusService.commodityPart.id, '' + this.uiStatusService.commodityPart.id);
-            this.partSelected(partOption);
+            if (this.hidePart)
+            {
+              this._parts = new Array<CommodityPart>();
+              this._parts.push(this.uiStatusService.commodityPart);
+              var partOption = new Option('' + this.uiStatusService.commodityPart.id, '' + this.uiStatusService.commodityPart.id);
+              this.partSelected(partOption);
+            }
+            else
+            {
+              var groupOption = new Option('' + this.uiStatusService.commodityGroup.id, '' + this.uiStatusService.commodityGroup.id);
+              this.groupSelected(groupOption);
+            }
           }
           setTimeout(() => this.modalComponent.open('fs'), 200);
         }
@@ -254,9 +265,7 @@ export class AddPositionComponent
 
   partSelected(event: Option)
   {
-    console.log("add-position.component -- partSelected -- event.value: " + event.value); //TODO: remove
     var foundPart: CommodityPart = this.findSelectedPart(+event.value);
-    console.log("add-position.component -- partSelected -- !!foundPart: " + !!foundPart); //TODO: remove
     this.partObjectSelected(foundPart, true);
   }
 
@@ -409,9 +418,12 @@ export class AddPositionComponent
     {
       this.selectComponent.clear();
     }
-    if (!this.uiStatusService.commodityPart.id)
+    if (!this.uiStatusService.commodityGroup.id)
     {
       this.uiStatusService.commodityGroup = new CommodityGroup(0, "", "");
+    }
+    if (!this.uiStatusService.commodityPart.id)
+    {
       this.uiStatusService.commodityPart = new CommodityPart(0, "", "","");
     }
     this.uiStatusService.tablesAndSizesVisible = false;

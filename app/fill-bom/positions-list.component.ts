@@ -75,7 +75,9 @@ export class PositionsListComponent {
     this.nodeName = this._node.name;
     this.nodeLocked = selectedNode.locked;
     this.uiStatusService.commodityGroup = !selectedNode.commodityGroup ? new CommodityGroup(0, "", "") : selectedNode.commodityGroup;
+    console.log("position-list.component - updateSelection - !!this.uiStatusService.commodityGroup.id: " + this.uiStatusService.commodityGroup.id); //TODO: remove
     this.uiStatusService.commodityPart = !selectedNode.commodityPart ? new CommodityPart(0, "", "", this.uiStatusService.commodityGroup.code) : selectedNode.commodityPart;
+    console.log("position-list.component - updateSelection - !!this.uiStatusService.commodityPart.id: " + this.uiStatusService.commodityPart.id); //TODO: remove
     this.positionsService.selectNode(selectedNode.id);
     this.uiStatusService.updateNodePositions(selectedNode.id);
     this.loadingVisible = true;
