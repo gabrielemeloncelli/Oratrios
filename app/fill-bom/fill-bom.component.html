@@ -53,9 +53,11 @@
 
       <span *ngIf="nodeNameDisabled" class="form-control" name="nodeName" id="nodeName">{{changedNode.name}}</span>
     </p>
-    <p *ngIf="confirmStoreNode">
+    <p *ngIf="conflictDetected">
       <label class="form-control">{{warningMessage}}</label>
-    <p>
+      <br/>
+      <button *ngIf="canConfirmConflict" type="button" class="btn btn-primary btn-saipem" (click)="storeNodeConfirm()">Confirm</button>
+    </p>
   </modal-body>
   <modal-footer>
     <button type="button" class="btn btn-primary btn-saipem" data-dismiss="modal" (click)="navigateModal.dismiss()">Cancel</button>

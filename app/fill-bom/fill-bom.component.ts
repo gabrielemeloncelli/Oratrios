@@ -37,7 +37,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
   coreEstService : CoreEstService;
   positionAdd: boolean = false;
   positionIsTag: boolean = false;
-  confirmStoreNode: boolean = false;
+  conflictDetected= false;
+  canConfirmConflict = false;
   warningMessage: string = '';
   nodeTypeOptions: Option[];
   @ViewChild('nodeTypeSelector')
@@ -66,7 +67,8 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
 
   handleNode(): void
   {
-    this.confirmStoreNode = false;
+    this.conflictDetected = false;
+    this.canConfirmConflict = false;
     this.warningMessage = '';
     this.confirmButtonText = 'Add';
     this.nodeNameDisabled = false;
@@ -242,7 +244,13 @@ export class FillBomComponent implements BubbleNodeMessageInterface, OnInit {
             if (error.status && error.status === 409)
             {
               this.warningMessage = error.message;
-              this.confirmStoreNode = true;
+              this.conflictDetected = true;
+              let stringMessage: string = error.message.toString();
+              if (stringMessage.length >= 61)
+              {
+                stringMessage = stringMessage.substring(0, 61);
+              }              
+              this.canConfirmConflict = stringMessage === 'The following node type(s) are already present in the branch:';
             }
           });
       }   
