@@ -710,10 +710,16 @@ export class AddPositionComponent
 
     newPosition.attributes = this.getAttributeValues();
     if (this._isEdit){
+      console.log("add-position.component -- saveSinglePosition -- Editing position"); //TODO: remove
       this.positionService.editPosition(newPosition).subscribe(
         p => {
+          console.log("add-position.component -- saveSinglePosition -- Position successfully edited"); //TODO: remove
           this.selectorService.refreshNode();
           this.modalComponent.dismiss();
+        },
+        e => {
+          console.log("add-position.component -- saveSinglePosition -- Edit failed "); //TODO: remove
+          this.errorMessage = e.message;
         }
       );
     }
