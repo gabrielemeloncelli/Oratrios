@@ -33,6 +33,7 @@ export class PositionsListComponent {
   private DELETION_NODE_QUANTITIES = "DELETION_NODE_QUANTITIES";
   private DELETION_POSITION = "DELETION_POSITION";
   public positionsCount = 0;
+  private _currentPage = 0;
 
 
   constructor(private selectorService: NodeSelectorService, public positionsService: PositionService, private uiStatusService: UiStatusService) {
@@ -80,7 +81,8 @@ export class PositionsListComponent {
     console.log("position-list.component - updateSelection - !!this.uiStatusService.commodityPart.id: " + this.uiStatusService.commodityPart.id); //TODO: remove
     this.positionsService.selectNode(selectedNode.id);
     this.uiStatusService.updateNodePositions(selectedNode.id);
-    this.loadingVisible = true;
+    this.onPageChanged(_currentPage);
+
   }
   addCatalogItem(hideTag: boolean) {
     this.uiStatusService.setInsertPosition(true, false, hideTag);
@@ -140,6 +142,7 @@ export class PositionsListComponent {
 
   onPageChanged(pageChanged: number) {
     this.loadingVisible = true;
+    _currentPage = pageChanged;
     this.positionsService.selectPage(this._node.id, pageChanged, 10);
     console.log('position-list.component -- onPageChanged -- pageSelected :' + pageChanged); //TODO: replace
   }

@@ -52,6 +52,14 @@ export class PositionStoreService {
       .map((res: Response) => res.json())
       .subscribe(res => {
         result.next(this.mapPosition(res));
+      },
+      err => {
+        if (err["status"] === 500) {
+          result.error({ message: JSON.parse(err["_body"])["ExceptionMessage"] });
+        }
+        else {
+          result.error(err);
+        }
       }
       );
     return result.asObservable();
