@@ -81,7 +81,7 @@ export class PositionsListComponent {
     console.log("position-list.component - updateSelection - !!this.uiStatusService.commodityPart.id: " + this.uiStatusService.commodityPart.id); //TODO: remove
     this.positionsService.selectNode(selectedNode.id);
     this.uiStatusService.updateNodePositions(selectedNode.id);
-    this.onPageChanged(_currentPage);
+    this.onPageChanged(this._currentPage);
 
   }
   addCatalogItem(hideTag: boolean) {
@@ -142,7 +142,7 @@ export class PositionsListComponent {
 
   onPageChanged(pageChanged: number) {
     this.loadingVisible = true;
-    _currentPage = pageChanged;
+    this._currentPage = pageChanged;
     this.positionsService.selectPage(this._node.id, pageChanged, 10);
     console.log('position-list.component -- onPageChanged -- pageSelected :' + pageChanged); //TODO: replace
   }
